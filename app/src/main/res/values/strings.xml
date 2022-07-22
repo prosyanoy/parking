@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Parking</string>
+    <string name="cluster_tap_message">Tapped cluster with %d items</string>
+    <string name="server_error">Cannot connect to the server</string>
+    <string name="successful">SMS code was sent to your phone number</string>
+    <string name="bottom_sheet_peek">Peek</string>
+    <string name="bottom_sheet_content">Content</string>
+</resources>
