@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/parking/app/src/main/res/layout/activity_intro.xml" value="0.136" />
         <entry key="..\:/parking/app/src/main/res/layout/activity_main.xml" value="0.136" />
         <entry key="..\:/parking/app/src/main/res/layout/bottom_sheet.xml" value="0.13722826086956522" />
         <entry key="app/src/main/res/drawable/default_pager_dot.xml" value="0.1645" />

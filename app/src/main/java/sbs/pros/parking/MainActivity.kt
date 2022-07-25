@@ -9,6 +9,7 @@ import android.graphics.*
 import android.graphics.Color.rgb
 import android.location.LocationManager
 import android.os.Bundle
+import android.provider.Contacts
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -18,6 +19,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.evernote.android.job.patched.internal.Job
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.yandex.mapkit.Animation
@@ -34,6 +36,7 @@ import com.yandex.mapkit.user_location.UserLocationLayer
 import com.yandex.mapkit.user_location.UserLocationObjectListener
 import com.yandex.mapkit.user_location.UserLocationView
 import com.yandex.runtime.image.ImageProvider
+import kotlinx.coroutines.*
 import java.lang.NullPointerException
 import kotlin.math.abs
 import kotlin.math.sqrt
@@ -55,7 +58,7 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
 
     private var userLocationLayer: UserLocationLayer? = null
 
-    private var context: Context? = null
+    private var mapKit: MapKit? = null
 
     object MapKitInitializer {
         private var initialized = false
@@ -127,12 +130,10 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
         MapKitInitializer.initialize(MAPKIT_API_KEY, applicationContext)
         setContentView(R.layout.activity_main)
 
-        context = this
-
         mapView = findViewById<MapView>(R.id.mapview)
 
         mapView!!.map.move(
-            CameraPosition(Point(56.834343, 60.688815), 11.0f, 0.0f, 0.0f),
+            CameraPosition(TARGET_LOCATION, 11.0f, 0.0f, 0.0f),
             Animation(Animation.Type.SMOOTH, 0F),
             null
         )
@@ -144,29 +145,27 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
         bottomSheetBehavior.isFitToContents = false
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
-
-
         //location
-        val mapKit = MapKitFactory.getInstance()
-        mapKit.resetLocationManagerToDefault()
+        mapKit = MapKitFactory.getInstance()
+        mapKit?.resetLocationManagerToDefault()
 
-        requestLocationPermission()
+        requestLocationPermission(grant = true)
+        setUserLocationLayer()
 
-        setUserLocationLayer(mapKit)
+        checkUserLocation()
+
+        if(userLocationLayer!!.cameraPosition()?.target != null){
+            centerCameraByUser()
+        }
 
         val meFloatButton = findViewById<FloatingActionButton>(R.id.floatingActionButton)
         meFloatButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
                 if(userLocationLayer!!.cameraPosition()?.target != null){
-                    mapView!!.map.move(
-                        CameraPosition(Point(userLocationLayer!!.cameraPosition()?.target!!.latitude, userLocationLayer!!.cameraPosition()?.target!!.longitude), 11.0f, 0.0f, 0.0f),
-                        Animation(Animation.Type.SMOOTH, 0F),
-                        null)
+                    centerCameraByUser()
                 } else{
-                    Toast.makeText(context, "нет местоположения", Toast.LENGTH_SHORT).show()
+                    requestLocationPermission(grant = true, denied = true)
                 }
-
-
             }
         })
 
@@ -176,6 +175,8 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
 
         getParkings(applicationContext, url, mapObjects, clusterizedCollection)
     }
+
+
 
     class getParkings(context : Context, url : String, mapObjects : MapObjectCollection, clusterizedCollection: ClusterizedPlacemarkCollection) {
         val queue = Volley.newRequestQueue(context)
@@ -334,10 +335,6 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
         clusterizedCollection.clusterPlacemarks(60.0, 15)
     }
 
-    fun changeCameraPosition(point : Point, cameraPosition : CameraPosition): CameraPosition {
-        return CameraPosition(point, cameraPosition.zoom, cameraPosition.azimuth, cameraPosition.tilt)
-    }
-
     companion object {
         /*private var currentSelection : MapObject? = null
         private val node = currentSelection
@@ -364,33 +361,53 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
     }
 
     //location
-    private fun requestLocationPermission() {
-        if (ContextCompat.checkSelfPermission(this,
-                "android.permission.ACCESS_FINE_LOCATION")
-            != PackageManager.PERMISSION_GRANTED
-        ) {
+    private fun requestLocationPermission(grant : Boolean = false, denied : Boolean = false) {
+        if ((ContextCompat.checkSelfPermission(this, "android.permission.ACCESS_FINE_LOCATION")
+                    != PackageManager.PERMISSION_GRANTED && grant) ||
+            (ContextCompat.checkSelfPermission(this, "android.permission.ACCESS_FINE_LOCATION")
+                    == PackageManager.PERMISSION_DENIED && denied))
+        {
             ActivityCompat.requestPermissions(this, arrayOf("android.permission.ACCESS_FINE_LOCATION"),
                 PERMISSIONS_REQUEST_FINE_LOCATION)
         }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int,
-                                            permissions: Array<out String>, grantResults: IntArray) {
+                  permissions: Array<out String>, grantResults: IntArray) {
 
-        if (requestCode == PERMISSIONS_REQUEST_FINE_LOCATION && grantResults.isNotEmpty()) {
-            Toast.makeText(context, "дали разрешение", Toast.LENGTH_SHORT).show()
-
-            startActivity(Intent.makeRestartActivityTask(this.intent?.component))
+        if (requestCode == PERMISSIONS_REQUEST_FINE_LOCATION) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startActivity(Intent.makeRestartActivityTask(this.intent?.component))
+            }
         }
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-    private fun setUserLocationLayer(mapKit : MapKit){
-        userLocationLayer = mapKit.createUserLocationLayer(mapView!!.mapWindow)
+    private fun setUserLocationLayer(){
+        userLocationLayer = mapKit?.createUserLocationLayer(mapView!!.mapWindow)
         userLocationLayer!!.isVisible = true
         userLocationLayer!!.isHeadingEnabled = false
         userLocationLayer!!.setObjectListener(this)
+    }
+
+    private fun checkUserLocation(){
+        GlobalScope.launch(Dispatchers.Main) { // запуск новой сопрограммы в фоне
+            while (true){
+                if (userLocationLayer!!.cameraPosition()?.target != null){
+                    centerCameraByUser()
+                    break
+                }
+                delay(500L)
+            }
+        }
+    }
+
+    private fun centerCameraByUser() {
+        mapView!!.map.move(
+            CameraPosition(Point(userLocationLayer!!.cameraPosition()?.target!!.latitude, userLocationLayer!!.cameraPosition()?.target!!.longitude), 11.0f, 0.0f, 0.0f),
+            Animation(Animation.Type.SMOOTH, 0F),
+            null)
     }
 
     override fun onObjectAdded(userLocationView: UserLocationView) {
