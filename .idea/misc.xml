@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Projects/AndroidPROJECTS/parking/app/src/main/res/layout/activity_main.xml" value="0.2864583333333333" />
+        <entry key="..\:/Projects/AndroidPROJECTS/parking/app/src/main/res/layout/bottom_sheet.xml" value="0.2864583333333333" />
         <entry key="app/src/main/res/drawable/default_pager_dot.xml" value="0.1645" />
         <entry key="app/src/main/res/drawable/selected_pager_dot.xml" value="0.1645" />
         <entry key="app/src/main/res/drawable/tab_pager_selector.xml" value="0.1645" />

@@ -1,6 +1,5 @@
 package sbs.pros.parking
 
-//import com.yandex.mapkit.map.CameraPosition
 
 import android.content.Context
 import android.graphics.*
@@ -24,6 +23,8 @@ import com.yandex.mapkit.map.*
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.mapkit.user_location.UserLocationLayer
 import com.yandex.runtime.image.ImageProvider
+import sbs.pros.parking.model.PinData
+import sbs.pros.parking.utils.moveWithBottomPadding
 import kotlin.math.abs
 import kotlin.math.sqrt
 
@@ -42,19 +43,9 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
 
     private val mapView: MapView? = null
 
-    /*private fun requestLocationPermission() {
-        if (ContextCompat.checkSelfPermission(
-                this,
-                "android.permission.ACCESS_FINE_LOCATION"
-            )
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this, arrayOf("android.permission.ACCESS_FINE_LOCATION"),
-                PERMISSIONS_REQUEST_FINE_LOCATION
-            )
-        }
-    }*/
+    private var selectedPin: PinData? = null
+
+
 
     object MapKitInitializer {
         private var initialized = false
@@ -114,23 +105,11 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        /*val resultLauncher = registerForActivityResult(MyIntroActivityContract()) { _ ->
-            val prefs = getSharedPreferences("data.xml", MODE_PRIVATE)
-            val editor = prefs.edit()
-            editor.putBoolean("login", false)
-            editor.apply()
-        }
-
-        val prefs = getSharedPreferences("data.xml", MODE_PRIVATE)
-
-        if (prefs.getBoolean("login", true)) {
-            resultLauncher.launch("Login?")
-        }*/
 
         MapKitInitializer.initialize(MAPKIT_API_KEY, applicationContext)
         setContentView(R.layout.activity_main)
 
-        val llBottomSheet = findViewById<View>(R.id.bottom_sheet) as LinearLayout
+        val llBottomSheet = findViewById<View>(R.id.bottom_sheet)
         val bottomSheetBehavior: BottomSheetBehavior<*> = BottomSheetBehavior.from(llBottomSheet)
 
         val mapView = findViewById<MapView>(R.id.mapview)
@@ -138,13 +117,6 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
         bottomSheetBehavior.isFitToContents = false
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
-        /*requestLocationPermission()
-        val mapKit = MapKitFactory.getInstance()
-        mapKit.resetLocationManagerToDefault()
-        userLocationLayer = mapKit.createUserLocationLayer(mapView.mapWindow)
-        userLocationLayer!!.isVisible = true
-        userLocationLayer!!.isHeadingEnabled = true
-        userLocationLayer!!.setObjectListener(this)*/
 
         mapView!!.map.move(
             CameraPosition(TARGET_LOCATION, 11.0f, 0.0f, 0.0f),
@@ -157,36 +129,12 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
         getParkings(applicationContext, url, mapObjects, clusterizedCollection)
     }
 
-    /*fun onLocationUpdated(location: Location) {
-        if (myLocation == null) {
-            mapView!!.map.move(
-                CameraPosition(location.position, 11.0f, 0.0f, 0.0f),
-                Animation(Animation.Type.SMOOTH, 0F),
-                null
-            )
-            //moveCamera(location.getPosition(), 11f);
-        }
-        //myLocation = location.position
-        //Log.w(TAG, "my location - " + myLocation!!.latitude + "," + myLocation!!.longitude)
-    }
 
-    fun onLocationStatusUpdated(locationStatus: LocationStatus) {
-        if (locationStatus == LocationStatus.NOT_AVAILABLE) {
-            //Snackbar.make(rootCoordinatorLayout, "lkj", Snackbar.LENGTH_LONG).show();
-            mapView!!.map.move(
-                CameraPosition(TARGET_LOCATION, 11.0f, 0.0f, 0.0f),
-                Animation(Animation.Type.SMOOTH, 0F),
-                null
-            )
-        }
-    }*/
 
     class getParkings(context : Context, url : String, mapObjects : MapObjectCollection, clusterizedCollection: ClusterizedPlacemarkCollection) {
-        val queue = Volley.newRequestQueue(context)
-        private val TAG = "MainActivity"
-        val stringRequest = object : StringRequest(
-            Method.GET,
-            "$url?apicall=get_parkings",
+        private val queue = Volley.newRequestQueue(context)
+        private val stringRequest = object : StringRequest(
+            Method.GET, "$url?apicall=get_parkings",
             com.android.volley.Response.Listener { response ->
                 val jsonArray = org.json.JSONTokener(response).nextValue() as org.json.JSONArray
                 for (i in 0 until jsonArray.length()) {
@@ -258,40 +206,29 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
     }
 
     override fun onClusterTap(cluster: Cluster): Boolean {
-        /*Toast.makeText(
-            applicationContext,
-            String.format(getString(R.string.cluster_tap_message), cluster.size),
-            Toast.LENGTH_SHORT
-        ).show()*/
         return true
     }
 
-    val parkingMapObjectTapListener =
+    private val parkingMapObjectTapListener =
             MapObjectTapListener { mapObject, point ->
                 if (mapObject is PlacemarkMapObject) {
                     val parking = mapObject
-                    val parkingData = parking.userData as Data
+                    val parkingData = parking.userData as PinData
 
-                    val llBottomSheet: LinearLayout by lazy { MainActivity().findViewById<View>(R.id.bottom_sheet) as LinearLayout }
-                    val bottomSheetBehavior: BottomSheetBehavior<*> =
-                        BottomSheetBehavior.from(llBottomSheet)
-                    val parkingAddress = MainActivity().findViewById<View>(R.id.parking_address) as TextView
-                    val parkingInfo = MainActivity().findViewById<View>(R.id.parking_info) as TextView
+                    val llBottomSheet = this.findViewById<LinearLayout>(R.id.bottom_sheet)
+                    val bottomSheetBehavior = BottomSheetBehavior.from(llBottomSheet)
+                    val parkingAddress = this.findViewById<TextView>(R.id.parking_address)
+                    val parkingInfo = this.findViewById<TextView>(R.id.parking_info)
 
                     parkingAddress.text = parkingData.address
                     parkingInfo.text = parkingData.hour_cost.toString()
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
-                    /*mapView!!.map.move(
-                        changeCameraPosition(point, mapView!!.map.cameraPosition),
-                        Animation(Animation.Type.SMOOTH, 0F),
-                        null
-                    )*/
-                    //MainActivity.changeSelection(parkingUserData?.mapObject!!)
                 }
                 true
             }
 
-    private class Data (val parking: MapObject, val hour_cost: Int, val address: String)
+
+
 
     private fun parking(context: Context, mapObjects: MapObjectCollection, clusterizedCollection: ClusterizedPlacemarkCollection, point : Point, list : List<Point>, address : String, hour_cost : Int, id : Int) {
         val polyline = mapObjects.addPolyline(
@@ -302,10 +239,11 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
             point,
             ImageProvider.fromBitmap(drawSimpleBitmap("$hour_cost₽", context))
         )
+        icon.addTapListener(parkingMapObjectTapListener)
         icon.setScaleFunction(listOf(PointF(1F, 0.5F)))
         icon.zIndex = 100.0f
 
-        icon.userData = Data(polyline, hour_cost, address)
+        icon.userData = PinData(polyline, hour_cost, address, point)
 
 
         clusterizedCollection.clusterPlacemarks(60.0, 15)
@@ -329,7 +267,7 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
         icon.setScaleFunction(listOf(PointF(1F, 0.5F)))
         icon.zIndex = 100.0f
 
-        icon.userData = Data(polygon, hour_cost, address)
+        icon.userData = PinData(polygon, hour_cost, address, point)
 
         clusterizedCollection.clusterPlacemarks(60.0, 15)
     }
@@ -359,7 +297,50 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
         private const val FONT_SIZE = 15f
         private const val MARGIN_SIZE = 3f
         private const val STROKE_SIZE = 3f
+        const val POINTS_ZOOM = 13 //9-12.99 (точки)
+        private const val ZOOM_DURATION = 0.5f
+
+
 
         private const val PERMISSIONS_REQUEST_FINE_LOCATION = 1
+    }
+
+
+
+    private fun unSelectPrevMarker() {
+        selectedPin?.let { //unselect prev
+            it.isSelected = false
+//            redrawMarkerItem(it)
+            selectedPin = null
+        }
+    }
+
+
+
+
+    private fun selectMarkerItem(item: PinData) {
+        unSelectPrevMarker()
+
+        selectedPin = item
+        selectedPin?.isSelected = true
+//        selectedPin?.let { redrawMarkerItem(it) }
+    }
+
+    private fun moveTo(target: Point, zoom: Float?) {
+        mapView?.let {
+            val cameraPosition = mapView.mapWindow.map.cameraPosition
+
+            mapView.map.moveWithBottomPadding(
+                CameraPosition(
+                    target,
+                    zoom ?: cameraPosition.zoom,
+                    cameraPosition.azimuth,
+                    cameraPosition.tilt
+                ),
+                Animation(Animation.Type.SMOOTH, ZOOM_DURATION), null,
+                resources.getDimensionPixelSize(R.dimen.bottom_sheet_height),
+                mapView.height()
+            )
+        }
     }
 }
