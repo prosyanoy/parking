@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.*
 import android.graphics.Color.rgb
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -13,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.LinearRing
@@ -21,7 +23,6 @@ import com.yandex.mapkit.geometry.Polygon
 import com.yandex.mapkit.geometry.Polyline
 import com.yandex.mapkit.map.*
 import com.yandex.mapkit.mapview.MapView
-import com.yandex.mapkit.user_location.UserLocationLayer
 import com.yandex.runtime.image.ImageProvider
 import sbs.pros.parking.model.PinData
 import sbs.pros.parking.utils.moveWithBottomPadding
@@ -34,10 +35,6 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
     private val MAPKIT_API_KEY = "024ae79a-58dc-4626-ac7e-1ba6ba83121e"
 
     private val url = "https://pros.sbs/parking/getting.php"
-
-    private var userLocationLayer: UserLocationLayer? = null
-
-    private var myLocation: Point? = null
 
     private val TARGET_LOCATION = Point(43.590097, 39.721887)
 
@@ -59,8 +56,7 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
         }
     }
 
-   //@SuppressLint("ResourceAsColor")
-    fun drawSimpleBitmap(number: String, context: Context): Bitmap {
+    private fun drawSimpleBitmap(number: String, context: Context): Bitmap {
         val textPaint = Paint()
         textPaint.textSize = FONT_SIZE * context.resources.displayMetrics.density
         textPaint.textAlign = Paint.Align.CENTER
@@ -131,11 +127,13 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
 
 
 
-    class getParkings(context : Context, url : String, mapObjects : MapObjectCollection, clusterizedCollection: ClusterizedPlacemarkCollection) {
-        private val queue = Volley.newRequestQueue(context)
-        private val stringRequest = object : StringRequest(
+    private fun getParkings(context : Context, url : String, mapObjects : MapObjectCollection, clusterizedCollection: ClusterizedPlacemarkCollection) {
+        val queue = Volley.newRequestQueue(context)
+        val stringRequest = object : StringRequest(
             Method.GET, "$url?apicall=get_parkings",
+
             com.android.volley.Response.Listener { response ->
+
                 val jsonArray = org.json.JSONTokener(response).nextValue() as org.json.JSONArray
                 for (i in 0 until jsonArray.length()) {
                     val coordinatesObject = jsonArray.getJSONObject(i).getString("coordinates")
@@ -146,7 +144,7 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
 
                     val lat = point2.getDouble(0)
                     val lon = point2.getDouble(1)
-                    val point = Point(lat.toDouble(), lon.toDouble())
+                    val point = Point(lat, lon)
 
                     val list = org.json.JSONTokener(coordinates.getString("list")).nextValue() as org.json.JSONArray
                     Toast.makeText(context, coordinates.getString("list"), Toast.LENGTH_SHORT)
@@ -157,7 +155,7 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
                         val coord2 = org.json.JSONTokener(coord1).nextValue() as org.json.JSONArray
                         val latitude = coord2.getDouble(0)
                         val longitude = coord2.getDouble(1)
-                        myList += Point(latitude.toDouble(), longitude.toDouble())
+                        myList += Point(latitude, longitude)
                     }
 
                     val type = coordinates.getString("type")
@@ -167,10 +165,9 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
                     val id = jsonArray.getJSONObject(i).getInt("id")
 
                     if (type == "l") {
-                        MainActivity().parking(context, mapObjects, clusterizedCollection, point, myList, address, hour_cost, id)
+                        parking(context, mapObjects, clusterizedCollection, point, myList, address, hour_cost, id)
                     } else if (type == "g") {
-                        android.app.Activity()
-                        MainActivity().parkingG(context, mapObjects, clusterizedCollection, point, myList, address, hour_cost, id)
+                        parkingG(context, mapObjects, clusterizedCollection, point, myList, address, hour_cost, id)
                     }
                 }
             },
@@ -181,9 +178,7 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
                     Toast.LENGTH_SHORT
                 ).show()
             }){}
-        init {
             queue.add(stringRequest)
-        }
     }
 
     override fun onStop() {
@@ -212,17 +207,20 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
     private val parkingMapObjectTapListener =
             MapObjectTapListener { mapObject, point ->
                 if (mapObject is PlacemarkMapObject) {
-                    val parking = mapObject
-                    val parkingData = parking.userData as PinData
+                    val parkingData = mapObject.userData as PinData
 
-                    val llBottomSheet = this.findViewById<LinearLayout>(R.id.bottom_sheet)
-                    val bottomSheetBehavior = BottomSheetBehavior.from(llBottomSheet)
-                    val parkingAddress = this.findViewById<TextView>(R.id.parking_address)
-                    val parkingInfo = this.findViewById<TextView>(R.id.parking_info)
 
+                    val llBottomSheet = findViewById<LinearLayout>(R.id.bottom_sheet)
+                    val view = LayoutInflater.from(applicationContext).inflate(R.layout.bottom_sheet, llBottomSheet, false)
+                    val bottomSheetDialog = BottomSheetDialog(this)
+                    bottomSheetDialog.setContentView(view)
+
+                    val parkingAddress = view.findViewById<TextView>(R.id.parking_address)
+                    val parkingInfo = view.findViewById<TextView>(R.id.parking_info)
                     parkingAddress.text = parkingData.address
                     parkingInfo.text = parkingData.hour_cost.toString()
-                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+
+                    bottomSheetDialog.show()
                 }
                 true
             }
@@ -239,12 +237,11 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
             point,
             ImageProvider.fromBitmap(drawSimpleBitmap("$hour_cost₽", context))
         )
+
         icon.addTapListener(parkingMapObjectTapListener)
         icon.setScaleFunction(listOf(PointF(1F, 0.5F)))
         icon.zIndex = 100.0f
-
         icon.userData = PinData(polyline, hour_cost, address, point)
-
 
         clusterizedCollection.clusterPlacemarks(60.0, 15)
     }
