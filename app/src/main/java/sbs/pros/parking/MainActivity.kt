@@ -1,60 +1,64 @@
 package sbs.pros.parking
 
-//import com.yandex.mapkit.map.CameraPosition
-
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.*
 import android.graphics.Color.rgb
+import android.location.LocationManager
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.yandex.mapkit.Animation
+import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.LinearRing
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.geometry.Polygon
 import com.yandex.mapkit.geometry.Polyline
+import com.yandex.mapkit.layers.ObjectEvent
 import com.yandex.mapkit.map.*
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.mapkit.user_location.UserLocationLayer
+import com.yandex.mapkit.user_location.UserLocationObjectListener
+import com.yandex.mapkit.user_location.UserLocationView
 import com.yandex.runtime.image.ImageProvider
+import kotlinx.coroutines.*
 import kotlin.math.abs
 import kotlin.math.sqrt
 
 
-class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
+class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
+    UserLocationObjectListener{
 
-    private val MAPKIT_API_KEY = "024ae79a-58dc-4626-ac7e-1ba6ba83121e"
-
-    private val url = "https://pros.sbs/parking/getting.php"
-
-    private var userLocationLayer: UserLocationLayer? = null
-
-    private var myLocation: Point? = null
+    private val MAPKIT_API_KEY: String = "024ae79a-58dc-4626-ac7e-1ba6ba83121e"
 
     private val TARGET_LOCATION = Point(43.590097, 39.721887)
 
-    private val mapView: MapView? = null
+    private val PERMISSIONS_REQUEST_FINE_LOCATION = 1
 
-    /*private fun requestLocationPermission() {
-        if (ContextCompat.checkSelfPermission(
-                this,
-                "android.permission.ACCESS_FINE_LOCATION"
-            )
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this, arrayOf("android.permission.ACCESS_FINE_LOCATION"),
-                PERMISSIONS_REQUEST_FINE_LOCATION
-            )
-        }
-    }*/
+    private val url = "https://pros.sbs/parking/getting.php"
+
+    private var mapView: MapView? = null
+
+    private var userLocationLayer: UserLocationLayer? = null
+
+    private var mapKit: MapKit? = null
+
+    var dialogType: String? = null
 
     object MapKitInitializer {
         private var initialized = false
@@ -68,8 +72,7 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
         }
     }
 
-   //@SuppressLint("ResourceAsColor")
-    fun drawSimpleBitmap(number: String, context: Context): Bitmap {
+    private fun drawSimpleBitmap(number: String, context: Context): Bitmap {
         val textPaint = Paint()
         textPaint.textSize = FONT_SIZE * context.resources.displayMetrics.density
         textPaint.textAlign = Paint.Align.CENTER
@@ -110,7 +113,6 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
         return bitmap
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -120,9 +122,7 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
             editor.putBoolean("login", false)
             editor.apply()
         }
-
         val prefs = getSharedPreferences("data.xml", MODE_PRIVATE)
-
         if (prefs.getBoolean("login", true)) {
             resultLauncher.launch("Login?")
         }*/
@@ -130,56 +130,52 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
         MapKitInitializer.initialize(MAPKIT_API_KEY, applicationContext)
         setContentView(R.layout.activity_main)
 
-        val llBottomSheet = findViewById<View>(R.id.bottom_sheet) as LinearLayout
-        val bottomSheetBehavior: BottomSheetBehavior<*> = BottomSheetBehavior.from(llBottomSheet)
-
-        val mapView = findViewById<MapView>(R.id.mapview)
-
-        bottomSheetBehavior.isFitToContents = false
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-
-        /*requestLocationPermission()
-        val mapKit = MapKitFactory.getInstance()
-        mapKit.resetLocationManagerToDefault()
-        userLocationLayer = mapKit.createUserLocationLayer(mapView.mapWindow)
-        userLocationLayer!!.isVisible = true
-        userLocationLayer!!.isHeadingEnabled = true
-        userLocationLayer!!.setObjectListener(this)*/
+        mapView = findViewById<MapView>(R.id.mapview)
 
         mapView!!.map.move(
             CameraPosition(TARGET_LOCATION, 11.0f, 0.0f, 0.0f),
             Animation(Animation.Type.SMOOTH, 0F),
             null
         )
-        val mapObjects = mapView.map.mapObjects.addCollection()
-        val clusterizedCollection = mapView.map.mapObjects.addClusterizedPlacemarkCollection(this)
+
+        //bottomSheet
+        val llBottomSheet = findViewById<View>(R.id.bottom_sheet) as LinearLayout
+        val bottomSheetBehavior: BottomSheetBehavior<*> = BottomSheetBehavior.from(llBottomSheet)
+
+        bottomSheetBehavior.isFitToContents = false
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+
+        //location
+        mapKit = MapKitFactory.getInstance()
+        mapKit?.resetLocationManagerToDefault()
+
+        requestLocationPermission(grant = true)
+        setUserLocationLayer()
+        checkUserLocation()
+
+        val meFloatButton = findViewById<FloatingActionButton>(R.id.centeringRelativeUser)
+        meFloatButton.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(view: View?) {
+                if(userLocationLayer!!.cameraPosition()?.target != null){
+                    centerCameraByUser()
+                } else{
+                    if(checkGEOStatus()){
+                        requestLocationPermission(grant = true, denied = true)
+                    } else {
+                        geoStatusDialog()
+                    }
+                }
+            }
+        })
+
+        //objects
+        val mapObjects = mapView!!.map.mapObjects.addCollection()
+        val clusterizedCollection = mapView!!.map.mapObjects.addClusterizedPlacemarkCollection(this)
 
         getParkings(applicationContext, url, mapObjects, clusterizedCollection)
     }
 
-    /*fun onLocationUpdated(location: Location) {
-        if (myLocation == null) {
-            mapView!!.map.move(
-                CameraPosition(location.position, 11.0f, 0.0f, 0.0f),
-                Animation(Animation.Type.SMOOTH, 0F),
-                null
-            )
-            //moveCamera(location.getPosition(), 11f);
-        }
-        //myLocation = location.position
-        //Log.w(TAG, "my location - " + myLocation!!.latitude + "," + myLocation!!.longitude)
-    }
 
-    fun onLocationStatusUpdated(locationStatus: LocationStatus) {
-        if (locationStatus == LocationStatus.NOT_AVAILABLE) {
-            //Snackbar.make(rootCoordinatorLayout, "lkj", Snackbar.LENGTH_LONG).show();
-            mapView!!.map.move(
-                CameraPosition(TARGET_LOCATION, 11.0f, 0.0f, 0.0f),
-                Animation(Animation.Type.SMOOTH, 0F),
-                null
-            )
-        }
-    }*/
 
     class getParkings(context : Context, url : String, mapObjects : MapObjectCollection, clusterizedCollection: ClusterizedPlacemarkCollection) {
         val queue = Volley.newRequestQueue(context)
@@ -258,19 +254,19 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
     }
 
     override fun onClusterTap(cluster: Cluster): Boolean {
-        /*Toast.makeText(
-            applicationContext,
-            String.format(getString(R.string.cluster_tap_message), cluster.size),
-            Toast.LENGTH_SHORT
-        ).show()*/
         return true
     }
 
-    val parkingMapObjectTapListener =
+    //private class ParkingMapObjectUserData constructor(val address : String, val hour_cost: String, val mapObject: MapObject?)
+    private class ParkingMapObjectUserData(val id: Int, val mapObject: MapObject?)
+
+    private class parkingListener (address: String, hour_cost: Int) {
+        val parkingMapObjectTapListener =
             MapObjectTapListener { mapObject, point ->
                 if (mapObject is PlacemarkMapObject) {
-                    val parking = mapObject
-                    val parkingData = parking.userData as Data
+                    //Toast.makeText(applicationContext, "lol", Toast.LENGTH_SHORT).show()
+                    //val parking = mapObject
+                    //val parkingData = parking.userData
 
                     val llBottomSheet: LinearLayout by lazy { MainActivity().findViewById<View>(R.id.bottom_sheet) as LinearLayout }
                     val bottomSheetBehavior: BottomSheetBehavior<*> =
@@ -278,8 +274,8 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
                     val parkingAddress = MainActivity().findViewById<View>(R.id.parking_address) as TextView
                     val parkingInfo = MainActivity().findViewById<View>(R.id.parking_info) as TextView
 
-                    parkingAddress.text = parkingData.address
-                    parkingInfo.text = parkingData.hour_cost.toString()
+                    parkingAddress.text = address
+                    parkingInfo.text = hour_cost.toString()
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
                     /*mapView!!.map.move(
                         changeCameraPosition(point, mapView!!.map.cameraPosition),
@@ -290,8 +286,7 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
                 }
                 true
             }
-
-    private class Data (val parking: MapObject, val hour_cost: Int, val address: String)
+    }
 
     private fun parking(context: Context, mapObjects: MapObjectCollection, clusterizedCollection: ClusterizedPlacemarkCollection, point : Point, list : List<Point>, address : String, hour_cost : Int, id : Int) {
         val polyline = mapObjects.addPolyline(
@@ -305,8 +300,10 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
         icon.setScaleFunction(listOf(PointF(1F, 0.5F)))
         icon.zIndex = 100.0f
 
-        icon.userData = Data(polyline, hour_cost, address)
+        /* val m = SaveState()
+         val result: Boolean = m.saveObject(myObject(parkingListener(address, hour_cost).parkingMapObjectTapListener, polyline), id, applicationContext)
 
+         icon.addTapListener(SaveState().getObject(applicationContext, id)!!.listener)*/
 
         clusterizedCollection.clusterPlacemarks(60.0, 15)
     }
@@ -329,17 +326,16 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
         icon.setScaleFunction(listOf(PointF(1F, 0.5F)))
         icon.zIndex = 100.0f
 
-        icon.userData = Data(polygon, hour_cost, address)
+        /*val m = SaveState()
+        val result: Boolean = m.saveObject(myObject(parkingListener(address, hour_cost).parkingMapObjectTapListener, polygon), id, applicationContext)
+
+        icon.addTapListener(SaveState().getObject(applicationContext, id)!!.listener)*/
 
         clusterizedCollection.clusterPlacemarks(60.0, 15)
     }
 
-    fun changeCameraPosition(point : Point, cameraPosition : CameraPosition): CameraPosition {
-        return CameraPosition(point, cameraPosition.zoom, cameraPosition.azimuth, cameraPosition.tilt)
-    }
-
     companion object {
-        private var currentSelection : MapObject? = null
+        /*private var currentSelection : MapObject? = null
         private val node = currentSelection
         fun changeSelection(parking: MapObject?) {
             if (node is PolylineMapObject) {
@@ -354,12 +350,130 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
             } else if (parking is PolygonMapObject) {
                 parking.strokeColor = rgb(57, 180, 36)
             }
-        }
+        }*/
 
         private const val FONT_SIZE = 15f
         private const val MARGIN_SIZE = 3f
         private const val STROKE_SIZE = 3f
-
-        private const val PERMISSIONS_REQUEST_FINE_LOCATION = 1
     }
+
+    //user location
+    private fun requestLocationPermission(grant : Boolean = false, denied : Boolean = false) {
+        if(checkFineLocationDenied() && denied){
+            fineLocationDialog()
+        } else if (!checkFineLocationGrant() && grant)
+        {
+            ActivityCompat.requestPermissions(this, arrayOf("android.permission.ACCESS_FINE_LOCATION"),
+                PERMISSIONS_REQUEST_FINE_LOCATION)
+        }
+    }
+
+    private fun fineLocationDialog(){
+        val dialogView = layoutInflater.inflate(R.layout.dialog_intent_settings, null)
+
+        val customDialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .show()
+
+        val dialogText = dialogView.findViewById<TextView>(R.id.intentSettingsTextView)
+        dialogText.text = getString(R.string.intent_settings_text_view_fine_location)
+
+        val dialogButton = dialogView.findViewById<Button>(R.id.intentSettingsButton)
+        dialogButton.setOnClickListener {
+            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            intent.data = Uri.parse("package:" + this.packageName)
+            startActivity(intent)
+            customDialog.dismiss()
+        }
+    }
+
+    private fun geoStatusDialog(){
+        val dialogView = layoutInflater.inflate(R.layout.dialog_intent_settings, null)
+
+        val customDialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .show()
+
+        val dialogText = dialogView.findViewById<TextView>(R.id.intentSettingsTextView)
+        dialogText.text = getString(R.string.intent_settings_text_view_geo_status)
+
+        val dialogButton = dialogView.findViewById<Button>(R.id.intentSettingsButton)
+        dialogButton.setOnClickListener {
+            val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+            startActivity(intent)
+            customDialog.dismiss()
+        }
+
+        GlobalScope.launch() {
+            while (true){
+                if (checkGEOStatus()){
+                    customDialog.dismiss()
+                }
+                delay(250L)
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int,
+                  permissions: Array<out String>, grantResults: IntArray) {
+        if (requestCode == PERMISSIONS_REQUEST_FINE_LOCATION) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startActivity(Intent.makeRestartActivityTask(this.intent?.component))
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    private fun setUserLocationLayer(){
+        userLocationLayer = mapKit?.createUserLocationLayer(mapView!!.mapWindow)
+        userLocationLayer!!.isVisible = true
+        userLocationLayer!!.isHeadingEnabled = false
+        userLocationLayer!!.setObjectListener(this)
+    }
+
+    private fun checkUserLocation(){
+        GlobalScope.launch(Dispatchers.Main) {
+            var t = 0
+            while (t < 10000){
+                if (userLocationLayer!!.cameraPosition()?.target != null){
+                    centerCameraByUser()
+                    break
+                }
+                delay(250L)
+                t += 250
+            }
+        }
+    }
+
+    private fun checkFineLocationGrant(): Boolean {
+        return (ContextCompat.checkSelfPermission(this, "android.permission.ACCESS_FINE_LOCATION")
+                == PackageManager.PERMISSION_GRANTED)
+    }
+
+    private fun checkFineLocationDenied(): Boolean {
+        return (ContextCompat.checkSelfPermission(this, "android.permission.ACCESS_FINE_LOCATION")
+                == PackageManager.PERMISSION_DENIED)
+    }
+
+    private fun checkGEOStatus(): Boolean {
+        val manager: LocationManager = getSystemService(LOCATION_SERVICE) as LocationManager
+        return manager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+    }
+
+    private fun centerCameraByUser() {
+        mapView!!.map.move(
+            CameraPosition(Point(userLocationLayer!!.cameraPosition()?.target!!.latitude, userLocationLayer!!.cameraPosition()?.target!!.longitude), 16f, 0.0f, 0.0f),
+            Animation(Animation.Type.SMOOTH, 0F),
+            null)
+    }
+
+    override fun onObjectAdded(userLocationView: UserLocationView) {
+        val pinIcon = userLocationView.pin.useCompositeIcon()
+
+        userLocationView.accuracyCircle.fillColor = Color.BLUE and -0x66000001
+    }
+
+    override fun onObjectRemoved(userLocationView: UserLocationView) {}
+
+    override fun onObjectUpdated(userLocationView: UserLocationView, objectEvent: ObjectEvent) {}
 }
