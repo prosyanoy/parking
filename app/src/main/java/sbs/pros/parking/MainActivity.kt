@@ -64,40 +64,58 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
         val textMetrics = textPaint.fontMetrics
         val heightF = abs(textMetrics.bottom) + abs(textMetrics.top)
 
-        val width = widthF + 1F
         val height = heightF + 0.5F
+        val width = widthF-2F+ height
+
+        val ss = STROKE_SIZE * context.resources.displayMetrics.density
+        val externalHeight = height + 2*ss
+
+        val tt = ss*2
 
         val externalShape = Path()
+        externalShape.moveTo(tt, tt)
+        val leftExternalCircle = RectF(tt, tt, externalHeight, externalHeight)
+        externalShape.arcTo(leftExternalCircle, 90F, 180F)
+        val x1 = externalHeight/2+widthF-2F
+        externalShape.lineTo(x1+tt, tt)
+        val rightExternalCircle = RectF(x1-externalHeight/2+tt, tt, x1+externalHeight/2+tt, externalHeight+tt)
+        externalShape.arcTo(rightExternalCircle, 270F, 180F)
+        externalShape.lineTo(externalHeight/2+tt, externalHeight+tt)
+        externalShape.close()
 
         val internalShape = Path()
-        internalShape.moveTo(0F, 0F)
-        val leftCircle = RectF(0F, 0F, height, height)
-        internalShape.arcTo(leftCircle, 90F, 180F)
-        val x = height/2+width-2F
-        internalShape.lineTo(x, 0F)
-        val rightCircle = RectF(x, 0F, x+height, height)
-        internalShape.arcTo(rightCircle, 270F, 180F)
-        internalShape.lineTo(height/2, height)
+        internalShape.moveTo(ss+tt, ss+tt)
+        val leftInternalCircle = RectF(ss+tt, ss+tt, height+ss+tt, height+ss+tt)
+        internalShape.arcTo(leftInternalCircle, 90F, 180F)
+        val x2 = height/2+widthF-2F
+        internalShape.lineTo(x2+ss+tt, ss+tt)
+        val rightInternalCircle = RectF(x2-height/2+ss+tt, ss+tt, x2+height/2+ss+tt, height+ss+tt)
+        internalShape.arcTo(rightInternalCircle, 270F, 180F)
+        internalShape.lineTo(height/2+ss+tt, height+ss+tt)
         internalShape.close()
 
-        /*val textRadius = sqrt((widthF * widthF + heightF * heightF).toDouble())
-            .toFloat() / 2
-        val internalRadius = textRadius + MARGIN_SIZE * context.resources.displayMetrics.density
-        val externalRadius = internalRadius + STROKE_SIZE * context.resources.displayMetrics.density
-        val width = (2 * externalRadius + 0.5).toInt()*/
-
-        val bitmap = Bitmap.createBitmap(width.toInt(), height.toInt(), Bitmap.Config.ARGB_8888)
+        val bitmap = Bitmap.createBitmap((width+2*ss+2*tt).toInt(), (externalHeight+2*tt).toInt(), Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         val backgroundPaint = Paint()
         backgroundPaint.isAntiAlias = true
-        backgroundPaint.color = rgb(13, 174, 252)
+
+        val shaderPaint = Paint()
+        shaderPaint.shader = LinearGradient(tt, 0F, 0F, 0F, Color.BLACK, Color.WHITE, Shader.TileMode.REPEAT)
+        val topRect = RectF(tt+externalHeight, 0F, x1+tt,tt)
+
+        canvas.drawRect(topRect, shaderPaint)
+
+
+        backgroundPaint.color = Color.WHITE
         canvas.drawPath(externalShape, backgroundPaint)
+
+        backgroundPaint.color = rgb(13, 174, 252)
         canvas.drawPath(internalShape, backgroundPaint)
 
         canvas.drawText(
             number, (
-                    width / 2).toFloat(),
-            height / 2 - (textMetrics.ascent + textMetrics.descent) / 2,
+                    width / 2+ss+tt).toFloat(),
+            externalHeight / 2 +tt - (textMetrics.ascent + textMetrics.descent) / 2,
             textPaint
         )
         return bitmap
