@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
 
     private val TARGET_LOCATION = Point(43.590097, 39.721887)
 
-    private val mapView: MapView? = null
+    private var mapView: MapView? = null
 
 
 
@@ -132,24 +132,22 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
         val llBottomSheet = findViewById<View>(R.id.bottom_sheet)
         val bottomSheetBehavior: BottomSheetBehavior<*> = BottomSheetBehavior.from(llBottomSheet)
 
-        val mapView = findViewById<MapView>(R.id.mapview)
+        mapView = findViewById<MapView>(R.id.mapview)
 
         bottomSheetBehavior.isFitToContents = false
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
 
         mapView!!.map.move(
-            CameraPosition(TARGET_LOCATION, 11.0f, 0.0f, 0.0f),
+            CameraPosition(TARGET_LOCATION, 13.0f, 0.0f, 0.0f),
             Animation(Animation.Type.SMOOTH, 0F),
             null
         )
-        val mapObjects = mapView.map.mapObjects.addCollection()
-        val clusterizedCollection = mapView.map.mapObjects.addClusterizedPlacemarkCollection(this)
+        val mapObjects = mapView!!.map.mapObjects.addCollection()
+        val clusterizedCollection = mapView!!.map.mapObjects.addClusterizedPlacemarkCollection(this)
 
         getParkings(applicationContext, url, mapObjects, clusterizedCollection)
     }
-
-
 
     private fun getParkings(context : Context, url : String, mapObjects : MapObjectCollection, clusterizedCollection: ClusterizedPlacemarkCollection) {
         val queue = Volley.newRequestQueue(context)
@@ -225,6 +223,11 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
     }
 
     override fun onClusterTap(cluster: Cluster): Boolean {
+        mapView!!.map.move(
+            CameraPosition(Point(cluster.appearance.geometry.latitude,cluster.appearance.geometry.longitude), mapView!!.map.cameraPosition.zoom * 1.08f, 0.0f, 0.0f),
+            Animation(Animation.Type.SMOOTH, 0.25F),
+            null
+        )
         return true
     }
 
@@ -329,9 +332,9 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
 
     private fun moveTo(target: Point, zoom: Float?) {
         mapView?.let {
-            val cameraPosition = mapView.mapWindow.map.cameraPosition
+            val cameraPosition = mapView!!.mapWindow.map.cameraPosition
 
-            mapView.map.moveWithBottomPadding(
+            mapView!!.map.moveWithBottomPadding(
                 CameraPosition(
                     target,
                     zoom ?: cameraPosition.zoom,
@@ -340,7 +343,7 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
                 ),
                 Animation(Animation.Type.SMOOTH, ZOOM_DURATION), null,
                 resources.getDimensionPixelSize(R.dimen.bottom_sheet_height),
-                mapView.height()
+                mapView!!.height()
             )
         }
     }
