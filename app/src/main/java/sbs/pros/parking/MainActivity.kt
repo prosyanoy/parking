@@ -27,7 +27,6 @@ import com.yandex.runtime.image.ImageProvider
 import sbs.pros.parking.model.PinData
 import sbs.pros.parking.utils.moveWithBottomPadding
 import kotlin.math.abs
-import kotlin.math.sqrt
 
 
 class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
@@ -39,8 +38,6 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
     private val TARGET_LOCATION = Point(43.590097, 39.721887)
 
     private val mapView: MapView? = null
-
-    private var selectedPin: PinData? = null
 
 
 
@@ -62,36 +59,45 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
         textPaint.textAlign = Paint.Align.CENTER
         textPaint.style = Paint.Style.FILL
         textPaint.isAntiAlias = true
+        textPaint.color = Color.WHITE
         val widthF = textPaint.measureText(number)
         val textMetrics = textPaint.fontMetrics
         val heightF = abs(textMetrics.bottom) + abs(textMetrics.top)
-        val textRadius = sqrt((widthF * widthF + heightF * heightF).toDouble())
+
+        val width = widthF + 1F
+        val height = heightF + 0.5F
+
+        val externalShape = Path()
+
+        val internalShape = Path()
+        internalShape.moveTo(0F, 0F)
+        val leftCircle = RectF(0F, 0F, height, height)
+        internalShape.arcTo(leftCircle, 90F, 180F)
+        val x = height/2+width-2F
+        internalShape.lineTo(x, 0F)
+        val rightCircle = RectF(x, 0F, x+height, height)
+        internalShape.arcTo(rightCircle, 270F, 180F)
+        internalShape.lineTo(height/2, height)
+        internalShape.close()
+
+        /*val textRadius = sqrt((widthF * widthF + heightF * heightF).toDouble())
             .toFloat() / 2
         val internalRadius = textRadius + MARGIN_SIZE * context.resources.displayMetrics.density
         val externalRadius = internalRadius + STROKE_SIZE * context.resources.displayMetrics.density
-        val width = (2 * externalRadius + 0.5).toInt()
-        val bitmap = Bitmap.createBitmap(width, width, Bitmap.Config.ARGB_8888)
+        val width = (2 * externalRadius + 0.5).toInt()*/
+
+        val bitmap = Bitmap.createBitmap(width.toInt(), height.toInt(), Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         val backgroundPaint = Paint()
         backgroundPaint.isAntiAlias = true
         backgroundPaint.color = rgb(13, 174, 252)
-        canvas.drawCircle(
-            (width / 2).toFloat(),
-            (width / 2).toFloat(),
-            externalRadius,
-            backgroundPaint
-        )
-        backgroundPaint.color = Color.WHITE
-        canvas.drawCircle(
-            (width / 2).toFloat(),
-            (width / 2).toFloat(),
-            internalRadius,
-            backgroundPaint
-        )
+        canvas.drawPath(externalShape, backgroundPaint)
+        canvas.drawPath(internalShape, backgroundPaint)
+
         canvas.drawText(
             number, (
                     width / 2).toFloat(),
-            width / 2 - (textMetrics.ascent + textMetrics.descent) / 2,
+            height / 2 - (textMetrics.ascent + textMetrics.descent) / 2,
             textPaint
         )
         return bitmap
@@ -147,7 +153,7 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
                     val point = Point(lat, lon)
 
                     val list = org.json.JSONTokener(coordinates.getString("list")).nextValue() as org.json.JSONArray
-                    Toast.makeText(context, coordinates.getString("list"), Toast.LENGTH_SHORT)
+                    //Toast.makeText(context, coordinates.getString("list"), Toast.LENGTH_SHORT)
 
                     var myList = mutableListOf<Point>()
                     for (i in 0 until list.length()) {
@@ -209,7 +215,6 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
                 if (mapObject is PlacemarkMapObject) {
                     val parkingData = mapObject.userData as PinData
 
-
                     val llBottomSheet = findViewById<LinearLayout>(R.id.bottom_sheet)
                     val view = LayoutInflater.from(applicationContext).inflate(R.layout.bottom_sheet, llBottomSheet, false)
                     val bottomSheetDialog = BottomSheetDialog(this)
@@ -235,7 +240,7 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
 
         val icon = clusterizedCollection.addPlacemark(
             point,
-            ImageProvider.fromBitmap(drawSimpleBitmap("$hour_cost₽", context))
+            ImageProvider.fromBitmap(drawSimpleBitmap("$hour_cost\u2006₽", context))
         )
 
         icon.addTapListener(parkingMapObjectTapListener)
@@ -261,9 +266,10 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
             point,
             ImageProvider.fromBitmap(drawSimpleBitmap("$hour_cost₽", context))
         )
+
+        icon.addTapListener(parkingMapObjectTapListener)
         icon.setScaleFunction(listOf(PointF(1F, 0.5F)))
         icon.zIndex = 100.0f
-
         icon.userData = PinData(polygon, hour_cost, address, point)
 
         clusterizedCollection.clusterPlacemarks(60.0, 15)
@@ -302,26 +308,6 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
         private const val PERMISSIONS_REQUEST_FINE_LOCATION = 1
     }
 
-
-
-    private fun unSelectPrevMarker() {
-        selectedPin?.let { //unselect prev
-            it.isSelected = false
-//            redrawMarkerItem(it)
-            selectedPin = null
-        }
-    }
-
-
-
-
-    private fun selectMarkerItem(item: PinData) {
-        unSelectPrevMarker()
-
-        selectedPin = item
-        selectedPin?.isSelected = true
-//        selectedPin?.let { redrawMarkerItem(it) }
-    }
 
     private fun moveTo(target: Point, zoom: Float?) {
         mapView?.let {
