@@ -3,6 +3,7 @@ package sbs.pros.parking
 
 import android.content.Context
 import android.graphics.*
+import android.graphics.Color.argb
 import android.graphics.Color.rgb
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -40,7 +41,6 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
     private var mapView: MapView? = null
 
 
-
     object MapKitInitializer {
         private var initialized = false
         fun initialize(apiKey: String, context: Context) {
@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
 
         val externalShape = Path()
         externalShape.moveTo(tt, tt)
-        val leftExternalCircle = RectF(tt, tt, externalHeight, externalHeight)
+        val leftExternalCircle = RectF(tt, tt, externalHeight+tt, externalHeight+tt)
         externalShape.arcTo(leftExternalCircle, 90F, 180F)
         val x1 = externalHeight/2+widthF-2F
         externalShape.lineTo(x1+tt, tt)
@@ -100,21 +100,58 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
         backgroundPaint.isAntiAlias = true
 
         val shaderPaint = Paint()
-        shaderPaint.shader = LinearGradient(tt, 0F, 0F, 0F, Color.BLACK, Color.WHITE, Shader.TileMode.REPEAT)
-        val topRect = RectF(tt+externalHeight, 0F, x1+tt,tt)
-
+        shaderPaint.shader = LinearGradient(
+            0F,
+            tt,
+            0F,
+            0F,
+            argb(100, 0,0,0),
+            argb(0,0,0,0),
+            Shader.TileMode.REPEAT
+        )
+        val topRect = RectF(tt+externalHeight/2, 0F, x1+tt,tt)
         canvas.drawRect(topRect, shaderPaint)
+
+        shaderPaint.shader = LinearGradient(
+            0F,
+            tt+externalHeight,
+            0F,
+            2*tt+externalHeight,
+            argb(100, 0,0,0),
+            argb(0, 0,0,0),
+            Shader.TileMode.REPEAT
+        )
+        val bottomRect = RectF(tt+externalHeight/2, tt+externalHeight, x1+tt,2*tt+externalHeight)
+        canvas.drawRect(bottomRect, shaderPaint)
+
+        shaderPaint.shader = RadialGradient (
+            tt+externalHeight/2,
+            tt+externalHeight/2,
+            tt+externalHeight/2,
+            intArrayOf(argb(100, 0,0,0), argb(0,0,0,0)),
+            floatArrayOf(1-tt/(tt+externalHeight), 1F),
+            Shader.TileMode.REPEAT)
+        canvas.drawCircle(tt+externalHeight/2, tt+externalHeight/2, tt+externalHeight/2, shaderPaint)
+
+        shaderPaint.shader = RadialGradient (
+            tt+externalHeight/2+widthF-2F,
+            tt+externalHeight/2,
+            tt+externalHeight/2,
+            intArrayOf(argb(100, 0,0,0), argb(0,0,0,0)),
+            floatArrayOf(1-tt/(tt+externalHeight), 1F),
+            Shader.TileMode.REPEAT)
+        canvas.drawCircle(tt+externalHeight/2+widthF-2F, tt+externalHeight/2, tt+externalHeight/2, shaderPaint)
 
 
         backgroundPaint.color = Color.WHITE
         canvas.drawPath(externalShape, backgroundPaint)
 
-        backgroundPaint.color = rgb(13, 174, 252)
+        backgroundPaint.color = blue
         canvas.drawPath(internalShape, backgroundPaint)
 
+
         canvas.drawText(
-            number, (
-                    width / 2+ss+tt).toFloat(),
+            number, (width / 2+ss+tt),
             externalHeight / 2 +tt - (textMetrics.ascent + textMetrics.descent) / 2,
             textPaint
         )
@@ -169,7 +206,6 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
                     val point = Point(lat, lon)
 
                     val list = org.json.JSONTokener(coordinates.getString("list")).nextValue() as org.json.JSONArray
-                    //Toast.makeText(context, coordinates.getString("list"), Toast.LENGTH_SHORT)
 
                     var myList = mutableListOf<Point>()
                     for (i in 0 until list.length()) {
@@ -257,7 +293,7 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
     private fun parking(context: Context, mapObjects: MapObjectCollection, clusterizedCollection: ClusterizedPlacemarkCollection, point : Point, list : List<Point>, address : String, hour_cost : Int, id : Int) {
         val polyline = mapObjects.addPolyline(
             Polyline(list))
-        polyline.setStrokeColor(rgb(13, 174, 252))
+        polyline.setStrokeColor(blue)
 
         val icon = clusterizedCollection.addPlacemark(
             point,
@@ -276,10 +312,8 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
         val polygon = mapObjects.addPolygon(
             Polygon(LinearRing(list), ArrayList())
         )
-        polygon.fillColor =
-                //rgb(13, 174, 252)
-            rgb(91, 200, 252)
-        polygon.strokeColor = rgb(9, 133, 192)
+        polygon.fillColor = lightBlue
+        polygon.strokeColor = darkBlue
         polygon.strokeWidth = 1.0f
         polygon.zIndex = 100.0f
 
@@ -312,19 +346,22 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
             var currentSelection = parking
 
             if (parking is PolylineMapObject) {
-                parking.setStrokeColor(rgb(57, 180, 36))
+                parking.setStrokeColor(green)
             } else if (parking is PolygonMapObject) {
-                parking.strokeColor = rgb(57, 180, 36)
+                parking.strokeColor = green
             }
         }
 
-        private const val FONT_SIZE = 15f
+        private const val FONT_SIZE = 22f
         private const val MARGIN_SIZE = 3f
         private const val STROKE_SIZE = 3f
         const val POINTS_ZOOM = 13 //9-12.99 (точки)
         private const val ZOOM_DURATION = 0.5f
 
-
+        private val blue = rgb(13, 174, 252)
+        private val lightBlue = rgb(91, 200, 252)
+        private val darkBlue = rgb(9, 133, 192)
+        private val green = rgb(57, 180, 36)
 
         private const val PERMISSIONS_REQUEST_FINE_LOCATION = 1
     }
