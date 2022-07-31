@@ -2,34 +2,55 @@ package sbs.pros.parking
 
 
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.*
 import android.graphics.Color.rgb
+import android.location.LocationManager
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.yandex.mapkit.Animation
+import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.LinearRing
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.geometry.Polygon
 import com.yandex.mapkit.geometry.Polyline
+import com.yandex.mapkit.layers.ObjectEvent
 import com.yandex.mapkit.map.*
 import com.yandex.mapkit.mapview.MapView
+import com.yandex.mapkit.user_location.UserLocationLayer
+import com.yandex.mapkit.user_location.UserLocationObjectListener
+import com.yandex.mapkit.user_location.UserLocationView
 import com.yandex.runtime.image.ImageProvider
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import sbs.pros.parking.model.PinData
 import sbs.pros.parking.utils.moveWithBottomPadding
 import kotlin.math.abs
+import kotlin.math.sqrt
 
 
-class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
+class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
+    UserLocationObjectListener{
 
     private val MAPKIT_API_KEY = "024ae79a-58dc-4626-ac7e-1ba6ba83121e"
 
@@ -39,7 +60,11 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
 
     private var mapView: MapView? = null
 
+    private var userLocationLayer: UserLocationLayer? = null
 
+    private var mapKit: MapKit? = null
+
+    private var selectedPin: PinData? = null
 
     object MapKitInitializer {
         private var initialized = false
@@ -125,18 +150,39 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         MapKitInitializer.initialize(MAPKIT_API_KEY, applicationContext)
         setContentView(R.layout.activity_main)
+
+        mapView = findViewById<MapView>(R.id.mapview)
 
         val llBottomSheet = findViewById<View>(R.id.bottom_sheet)
         val bottomSheetBehavior: BottomSheetBehavior<*> = BottomSheetBehavior.from(llBottomSheet)
 
-        mapView = findViewById<MapView>(R.id.mapview)
-
         bottomSheetBehavior.isFitToContents = false
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
+        //location
+        mapKit = MapKitFactory.getInstance()
+        mapKit?.resetLocationManagerToDefault()
+
+        requestLocationPermission(grant = true)
+        setUserLocationLayer()
+        checkUserLocation()
+
+        val meFloatButton = findViewById<FloatingActionButton>(R.id.centeringRelativeUser)
+        meFloatButton.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(view: View?) {
+                if(userLocationLayer!!.cameraPosition()?.target != null){
+                    centerCameraByUser()
+                } else{
+                    if(checkGEOStatus()){
+                        requestLocationPermission(grant = true, denied = true)
+                    } else {
+                        geoStatusDialog()
+                    }
+                }
+            }
+        })
 
         mapView!!.map.move(
             CameraPosition(TARGET_LOCATION, 13.0f, 0.0f, 0.0f),
@@ -169,7 +215,7 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
                     val point = Point(lat, lon)
 
                     val list = org.json.JSONTokener(coordinates.getString("list")).nextValue() as org.json.JSONArray
-                    //Toast.makeText(context, coordinates.getString("list"), Toast.LENGTH_SHORT)
+                    Toast.makeText(context, coordinates.getString("list"), Toast.LENGTH_SHORT)
 
                     var myList = mutableListOf<Point>()
                     for (i in 0 until list.length()) {
@@ -200,7 +246,7 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
                     Toast.LENGTH_SHORT
                 ).show()
             }){}
-            queue.add(stringRequest)
+        queue.add(stringRequest)
     }
 
     override fun onStop() {
@@ -347,4 +393,124 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
             )
         }
     }
+
+    //user location
+    private fun requestLocationPermission(grant : Boolean = false, denied : Boolean = false) {
+        if(checkFineLocationDenied() && denied){
+            fineLocationDialog()
+        } else if (!checkFineLocationGrant() && grant)
+        {
+            ActivityCompat.requestPermissions(this, arrayOf("android.permission.ACCESS_FINE_LOCATION"),
+                PERMISSIONS_REQUEST_FINE_LOCATION)
+        }
+    }
+
+    private fun fineLocationDialog(){
+        val dialogView = layoutInflater.inflate(R.layout.dialog_intent_settings, null)
+
+        val customDialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .show()
+
+        val dialogText = dialogView.findViewById<TextView>(R.id.intentSettingsTextView)
+        dialogText.text = getString(R.string.intent_settings_text_view_fine_location)
+
+        val dialogButton = dialogView.findViewById<Button>(R.id.intentSettingsButton)
+        dialogButton.setOnClickListener {
+            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            intent.data = Uri.parse("package:" + this.packageName)
+            startActivity(intent)
+            customDialog.dismiss()
+        }
+    }
+
+    private fun geoStatusDialog(){
+        val dialogView = layoutInflater.inflate(R.layout.dialog_intent_settings, null)
+
+        val customDialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .show()
+
+        val dialogText = dialogView.findViewById<TextView>(R.id.intentSettingsTextView)
+        dialogText.text = getString(R.string.intent_settings_text_view_geo_status)
+
+        val dialogButton = dialogView.findViewById<Button>(R.id.intentSettingsButton)
+        dialogButton.setOnClickListener {
+            val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+            startActivity(intent)
+            customDialog.dismiss()
+        }
+
+        GlobalScope.launch() {
+            while (true){
+                if (checkGEOStatus()){
+                    customDialog.dismiss()
+                }
+                delay(250L)
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int,
+                                            permissions: Array<out String>, grantResults: IntArray) {
+        if (requestCode == PERMISSIONS_REQUEST_FINE_LOCATION) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startActivity(Intent.makeRestartActivityTask(this.intent?.component))
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    private fun setUserLocationLayer(){
+        userLocationLayer = mapKit?.createUserLocationLayer(mapView!!.mapWindow)
+        userLocationLayer!!.isVisible = true
+        userLocationLayer!!.isHeadingEnabled = false
+        userLocationLayer!!.setObjectListener(this)
+    }
+
+    private fun checkUserLocation(){
+        GlobalScope.launch(Dispatchers.Main) {
+            var t = 0
+            while (t < 10000){
+                if (userLocationLayer!!.cameraPosition()?.target != null){
+                    centerCameraByUser()
+                    break
+                }
+                delay(250L)
+                t += 250
+            }
+        }
+    }
+
+    private fun checkFineLocationGrant(): Boolean {
+        return (ContextCompat.checkSelfPermission(this, "android.permission.ACCESS_FINE_LOCATION")
+                == PackageManager.PERMISSION_GRANTED)
+    }
+
+    private fun checkFineLocationDenied(): Boolean {
+        return (ContextCompat.checkSelfPermission(this, "android.permission.ACCESS_FINE_LOCATION")
+                == PackageManager.PERMISSION_DENIED)
+    }
+
+    private fun checkGEOStatus(): Boolean {
+        val manager: LocationManager = getSystemService(LOCATION_SERVICE) as LocationManager
+        return manager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+    }
+
+    private fun centerCameraByUser() {
+        mapView!!.map.move(
+            CameraPosition(Point(userLocationLayer!!.cameraPosition()?.target!!.latitude, userLocationLayer!!.cameraPosition()?.target!!.longitude), 16f, 0.0f, 0.0f),
+            Animation(Animation.Type.SMOOTH, 0F),
+            null)
+    }
+
+    override fun onObjectAdded(userLocationView: UserLocationView) {
+        val pinIcon = userLocationView.pin.useCompositeIcon()
+
+        userLocationView.accuracyCircle.fillColor = Color.BLUE and -0x66000001
+    }
+
+    override fun onObjectRemoved(userLocationView: UserLocationView) {}
+
+    override fun onObjectUpdated(userLocationView: UserLocationView, objectEvent: ObjectEvent) {}
 }
