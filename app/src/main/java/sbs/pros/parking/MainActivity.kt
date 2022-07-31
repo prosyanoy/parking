@@ -129,13 +129,7 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
         MapKitInitializer.initialize(MAPKIT_API_KEY, applicationContext)
         setContentView(R.layout.activity_main)
 
-        val llBottomSheet = findViewById<View>(R.id.bottom_sheet)
-        val bottomSheetBehavior: BottomSheetBehavior<*> = BottomSheetBehavior.from(llBottomSheet)
-
         mapView = findViewById<MapView>(R.id.mapview)
-
-        bottomSheetBehavior.isFitToContents = false
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
 
         mapView!!.map.move(
@@ -236,17 +230,9 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
                 if (mapObject is PlacemarkMapObject) {
                     val parkingData = mapObject.userData as PinData
 
-                    val llBottomSheet = findViewById<LinearLayout>(R.id.bottom_sheet)
-                    val view = LayoutInflater.from(applicationContext).inflate(R.layout.bottom_sheet, llBottomSheet, false)
-                    val bottomSheetDialog = BottomSheetDialog(this)
-                    bottomSheetDialog.setContentView(view)
+                    val bottomSheetDialog = BottomSheetDialog(parkingData)
 
-                    val parkingAddress = view.findViewById<TextView>(R.id.parking_address)
-                    val parkingInfo = view.findViewById<TextView>(R.id.parking_info)
-                    parkingAddress.text = parkingData.address
-                    parkingInfo.text = parkingData.hour_cost.toString()
-
-                    bottomSheetDialog.show()
+                    bottomSheetDialog.show(supportFragmentManager,"tag")
                 }
                 true
             }
