@@ -24,7 +24,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
@@ -46,7 +46,6 @@ import kotlinx.coroutines.launch
 import sbs.pros.parking.model.PinData
 import sbs.pros.parking.utils.moveWithBottomPadding
 import kotlin.math.abs
-import kotlin.math.sqrt
 
 
 class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
@@ -169,20 +168,7 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
         setUserLocationLayer()
         checkUserLocation()
 
-        val meFloatButton = findViewById<FloatingActionButton>(R.id.centeringRelativeUser)
-        meFloatButton.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(view: View?) {
-                if(userLocationLayer!!.cameraPosition()?.target != null){
-                    centerCameraByUser()
-                } else{
-                    if(checkGEOStatus()){
-                        requestLocationPermission(grant = true, denied = true)
-                    } else {
-                        geoStatusDialog()
-                    }
-                }
-            }
-        })
+        setClickListeners()
 
         mapView!!.map.move(
             CameraPosition(TARGET_LOCATION, 13.0f, 0.0f, 0.0f),
@@ -193,6 +179,35 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
         val clusterizedCollection = mapView!!.map.mapObjects.addClusterizedPlacemarkCollection(this)
 
         getParkings(applicationContext, url, mapObjects, clusterizedCollection)
+    }
+
+    private fun setClickListeners() {
+
+        val uiMapLocationFAB = findViewById<ExtendedFloatingActionButton>(R.id.uiMapLocationFAB)
+        uiMapLocationFAB.setOnClickListener {
+            if (userLocationLayer!!.cameraPosition()?.target != null) {
+                centerCameraByUser()
+            } else {
+                if (checkGEOStatus()) {
+                    requestLocationPermission(grant = true, denied = true)
+                } else {
+                    geoStatusDialog()
+                }
+            }
+        }
+        val uiMapInfoFAB = findViewById<ExtendedFloatingActionButton>(R.id.uiMapInfoFAB)
+
+        val uiMapAccessibleFAB = findViewById<ExtendedFloatingActionButton>(R.id.uiMapAccessibleFAB)
+        uiMapAccessibleFAB.setOnClickListener {
+            val textColor = resources.getColor(R.color.primary)
+            if (uiMapInfoFAB.visibility == View.GONE) {
+                uiMapAccessibleFAB.setIconTintResource(R.color.primary)
+                uiMapInfoFAB.visibility = View.VISIBLE
+            }else {
+                uiMapAccessibleFAB.setIconTintResource(R.color.black)
+                uiMapInfoFAB.visibility = View.GONE
+            }
+        }
     }
 
     private fun getParkings(context : Context, url : String, mapObjects : MapObjectCollection, clusterizedCollection: ClusterizedPlacemarkCollection) {
