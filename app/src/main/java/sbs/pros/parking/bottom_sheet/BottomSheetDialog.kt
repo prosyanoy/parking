@@ -1,4 +1,4 @@
-package sbs.pros.parking
+package sbs.pros.parking.bottom_sheet
 
 import android.os.Bundle
 import android.view.Gravity
@@ -11,6 +11,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import sbs.pros.parking.R
 import sbs.pros.parking.model.PinData
 
 
@@ -48,6 +49,8 @@ class BottomSheetDialog(val data: PinData ) : BottomSheetDialogFragment() {
 
             behavior.peekHeight = (COLLAPSED_HEIGHT * density).toInt()
             behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            behavior.isFitToContents = false
+            behavior.halfExpandedRatio = 0.3f
 
             val containerLayout = it.findViewById<FrameLayout>(com.google.android.material.R.id.container)
             val buttons = it.layoutInflater.inflate(R.layout.button_layout, null)

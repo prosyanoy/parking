@@ -5,16 +5,11 @@ import android.content.Context
 import android.graphics.*
 import android.graphics.Color.rgb
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.widget.LinearLayout
-import android.widget.TextView
+
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.LinearRing
@@ -24,6 +19,7 @@ import com.yandex.mapkit.geometry.Polyline
 import com.yandex.mapkit.map.*
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.runtime.image.ImageProvider
+import sbs.pros.parking.bottom_sheet.BottomSheetDialog
 import sbs.pros.parking.model.PinData
 import sbs.pros.parking.utils.moveWithBottomPadding
 import kotlin.math.abs
@@ -129,7 +125,7 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
         MapKitInitializer.initialize(MAPKIT_API_KEY, applicationContext)
         setContentView(R.layout.activity_main)
 
-        mapView = findViewById<MapView>(R.id.mapview)
+        mapView = findViewById(R.id.mapview)
 
 
         mapView!!.map.move(
@@ -241,8 +237,8 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
 
 
     private fun parking(context: Context, mapObjects: MapObjectCollection, clusterizedCollection: ClusterizedPlacemarkCollection, point : Point, list : List<Point>, address : String, hour_cost : Int, id : Int) {
-        val polyline = mapObjects.addPolyline(
-            Polyline(list))
+        val polyline = mapObjects.addPolyline(Polyline(list))
+
         polyline.setStrokeColor(rgb(13, 174, 252))
 
         val icon = clusterizedCollection.addPlacemark(
@@ -251,7 +247,7 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
         )
 
         icon.addTapListener(parkingMapObjectTapListener)
-        icon.setScaleFunction(listOf(PointF(1F, 0.5F)))
+        icon.setScaleFunction(listOf(PointF(2F, 1F)))
         icon.zIndex = 100.0f
         icon.userData = PinData(polyline, hour_cost, address, point)
 
