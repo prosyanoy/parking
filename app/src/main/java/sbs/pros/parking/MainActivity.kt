@@ -6,7 +6,6 @@ import android.graphics.*
 import android.graphics.Color.argb
 import android.graphics.Color.rgb
 import android.os.Bundle
-
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.toolbox.StringRequest
@@ -35,7 +34,6 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
     private val TARGET_LOCATION = Point(43.590097, 39.721887)
 
     private var mapView: MapView? = null
-
 
 
     object MapKitInitializer {
@@ -71,7 +69,7 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
 
         val externalShape = Path()
         externalShape.moveTo(tt, tt)
-        val leftExternalCircle = RectF(tt, tt, externalHeight, externalHeight)
+        val leftExternalCircle = RectF(tt, tt, externalHeight+tt, externalHeight+tt)
         externalShape.arcTo(leftExternalCircle, 90F, 180F)
         val x1 = externalHeight/2+widthF-2F
         externalShape.lineTo(x1+tt, tt)
@@ -145,6 +143,7 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
 
         backgroundPaint.color = blue
         canvas.drawPath(internalShape, backgroundPaint)
+
 
         canvas.drawText(
             number, (width / 2+ss+tt),
@@ -283,7 +282,7 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
         )
 
         icon.addTapListener(parkingMapObjectTapListener)
-        icon.setScaleFunction(listOf(PointF(2F, 1F)))
+        icon.setScaleFunction(listOf(PointF(1F, 0.5F)))
         icon.zIndex = 100.0f
         icon.userData = PinData(polyline, hour_cost, address, point)
 

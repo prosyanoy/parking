@@ -47,7 +47,7 @@ class BottomSheetDialog(val data: PinData ) : BottomSheetDialogFragment() {
             val bottomSheet = it.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as FrameLayout
             val behavior = BottomSheetBehavior.from(bottomSheet)
 
-//            behavior.peekHeight = (COLLAPSED_HEIGHT * density).toInt()
+            behavior.peekHeight = (COLLAPSED_HEIGHT * density).toInt()
             behavior.state = BottomSheetBehavior.STATE_COLLAPSED
 
 
