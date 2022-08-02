@@ -5,4 +5,7 @@
     <string name="successful">SMS code was sent to your phone number</string>
     <string name="bottom_sheet_peek">Peek</string>
     <string name="bottom_sheet_content">Content</string>
+    <string name="intent_settings_text_view_fine_location">Разрешите определить ваше местоположение в настройках устройства</string>
+    <string name="intent_settings_text_view_geo_status">Включите геолокацию на вашем устройстве</string>
+    <string name="intent_settings_button">Перейти в настройки</string>
 </resources>
