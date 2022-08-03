@@ -23,8 +23,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKit
@@ -194,12 +192,6 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
         setContentView(R.layout.activity_main)
 
         mapView = findViewById<MapView>(R.id.mapview)
-
-        val llBottomSheet = findViewById<View>(R.id.bottom_sheet)
-        val bottomSheetBehavior: BottomSheetBehavior<*> = BottomSheetBehavior.from(llBottomSheet)
-
-        bottomSheetBehavior.isFitToContents = false
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
         //location
         mapKit = MapKitFactory.getInstance()
