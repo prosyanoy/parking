@@ -1,6 +1,7 @@
 package sbs.pros.parking.bottom_sheet
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -85,6 +86,7 @@ class BottomSheetDialog(val data: PinData ) : BottomSheetDialogFragment() {
 
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
 
+                    Log.d("jkewjrker", newState.toString())
                 }
 
                 override fun onSlide(bottomSheet: View, slideOffset: Float) {

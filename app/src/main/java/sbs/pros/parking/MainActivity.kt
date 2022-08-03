@@ -225,9 +225,15 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
             MapObjectTapListener { mapObject, point ->
                 if (mapObject is PlacemarkMapObject) {
                     val parkingData = mapObject.userData as PinData
+                    val polyLine = parkingData.parking
+
+
+
+
+
+
 
                     val bottomSheetDialog = BottomSheetDialog(parkingData)
-
                     bottomSheetDialog.show(supportFragmentManager,"tag")
                 }
                 true
