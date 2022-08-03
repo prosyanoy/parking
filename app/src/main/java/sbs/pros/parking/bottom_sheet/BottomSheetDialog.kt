@@ -1,6 +1,7 @@
 package sbs.pros.parking.bottom_sheet
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.isVisible
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -66,25 +68,29 @@ class BottomSheetDialog(val data: PinData ) : BottomSheetDialogFragment() {
             }
             // Добавляем кнопку в контейнер
             containerLayout?.addView(buttons)
+            buttons.isVisible = false
 
-            // Перерисовываем лэйаут
-            buttons.post {
-                (coordinator?.layoutParams as ViewGroup.MarginLayoutParams).apply {
-                    buttons.measure(
-                        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-                        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
-                    )
-                    // Устраняем разрыв между кнопкой и скролящейся частью
-                    this.bottomMargin = (buttons.measuredHeight - 8 * density).toInt()
-                    containerLayout?.requestLayout()
-                }
-            }
 
 
             behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
 
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
-
+                   buttons.isVisible = newState == BottomSheetBehavior.STATE_EXPANDED
+                    buttons.post {
+                        (coordinator?.layoutParams as ViewGroup.MarginLayoutParams).apply {
+                            buttons.measure(
+                                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+                            )
+                            // Устраняем разрыв между кнопкой и скролящейся частью
+                            if (newState == BottomSheetBehavior.STATE_COLLAPSED){
+                                this.bottomMargin = 0
+                            }else{
+                                this.bottomMargin = (buttons.measuredHeight - 8 * density).toInt()
+                            }
+                            containerLayout?.requestLayout()
+                        }
+                    }
                 }
 
                 override fun onSlide(bottomSheet: View, slideOffset: Float) {

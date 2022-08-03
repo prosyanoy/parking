@@ -10,7 +10,7 @@
 
     <View
         android:id="@+id/view"
-        android:layout_width="80dp"
+        android:layout_width="50dp"
         android:layout_height="7dp"
         android:layout_marginTop="7dp"
         android:background="@drawable/rounded_layout"
