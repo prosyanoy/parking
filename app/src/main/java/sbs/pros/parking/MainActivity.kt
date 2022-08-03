@@ -513,4 +513,5 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
     override fun onObjectRemoved(userLocationView: UserLocationView) {}
 
     override fun onObjectUpdated(userLocationView: UserLocationView, objectEvent: ObjectEvent) {}
+    //end user location
 }
