@@ -1,13 +1,13 @@
 package sbs.pros.parking
 
-
 import android.content.Context
 import android.graphics.*
-import android.graphics.Color.argb
-import android.graphics.Color.rgb
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.yandex.mapkit.Animation
@@ -20,12 +20,16 @@ import com.yandex.mapkit.map.*
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.runtime.image.ImageProvider
 import sbs.pros.parking.bottom_sheet.BottomSheetDialog
+import sbs.pros.parking.databinding.FragmentMapBinding
 import sbs.pros.parking.model.PinData
-import sbs.pros.parking.utils.moveWithBottomPadding
 import kotlin.math.abs
 
-
-class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
+/**
+ * A simple [Fragment] subclass.
+ * Use the [MapFragment.newInstance] factory method to
+ * create an instance of this fragment.
+ */
+class MapFragment : Fragment(), ClusterListener, ClusterTapListener {
 
     private val MAPKIT_API_KEY = "024ae79a-58dc-4626-ac7e-1ba6ba83121e"
 
@@ -35,6 +39,8 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
 
     private var mapView: MapView? = null
 
+    private var _binding: FragmentMapBinding? = null
+    private val binding get() = _binding!!
 
     object MapKitInitializer {
         private var initialized = false
@@ -100,8 +106,8 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
             tt,
             0F,
             0F,
-            argb(100, 0,0,0),
-            argb(0,0,0,0),
+            Color.argb(100, 0,0,0),
+            Color.argb(0,0,0,0),
             Shader.TileMode.REPEAT
         )
         val topRect = RectF(tt+externalHeight/2, 0F, x1+tt,tt)
@@ -112,8 +118,8 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
             tt+externalHeight,
             0F,
             2*tt+externalHeight,
-            argb(100, 0,0,0),
-            argb(0, 0,0,0),
+            Color.argb(100, 0,0,0),
+            Color.argb(0, 0,0,0),
             Shader.TileMode.REPEAT
         )
         val bottomRect = RectF(tt+externalHeight/2, tt+externalHeight, x1+tt,2*tt+externalHeight)
@@ -123,7 +129,7 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
             tt+externalHeight/2,
             tt+externalHeight/2,
             tt+externalHeight/2,
-            intArrayOf(argb(100, 0,0,0), argb(0,0,0,0)),
+            intArrayOf(Color.argb(100, 0,0,0), Color.argb(0,0,0,0)),
             floatArrayOf(1-tt/(tt+externalHeight), 1F),
             Shader.TileMode.REPEAT)
         canvas.drawCircle(tt+externalHeight/2, tt+externalHeight/2, tt+externalHeight/2, shaderPaint)
@@ -132,7 +138,7 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
             tt+externalHeight/2+widthF-2F,
             tt+externalHeight/2,
             tt+externalHeight/2,
-            intArrayOf(argb(100, 0,0,0), argb(0,0,0,0)),
+            intArrayOf(Color.argb(100, 0,0,0), Color.argb(0,0,0,0)),
             floatArrayOf(1-tt/(tt+externalHeight), 1F),
             Shader.TileMode.REPEAT)
         canvas.drawCircle(tt+externalHeight/2+widthF-2F, tt+externalHeight/2, tt+externalHeight/2, shaderPaint)
@@ -153,16 +159,11 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
         return bitmap
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        MapKitInitializer.initialize(MAPKIT_API_KEY, requireContext())
 
-
-        MapKitInitializer.initialize(MAPKIT_API_KEY, applicationContext)
-        setContentView(R.layout.activity_main)
-
-        mapView = findViewById(R.id.mapview)
-
+        mapView = binding.mapview
 
         mapView!!.map.move(
             CameraPosition(TARGET_LOCATION, 13.0f, 0.0f, 0.0f),
@@ -172,7 +173,43 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
         val mapObjects = mapView!!.map.mapObjects.addCollection()
         val clusterizedCollection = mapView!!.map.mapObjects.addClusterizedPlacemarkCollection(this)
 
-        getParkings(applicationContext, url, mapObjects, clusterizedCollection)
+        getParkings(requireContext(), url, mapObjects, clusterizedCollection)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentMapBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onStop() {
+        mapView?.onStop()
+        MapKitFactory.getInstance().onStop()
+        super.onStop()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        MapKitFactory.getInstance().onStart()
+        mapView?.onStart()
+    }
+
+    override fun onClusterAdded(cluster: Cluster) {
+        // We setup cluster appearance and tap handler in this method
+        cluster.appearance.setIcon(
+            ImageProvider.fromAsset(requireContext(), "search_result.png"))
+        cluster.addClusterTapListener(this)
+    }
+
+    override fun onClusterTap(cluster: Cluster): Boolean {
+        mapView!!.map.move(
+            CameraPosition(Point(cluster.appearance.geometry.latitude,cluster.appearance.geometry.longitude), mapView!!.map.cameraPosition.zoom * 1.08f, 0.0f, 0.0f),
+            Animation(Animation.Type.SMOOTH, 0.25F),
+            null
+        )
+        return true
     }
 
     private fun getParkings(context : Context, url : String, mapObjects : MapObjectCollection, clusterizedCollection: ClusterizedPlacemarkCollection) {
@@ -225,57 +262,26 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
                     Toast.LENGTH_SHORT
                 ).show()
             }){}
-            queue.add(stringRequest)
-    }
-
-    override fun onStop() {
-        mapView?.onStop()
-        MapKitFactory.getInstance().onStop()
-        super.onStop()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        MapKitFactory.getInstance().onStart()
-        mapView?.onStart()
-    }
-
-    override fun onClusterAdded(cluster: Cluster) {
-        // We setup cluster appearance and tap handler in this method
-        cluster.appearance.setIcon(
-            ImageProvider.fromAsset(this, "search_result.png"))
-        cluster.addClusterTapListener(this)
-    }
-
-    override fun onClusterTap(cluster: Cluster): Boolean {
-        mapView!!.map.move(
-            CameraPosition(Point(cluster.appearance.geometry.latitude,cluster.appearance.geometry.longitude), mapView!!.map.cameraPosition.zoom * 1.08f, 0.0f, 0.0f),
-            Animation(Animation.Type.SMOOTH, 0.25F),
-            null
-        )
-        return true
+        queue.add(stringRequest)
     }
 
     private val parkingMapObjectTapListener =
-            MapObjectTapListener { mapObject, point ->
-                if (mapObject is PlacemarkMapObject) {
-                    val parkingData = mapObject.userData as PinData
+        MapObjectTapListener { mapObject, point ->
+            if (mapObject is PlacemarkMapObject) {
+                val parkingData = mapObject.userData as PinData
 
-                    val bottomSheetDialog = BottomSheetDialog(parkingData)
+                val bottomSheetDialog = BottomSheetDialog(parkingData)
 
-                    bottomSheetDialog.show(supportFragmentManager,"tag")
-                }
-                true
+                bottomSheetDialog.show(parentFragmentManager,"tag")
             }
-
-
-
+            true
+        }
 
     private fun parking(context: Context, mapObjects: MapObjectCollection, clusterizedCollection: ClusterizedPlacemarkCollection, point : Point, list : List<Point>, address : String, hour_cost : Int, id : Int) {
         val polyline = mapObjects.addPolyline(Polyline(list))
 
-        polyline.setStrokeColor(rgb(13, 174, 252))
-        
+        polyline.setStrokeColor(Color.rgb(13, 174, 252))
+
         val icon = clusterizedCollection.addPlacemark(
             point,
             ImageProvider.fromBitmap(drawSimpleBitmap("$hour_cost\u2006₽", context))
@@ -312,13 +318,21 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
     }
 
     companion object {
+        /**
+         * Use this factory method to create a new instance of
+         * this fragment using the provided parameters.
+         *
+         * @param param1 Parameter 1.
+         * @param param2 Parameter 2.
+         * @return A new instance of fragment MapFragment.
+         */
         private var currentSelection : MapObject? = null
         private val node = currentSelection
         fun changeSelection(parking: MapObject?) {
             if (node is PolylineMapObject) {
-                node.setStrokeColor(rgb(13, 174, 252))
+                node.setStrokeColor(Color.rgb(13, 174, 252))
             } else if (node is PolygonMapObject) {
-                node.strokeColor = rgb(13, 174, 252)
+                node.strokeColor = Color.rgb(13, 174, 252)
             }
             var currentSelection = parking
 
@@ -335,30 +349,11 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
         const val POINTS_ZOOM = 13 //9-12.99 (точки)
         const val ZOOM_DURATION = 0.5f
 
-        private val blue = rgb(13, 174, 252)
-        private val lightBlue = rgb(91, 200, 252)
-        private val darkBlue = rgb(9, 133, 192)
-        private val green = rgb(57, 180, 36)
+        val blue = Color.rgb(13, 174, 252)
+        val lightBlue = Color.rgb(91, 200, 252)
+        val darkBlue = Color.rgb(9, 133, 192)
+        val green = Color.rgb(57, 180, 36)
 
         private const val PERMISSIONS_REQUEST_FINE_LOCATION = 1
-    }
-
-
-    private fun moveTo(target: Point, zoom: Float?) {
-        mapView?.let {
-            val cameraPosition = mapView!!.mapWindow.map.cameraPosition
-
-            mapView!!.map.moveWithBottomPadding(
-                CameraPosition(
-                    target,
-                    zoom ?: cameraPosition.zoom,
-                    cameraPosition.azimuth,
-                    cameraPosition.tilt
-                ),
-                Animation(Animation.Type.SMOOTH, ZOOM_DURATION), null,
-                resources.getDimensionPixelSize(R.dimen.bottom_sheet_height),
-                mapView!!.height()
-            )
-        }
     }
 }

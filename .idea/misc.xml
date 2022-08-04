@@ -18,6 +18,9 @@
         <entry key="app/src/main/res/layout/activity_intro.xml" value="0.22056159420289856" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/bottom_sheet.xml" value="0.22056159420289856" />
+        <entry key="app/src/main/res/layout/fragment_intro.xml" value="0.2427536231884058" />
+        <entry key="app/src/main/res/layout/fragment_map.xml" value="0.2427536231884058" />
+        <entry key="app/src/main/res/layout/fragment_sms.xml" value="0.2427536231884058" />
         <entry key="app/src/main/res/layout/item_page.xml" value="0.22056159420289856" />
       </map>
     </option>
