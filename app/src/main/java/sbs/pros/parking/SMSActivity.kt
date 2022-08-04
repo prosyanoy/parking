@@ -18,7 +18,7 @@ class SMSActivity : AppCompatActivity() {
 }
 
 class SMSRequest (context : Context, code : Int, phone : String) {
-    val url = "https://cloud.sendsmsgate.com/sendsms.php?user=prosyanoy&psw=3p5UJCJfcCYtYEX&dadr=$phone&sadr=Service&text=Ваш код: $code"
+    val url = ""
     val stringRequest = StringRequest(
         url,
         { response ->
