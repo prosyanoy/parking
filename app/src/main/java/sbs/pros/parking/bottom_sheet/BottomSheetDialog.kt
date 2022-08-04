@@ -17,7 +17,7 @@ import sbs.pros.parking.R
 import sbs.pros.parking.model.PinData
 
 
-private const val COLLAPSED_HEIGHT = 228
+private const val COLLAPSED_HEIGHT = 125
 
 class BottomSheetDialog(val data: PinData ) : BottomSheetDialogFragment() {
 
@@ -75,7 +75,7 @@ class BottomSheetDialog(val data: PinData ) : BottomSheetDialogFragment() {
             behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
 
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
-                   buttons.isVisible = newState == BottomSheetBehavior.STATE_EXPANDED
+                   buttons.isVisible = newState != BottomSheetBehavior.STATE_COLLAPSED
                     buttons.post {
                         (coordinator?.layoutParams as ViewGroup.MarginLayoutParams).apply {
                             buttons.measure(
