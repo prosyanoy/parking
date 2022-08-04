@@ -24,16 +24,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"
-        android:layout_marginBottom="436dp"
         android:backgroundTint="@color/white"
         android:clickable="true"
         app:collapsedSize="43dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:icon="@drawable/ic_minus"
         app:layout_constraintEnd_toEndOf="@+id/uiMapZoomInFAB"
         app:layout_constraintTop_toBottomOf="@+id/uiMapZoomInFAB"
-        app:layout_constraintVertical_bias="0.0"
-        app:shapeAppearanceOverlay="@style/fab_top_square"
-        app:icon="@drawable/ic_minus" />
+        app:shapeAppearanceOverlay="@style/fab_top_square" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/uiMapMenuFAB"
