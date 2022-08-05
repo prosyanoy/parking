@@ -61,13 +61,13 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
     private var mapView: MapView? = null
 
     private var userLocationLayer: UserLocationLayer? = null
+
     private var selectedObject: MapObject? = null
 
     private var clusterizedCollection: ClusterizedPlacemarkCollection? = null
 
     private var mapKit: MapKit? = null
 
-    private var selectedPin: PinData? = null
 
     object MapKitInitializer {
         private var initialized = false
