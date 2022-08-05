@@ -5,9 +5,11 @@ import android.content.Context
 import android.graphics.*
 import android.graphics.Color.rgb
 import android.os.Bundle
+import android.util.Log
 
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.yandex.mapkit.Animation
@@ -35,6 +37,9 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
 
     private var mapView: MapView? = null
 
+    private var selectedObject: MapObject? = null
+
+    private var clusterizedCollection: ClusterizedPlacemarkCollection? = null
 
 
     object MapKitInitializer {
@@ -49,7 +54,11 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
         }
     }
 
-    private fun drawSimpleBitmap(number: String, context: Context): Bitmap {
+    private fun drawSimpleBitmap(
+        number: String,
+        context: Context,
+        backgroundColor: Int = rgb(13, 174, 252)
+    ): Bitmap {
         val textPaint = Paint()
         textPaint.textSize = FONT_SIZE * context.resources.displayMetrics.density
         textPaint.textAlign = Paint.Align.CENTER
@@ -105,7 +114,8 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
         backgroundPaint.color = Color.WHITE
         canvas.drawPath(externalShape, backgroundPaint)
 
-        backgroundPaint.color = rgb(13, 174, 252)
+        Log.d("klke",R.color.lightGreen.toString())
+        backgroundPaint.color = backgroundColor
         canvas.drawPath(internalShape, backgroundPaint)
 
         canvas.drawText(
@@ -134,9 +144,9 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
             null
         )
         val mapObjects = mapView!!.map.mapObjects.addCollection()
-        val clusterizedCollection = mapView!!.map.mapObjects.addClusterizedPlacemarkCollection(this)
+        clusterizedCollection = mapView!!.map.mapObjects.addClusterizedPlacemarkCollection(this)
 
-        getParkings(applicationContext, url, mapObjects, clusterizedCollection)
+        getParkings(applicationContext, url, mapObjects, clusterizedCollection!!)
     }
 
     private fun getParkings(context : Context, url : String, mapObjects : MapObjectCollection, clusterizedCollection: ClusterizedPlacemarkCollection) {
@@ -221,31 +231,71 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
         return true
     }
 
+
+
     private val parkingMapObjectTapListener =
-            MapObjectTapListener { mapObject, point ->
-                if (mapObject is PlacemarkMapObject) {
+           MapObjectTapListener { mapObject, point ->
+
+               clearSelection()
+
+
+               if (mapObject is PlacemarkMapObject) {
                     val parkingData = mapObject.userData as PinData
-                    val polyLine = parkingData.parking
+
+                   val style = IconStyle().apply { scale = 1.3f }
+                   mapObject.setIcon(ImageProvider.fromBitmap(drawSimpleBitmap("${parkingData.hour_cost}\u2006₽", applicationContext, R.color.lightGreen)))
+
+                   mapObject.setIconStyle(style)
 
 
+                   when(parkingData.parking){
+                       is PolylineMapObject -> setSelectedPolyline(parkingData.parking)
+                       is PolygonMapObject -> setSelectedPolygon(parkingData.parking)
+                   }
 
 
+                   val bottomSheetDialog = BottomSheetDialog(parkingData){
+                       mapObject.setIcon(ImageProvider.fromBitmap(drawSimpleBitmap("${parkingData.hour_cost}\u2006₽", applicationContext)))
+                       clearSelection()
+                   }
 
-
-
-                    val bottomSheetDialog = BottomSheetDialog(parkingData)
                     bottomSheetDialog.show(supportFragmentManager,"tag")
                 }
                 true
             }
 
 
+    private fun setSelectedPolyline(polyline: PolylineMapObject){
+        polyline.setStrokeColor(ContextCompat.getColor(applicationContext, R.color.lightGreen))
+        selectedObject = polyline
+    }
 
+    private fun setSelectedPolygon(polygon: PolygonMapObject){
+        polygon.fillColor = ContextCompat.getColor(applicationContext, R.color.lightGreen)
+        polygon.strokeColor = ContextCompat.getColor(applicationContext, R.color.lightGreen)
+        selectedObject = polygon
+    }
+
+
+    private fun clearSelection(){
+        selectedObject?.let {
+            when(it){
+                is PolylineMapObject -> {
+                    it.setStrokeColor(rgb(13, 174, 252))
+                }
+
+                is PolygonMapObject -> {
+                    it.fillColor = rgb(91, 200, 252)
+                    it.strokeColor = rgb(9, 133, 192)
+                }
+            }
+        }
+    }
 
     private fun parking(context: Context, mapObjects: MapObjectCollection, clusterizedCollection: ClusterizedPlacemarkCollection, point : Point, list : List<Point>, address : String, hour_cost : Int, id : Int) {
-        val polyline = mapObjects.addPolyline(Polyline(list))
-
-        polyline.setStrokeColor(rgb(13, 174, 252))
+        val polyline = mapObjects
+            .addPolyline(Polyline(list))
+            .apply { setStrokeColor(rgb(13, 174, 252)) }
 
         val icon = clusterizedCollection.addPlacemark(
             point,
@@ -260,16 +310,18 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
         clusterizedCollection.clusterPlacemarks(60.0, 15)
     }
 
+
+
     private fun parkingG(context: Context, mapObjects: MapObjectCollection, clusterizedCollection: ClusterizedPlacemarkCollection, point : Point, list : List<Point>, address : String, hour_cost : Int, id : Int) {
-        val polygon = mapObjects.addPolygon(
-            Polygon(LinearRing(list), ArrayList())
-        )
-        polygon.fillColor =
-                //rgb(13, 174, 252)
-            rgb(91, 200, 252)
-        polygon.strokeColor = rgb(9, 133, 192)
-        polygon.strokeWidth = 1.0f
-        polygon.zIndex = 100.0f
+        val polygon = mapObjects
+            .addPolygon(Polygon(LinearRing(list), ArrayList()))
+            .apply {
+                fillColor = rgb(91, 200, 252)
+                strokeColor = rgb(9, 133, 192)
+                strokeWidth = 1.0f
+                zIndex = 100.0f
+            }
+
 
         val icon = clusterizedCollection.addPlacemark(
             point,
@@ -289,32 +341,9 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
     }
 
     companion object {
-        private var currentSelection : MapObject? = null
-        private val node = currentSelection
-        fun changeSelection(parking: MapObject?) {
-            if (node is PolylineMapObject) {
-                node.setStrokeColor(rgb(13, 174, 252))
-            } else if (node is PolygonMapObject) {
-                node.strokeColor = rgb(13, 174, 252)
-            }
-            var currentSelection = parking
-
-            if (parking is PolylineMapObject) {
-                parking.setStrokeColor(rgb(57, 180, 36))
-            } else if (parking is PolygonMapObject) {
-                parking.strokeColor = rgb(57, 180, 36)
-            }
-        }
-
-        private const val FONT_SIZE = 15f
-        private const val MARGIN_SIZE = 3f
+        private const val FONT_SIZE: Float = 15f
         private const val STROKE_SIZE = 3f
-        const val POINTS_ZOOM = 13 //9-12.99 (точки)
         private const val ZOOM_DURATION = 0.5f
-
-
-
-        private const val PERMISSIONS_REQUEST_FINE_LOCATION = 1
     }
 
 
