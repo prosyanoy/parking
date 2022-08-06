@@ -8,12 +8,12 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvTitle"
-        android:textColor="@android:color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        tools:text= "item"
-        android:textSize="32sp"/>
+        android:textColor="@android:color/white"
+        android:textSize="32sp"
+        tools:text="item" />
 
 
 </RelativeLayout>

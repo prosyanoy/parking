@@ -3,6 +3,7 @@ package sbs.pros.parking
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.*
 import android.graphics.Color.argb
@@ -11,10 +12,8 @@ import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -43,10 +42,10 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import sbs.pros.parking.bottom_sheet.BottomSheetDialog
+import sbs.pros.parking.intro.IntroActivity
 import sbs.pros.parking.model.PinData
 import sbs.pros.parking.utils.moveWithBottomPadding
 import kotlin.math.abs
-import kotlin.math.sqrt
 
 
 class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
@@ -64,7 +63,6 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
 
     private var mapKit: MapKit? = null
 
-    private var selectedPin: PinData? = null
 
     object MapKitInitializer {
         private var initialized = false
@@ -186,18 +184,18 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
+        
         MapKitInitializer.initialize(MAPKIT_API_KEY, applicationContext)
         setContentView(R.layout.activity_main)
 
         mapView = findViewById<MapView>(R.id.mapview)
 
+
+
         //location
         mapKit = MapKitFactory.getInstance()
         mapKit?.resetLocationManagerToDefault()
 
-        requestLocationPermission(grant = true)
         setUserLocationLayer()
         checkUserLocation()
 
@@ -221,6 +219,7 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
             Animation(Animation.Type.SMOOTH, 0F),
             null
         )
+
         val mapObjects = mapView!!.map.mapObjects.addCollection()
         val clusterizedCollection = mapView!!.map.mapObjects.addClusterizedPlacemarkCollection(this)
 
@@ -396,7 +395,7 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
         private val darkBlue = rgb(9, 133, 192)
         private val green = rgb(57, 180, 36)
 
-        private const val PERMISSIONS_REQUEST_FINE_LOCATION = 1
+        const val PERMISSIONS_REQUEST_FINE_LOCATION = 1
     }
 
 
