@@ -1,40 +1,48 @@
-package sbs.pros.parking
+package sbs.pros.parking.intro
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager.widget.PagerAdapter
+import sbs.pros.parking.R
 
-class ViewPagerAdapter : RecyclerView.Adapter<PagerVH>() {
+class ViewPagerAdapter : PagerAdapter {
 
-    private val pictures = intArrayOf(
-        R.drawable.parking,
-        R.drawable.old,
+    var con : Context
+    var images : Array<Int>
+    var texts : Array<String>
 
-    )
+    constructor(con: Context, path: Array<Int>, texts: Array<String>) : super() {
+        this.con = con
+        this.images = path
+        this.texts = texts
+    }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PagerVH =
-        PagerVH(LayoutInflater.from(parent.context).inflate(R.layout.item_page, parent, false))
+    override fun getCount(): Int {return images.size}
 
-    override fun getItemCount(): Int = pictures.size
+    override fun isViewFromObject(view: View, `object`: Any): Boolean {
+        return view == `object` as RelativeLayout
+    }
 
-    override fun onBindViewHolder(holder: PagerVH, position: Int) = holder.itemView.run {
+    override fun instantiateItem(container: ViewGroup, position: Int): Any {
+        var inflater: LayoutInflater = con.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
-        val tvTitle = findViewById<TextView>(R.id.tvTitle)
-        val container = findViewById<RelativeLayout>(R.id.container)
-        tvTitle.text = "item $position"
-        val imageView = ImageView(context)
-        imageView.layoutParams = LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
+        var view : View = inflater.inflate(R.layout.item_page, container, false)
+        var img : ImageView = view.findViewById(R.id.img) as ImageView
+        var txt : TextView = view.findViewById(R.id.textView2) as TextView
 
-        imageView.setImageResource(pictures[position])
-        container.addView(imageView)
-        //container.setBackgroundResource(colors[position])
+        img.setImageResource(images[position])
+        txt.setText(texts[position])
+        container.addView(view)
+
+        return view
+    }
+
+    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
+        super.destroyItem(container, position, `object`)
     }
 }
-
-class PagerVH(itemView: View) : RecyclerView.ViewHolder(itemView)
