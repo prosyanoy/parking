@@ -4,17 +4,14 @@ package sbs.pros.parking
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.*
-import android.graphics.Color.argb
+import android.graphics.Color
 import android.graphics.Color.rgb
+import android.graphics.PointF
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.view.LayoutInflater
-import android.view.View
 import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -47,8 +44,6 @@ import sbs.pros.parking.bottom_sheet.BottomSheetDialog
 import sbs.pros.parking.model.PinData
 import sbs.pros.parking.utils.drawSimpleBitmap
 import sbs.pros.parking.utils.moveWithBottomPadding
-import kotlin.math.abs
-import kotlin.math.sqrt
 
 
 class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
@@ -240,7 +235,7 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
                     val parkingData = mapObject.userData as PinData
 
                    val style = IconStyle().apply { scale = 1.3f }
-                   mapObject.setIcon(ImageProvider.fromBitmap(drawSimpleBitmap("${parkingData.hour_cost}\u2006₽", applicationContext, R.color.lightGreen)))
+                   mapObject.setIcon(ImageProvider.fromBitmap(drawSimpleBitmap("${parkingData.hour_cost}\u2006₽", applicationContext, green)))
 
                    mapObject.setIconStyle(style)
 
@@ -251,7 +246,7 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
                    }
 
 
-                   val bottomSheetDialog = BottomSheetDialog(parkingData){
+                   val bottomSheetDialog = BottomSheetDialog(parkingData) {
                        mapObject.setIcon(ImageProvider.fromBitmap(drawSimpleBitmap("${parkingData.hour_cost}\u2006₽", applicationContext)))
                        clearSelection()
                    }
@@ -263,13 +258,13 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
 
 
     private fun setSelectedPolyline(polyline: PolylineMapObject){
-        polyline.setStrokeColor(ContextCompat.getColor(applicationContext, R.color.lightGreen))
+        polyline.setStrokeColor(green)
         selectedObject = polyline
     }
 
     private fun setSelectedPolygon(polygon: PolygonMapObject){
-        polygon.fillColor = ContextCompat.getColor(applicationContext, R.color.lightGreen)
-        polygon.strokeColor = ContextCompat.getColor(applicationContext, R.color.lightGreen)
+        polygon.fillColor = lightGreen
+        polygon.strokeColor = darkGreen
         selectedObject = polygon
     }
 
@@ -278,12 +273,12 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
         selectedObject?.let {
             when(it){
                 is PolylineMapObject -> {
-                    it.setStrokeColor(rgb(13, 174, 252))
+                    it.setStrokeColor(blue)
                 }
 
                 is PolygonMapObject -> {
-                    it.fillColor = rgb(91, 200, 252)
-                    it.strokeColor = rgb(9, 133, 192)
+                    it.fillColor = lightBlue
+                    it.strokeColor = darkBlue
                 }
             }
         }
@@ -359,7 +354,10 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
         private val blue = rgb(13, 174, 252)
         private val lightBlue = rgb(91, 200, 252)
         private val darkBlue = rgb(9, 133, 192)
+
         private val green = rgb(57, 180, 36)
+        private val lightGreen = rgb(92, 233, 70)
+        private val darkGreen = rgb(30, 141, 13)
 
         private const val PERMISSIONS_REQUEST_FINE_LOCATION = 1
     }
