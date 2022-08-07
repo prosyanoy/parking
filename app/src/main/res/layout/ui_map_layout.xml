@@ -43,7 +43,7 @@
         app:collapsedSize="43dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/uiMapSearchFAB"
-        app:icon="@drawable/ic_sliders" />
+        app:icon="@drawable/ic_list" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/uiMapDepositButton"
