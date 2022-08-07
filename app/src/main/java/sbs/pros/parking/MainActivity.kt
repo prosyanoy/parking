@@ -2,6 +2,7 @@ package sbs.pros.parking
 
 
 import android.content.Context
+import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.*
@@ -21,6 +22,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.content.ContextCompat.startActivity
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -300,7 +303,7 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
     }
 
     companion object {
-        private var currentSelection : MapObject? = null
+        /*private var currentSelection : MapObject? = null
         private val node = currentSelection
         fun changeSelection(parking: MapObject?) {
             if (node is PolylineMapObject) {
@@ -314,7 +317,7 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
                 parking.setStrokeColor(green)
             } else if (parking is PolygonMapObject) {
                 parking.strokeColor = green
-            }
+            }*/
         }
 
 
