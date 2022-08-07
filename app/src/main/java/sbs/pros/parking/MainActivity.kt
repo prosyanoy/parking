@@ -20,6 +20,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
@@ -92,6 +94,12 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
         mapKit = MapKitFactory.getInstance()
         mapKit?.resetLocationManagerToDefault()
 
+        requestLocationPermission(grant = true)
+        setUserLocationLayer()
+        checkUserLocation()
+
+        setClickListeners()
+
 
         mapView!!.map.move(
             CameraPosition(TARGET_LOCATION, 13.0f, 0.0f, 0.0f),
@@ -102,6 +110,35 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
         clusterizedCollection = mapView!!.map.mapObjects.addClusterizedPlacemarkCollection(this)
 
         getParkings(applicationContext, url, mapObjects, clusterizedCollection!!)
+    }
+
+    private fun setClickListeners() {
+
+        val uiMapLocationFAB = findViewById<ExtendedFloatingActionButton>(R.id.uiMapLocationFAB)
+        uiMapLocationFAB.setOnClickListener {
+            if (userLocationLayer!!.cameraPosition()?.target != null) {
+                centerCameraByUser()
+            } else {
+                if (checkGEOStatus()) {
+                    requestLocationPermission(grant = true, denied = true)
+                } else {
+                    geoStatusDialog()
+                }
+            }
+        }
+        val uiMapInfoFAB = findViewById<ExtendedFloatingActionButton>(R.id.uiMapInfoFAB)
+
+        val uiMapAccessibleFAB = findViewById<ExtendedFloatingActionButton>(R.id.uiMapAccessibleFAB)
+        uiMapAccessibleFAB.setOnClickListener {
+            val textColor = resources.getColor(R.color.primary)
+            if (uiMapInfoFAB.visibility == View.GONE) {
+                uiMapAccessibleFAB.setIconTintResource(R.color.primary)
+                uiMapInfoFAB.visibility = View.VISIBLE
+            }else {
+                uiMapAccessibleFAB.setIconTintResource(R.color.black)
+                uiMapInfoFAB.visibility = View.GONE
+            }
+        }
     }
 
     private fun getParkings(context : Context, url : String, mapObjects : MapObjectCollection, clusterizedCollection: ClusterizedPlacemarkCollection) {
@@ -463,5 +500,4 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
     override fun onObjectRemoved(userLocationView: UserLocationView) {}
 
     override fun onObjectUpdated(userLocationView: UserLocationView, objectEvent: ObjectEvent) {}
-    //end user location
 }
