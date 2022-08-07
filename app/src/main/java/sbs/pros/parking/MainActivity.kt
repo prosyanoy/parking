@@ -40,6 +40,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import sbs.pros.parking.bottom_sheet.BottomSheetDialog
 import sbs.pros.parking.model.PinData
+import sbs.pros.parking.utils.drawLocationPoint
 import sbs.pros.parking.utils.drawSimpleBitmap
 import sbs.pros.parking.utils.moveWithBottomPadding
 
@@ -455,7 +456,7 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
     }
 
     override fun onObjectAdded(userLocationView: UserLocationView) {
-        val pinIcon = userLocationView.pin.useCompositeIcon()
+        val pinIcon = userLocationView.pin.setIcon(ImageProvider.fromBitmap(drawLocationPoint()))
 
         userLocationView.accuracyCircle.fillColor = Color.BLUE and -0x66000001
     }
