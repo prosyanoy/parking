@@ -2,30 +2,53 @@ package sbs.pros.parking
 
 
 import android.content.Context
-import android.graphics.*
-import android.graphics.Color.argb
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Color
 import android.graphics.Color.rgb
+import android.graphics.PointF
+import android.location.LocationManager
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.yandex.mapkit.Animation
+import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.LinearRing
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.geometry.Polygon
 import com.yandex.mapkit.geometry.Polyline
+import com.yandex.mapkit.layers.ObjectEvent
 import com.yandex.mapkit.map.*
 import com.yandex.mapkit.mapview.MapView
+import com.yandex.mapkit.user_location.UserLocationLayer
+import com.yandex.mapkit.user_location.UserLocationObjectListener
+import com.yandex.mapkit.user_location.UserLocationView
 import com.yandex.runtime.image.ImageProvider
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import sbs.pros.parking.bottom_sheet.BottomSheetDialog
 import sbs.pros.parking.model.PinData
+import sbs.pros.parking.utils.drawSimpleBitmap
 import sbs.pros.parking.utils.moveWithBottomPadding
 import kotlin.math.abs
 
 
-class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
+class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
+    UserLocationObjectListener{
 
     private val MAPKIT_API_KEY = "024ae79a-58dc-4626-ac7e-1ba6ba83121e"
 
@@ -34,6 +57,14 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
     private val TARGET_LOCATION = Point(43.590097, 39.721887)
 
     private var mapView: MapView? = null
+
+    private var userLocationLayer: UserLocationLayer? = null
+
+    private var selectedObject: MapObject? = null
+
+    private var clusterizedCollection: ClusterizedPlacemarkCollection? = null
+
+    private var mapKit: MapKit? = null
 
 
     object MapKitInitializer {
@@ -48,110 +79,7 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
         }
     }
 
-    private fun drawSimpleBitmap(number: String, context: Context): Bitmap {
-        val textPaint = Paint()
-        textPaint.textSize = FONT_SIZE * context.resources.displayMetrics.density
-        textPaint.textAlign = Paint.Align.CENTER
-        textPaint.style = Paint.Style.FILL
-        textPaint.isAntiAlias = true
-        textPaint.color = Color.WHITE
-        val widthF = textPaint.measureText(number)
-        val textMetrics = textPaint.fontMetrics
-        val heightF = abs(textMetrics.bottom) + abs(textMetrics.top)
 
-        val height = heightF + 0.5F
-        val width = widthF-2F+ height
-
-        val ss = STROKE_SIZE * context.resources.displayMetrics.density
-        val externalHeight = height + 2*ss
-
-        val tt = ss*2
-
-        val externalShape = Path()
-        externalShape.moveTo(tt, tt)
-        val leftExternalCircle = RectF(tt, tt, externalHeight+tt, externalHeight+tt)
-        externalShape.arcTo(leftExternalCircle, 90F, 180F)
-        val x1 = externalHeight/2+widthF-2F
-        externalShape.lineTo(x1+tt, tt)
-        val rightExternalCircle = RectF(x1-externalHeight/2+tt, tt, x1+externalHeight/2+tt, externalHeight+tt)
-        externalShape.arcTo(rightExternalCircle, 270F, 180F)
-        externalShape.lineTo(externalHeight/2+tt, externalHeight+tt)
-        externalShape.close()
-
-        val internalShape = Path()
-        internalShape.moveTo(ss+tt, ss+tt)
-        val leftInternalCircle = RectF(ss+tt, ss+tt, height+ss+tt, height+ss+tt)
-        internalShape.arcTo(leftInternalCircle, 90F, 180F)
-        val x2 = height/2+widthF-2F
-        internalShape.lineTo(x2+ss+tt, ss+tt)
-        val rightInternalCircle = RectF(x2-height/2+ss+tt, ss+tt, x2+height/2+ss+tt, height+ss+tt)
-        internalShape.arcTo(rightInternalCircle, 270F, 180F)
-        internalShape.lineTo(height/2+ss+tt, height+ss+tt)
-        internalShape.close()
-
-        val bitmap = Bitmap.createBitmap((width+2*ss+2*tt).toInt(), (externalHeight+2*tt).toInt(), Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(bitmap)
-        val backgroundPaint = Paint()
-        backgroundPaint.isAntiAlias = true
-
-        val shaderPaint = Paint()
-        shaderPaint.shader = LinearGradient(
-            0F,
-            tt,
-            0F,
-            0F,
-            argb(100, 0,0,0),
-            argb(0,0,0,0),
-            Shader.TileMode.REPEAT
-        )
-        val topRect = RectF(tt+externalHeight/2, 0F, x1+tt,tt)
-        canvas.drawRect(topRect, shaderPaint)
-
-        shaderPaint.shader = LinearGradient(
-            0F,
-            tt+externalHeight,
-            0F,
-            2*tt+externalHeight,
-            argb(100, 0,0,0),
-            argb(0, 0,0,0),
-            Shader.TileMode.REPEAT
-        )
-        val bottomRect = RectF(tt+externalHeight/2, tt+externalHeight, x1+tt,2*tt+externalHeight)
-        canvas.drawRect(bottomRect, shaderPaint)
-
-        shaderPaint.shader = RadialGradient (
-            tt+externalHeight/2,
-            tt+externalHeight/2,
-            tt+externalHeight/2,
-            intArrayOf(argb(100, 0,0,0), argb(0,0,0,0)),
-            floatArrayOf(1-tt/(tt+externalHeight), 1F),
-            Shader.TileMode.REPEAT)
-        canvas.drawCircle(tt+externalHeight/2, tt+externalHeight/2, tt+externalHeight/2, shaderPaint)
-
-        shaderPaint.shader = RadialGradient (
-            tt+externalHeight/2+widthF-2F,
-            tt+externalHeight/2,
-            tt+externalHeight/2,
-            intArrayOf(argb(100, 0,0,0), argb(0,0,0,0)),
-            floatArrayOf(1-tt/(tt+externalHeight), 1F),
-            Shader.TileMode.REPEAT)
-        canvas.drawCircle(tt+externalHeight/2+widthF-2F, tt+externalHeight/2, tt+externalHeight/2, shaderPaint)
-
-
-        backgroundPaint.color = Color.WHITE
-        canvas.drawPath(externalShape, backgroundPaint)
-
-        backgroundPaint.color = blue
-        canvas.drawPath(internalShape, backgroundPaint)
-
-
-        canvas.drawText(
-            number, (width / 2+ss+tt),
-            externalHeight / 2 +tt - (textMetrics.ascent + textMetrics.descent) / 2,
-            textPaint
-        )
-        return bitmap
-    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -161,7 +89,17 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
         MapKitInitializer.initialize(MAPKIT_API_KEY, applicationContext)
         setContentView(R.layout.activity_main)
 
-        mapView = findViewById(R.id.mapview)
+        mapView = findViewById<MapView>(R.id.mapview)
+
+        //location
+        mapKit = MapKitFactory.getInstance()
+        mapKit?.resetLocationManagerToDefault()
+
+        requestLocationPermission(grant = true)
+        setUserLocationLayer()
+        checkUserLocation()
+
+        setClickListeners()
 
 
         mapView!!.map.move(
@@ -170,9 +108,38 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
             null
         )
         val mapObjects = mapView!!.map.mapObjects.addCollection()
-        val clusterizedCollection = mapView!!.map.mapObjects.addClusterizedPlacemarkCollection(this)
+        clusterizedCollection = mapView!!.map.mapObjects.addClusterizedPlacemarkCollection(this)
 
-        getParkings(applicationContext, url, mapObjects, clusterizedCollection)
+        getParkings(applicationContext, url, mapObjects, clusterizedCollection!!)
+    }
+
+    private fun setClickListeners() {
+
+        val uiMapLocationFAB = findViewById<ExtendedFloatingActionButton>(R.id.uiMapLocationFAB)
+        uiMapLocationFAB.setOnClickListener {
+            if (userLocationLayer!!.cameraPosition()?.target != null) {
+                centerCameraByUser()
+            } else {
+                if (checkGEOStatus()) {
+                    requestLocationPermission(grant = true, denied = true)
+                } else {
+                    geoStatusDialog()
+                }
+            }
+        }
+        val uiMapInfoFAB = findViewById<ExtendedFloatingActionButton>(R.id.uiMapInfoFAB)
+
+        val uiMapAccessibleFAB = findViewById<ExtendedFloatingActionButton>(R.id.uiMapAccessibleFAB)
+        uiMapAccessibleFAB.setOnClickListener {
+            val textColor = resources.getColor(R.color.primary)
+            if (uiMapInfoFAB.visibility == View.GONE) {
+                uiMapAccessibleFAB.setIconTintResource(R.color.primary)
+                uiMapInfoFAB.visibility = View.VISIBLE
+            }else {
+                uiMapAccessibleFAB.setIconTintResource(R.color.black)
+                uiMapInfoFAB.visibility = View.GONE
+            }
+        }
     }
 
     private fun getParkings(context : Context, url : String, mapObjects : MapObjectCollection, clusterizedCollection: ClusterizedPlacemarkCollection) {
@@ -257,11 +224,30 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
     }
 
     private val parkingMapObjectTapListener =
-            MapObjectTapListener { mapObject, point ->
-                if (mapObject is PlacemarkMapObject) {
+           MapObjectTapListener { mapObject, point ->
+
+               clearSelection()
+
+
+               if (mapObject is PlacemarkMapObject) {
                     val parkingData = mapObject.userData as PinData
 
-                    val bottomSheetDialog = BottomSheetDialog(parkingData)
+                   val style = IconStyle().apply { scale = 1.3f }
+                   mapObject.setIcon(ImageProvider.fromBitmap(drawSimpleBitmap("${parkingData.hour_cost}\u2006₽", applicationContext, green)))
+
+                   mapObject.setIconStyle(style)
+
+
+                   when(parkingData.parking){
+                       is PolylineMapObject -> setSelectedPolyline(parkingData.parking)
+                       is PolygonMapObject -> setSelectedPolygon(parkingData.parking)
+                   }
+
+
+                   val bottomSheetDialog = BottomSheetDialog(parkingData) {
+                       mapObject.setIcon(ImageProvider.fromBitmap(drawSimpleBitmap("${parkingData.hour_cost}\u2006₽", applicationContext)))
+                       clearSelection()
+                   }
 
                     bottomSheetDialog.show(supportFragmentManager,"tag")
                 }
@@ -269,13 +255,38 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
             }
 
 
+    private fun setSelectedPolyline(polyline: PolylineMapObject){
+        polyline.setStrokeColor(green)
+        selectedObject = polyline
+    }
 
+    private fun setSelectedPolygon(polygon: PolygonMapObject){
+        polygon.fillColor = lightGreen
+        polygon.strokeColor = darkGreen
+        selectedObject = polygon
+    }
+
+
+    private fun clearSelection(){
+        selectedObject?.let {
+            when(it){
+                is PolylineMapObject -> {
+                    it.setStrokeColor(blue)
+                }
+
+                is PolygonMapObject -> {
+                    it.fillColor = lightBlue
+                    it.strokeColor = darkBlue
+                }
+            }
+        }
+    }
 
     private fun parking(context: Context, mapObjects: MapObjectCollection, clusterizedCollection: ClusterizedPlacemarkCollection, point : Point, list : List<Point>, address : String, hour_cost : Int, id : Int) {
-        val polyline = mapObjects.addPolyline(Polyline(list))
+        val polyline = mapObjects
+            .addPolyline(Polyline(list))
+            .apply { setStrokeColor(rgb(13, 174, 252)) }
 
-        polyline.setStrokeColor(rgb(13, 174, 252))
-        
         val icon = clusterizedCollection.addPlacemark(
             point,
             ImageProvider.fromBitmap(drawSimpleBitmap("$hour_cost\u2006₽", context))
@@ -329,16 +340,19 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
             }
         }
 
+
+        private const val ZOOM_DURATION = 0.5f
         const val FONT_SIZE = 22f
         const val MARGIN_SIZE = 3f
         const val STROKE_SIZE = 3f
         const val POINTS_ZOOM = 13 //9-12.99 (точки)
-        const val ZOOM_DURATION = 0.5f
 
         private val blue = rgb(13, 174, 252)
         private val lightBlue = rgb(91, 200, 252)
         private val darkBlue = rgb(9, 133, 192)
         private val green = rgb(57, 180, 36)
+        private val lightGreen = rgb(92, 233, 70)
+        private val darkGreen = rgb(30, 141, 13)
 
         private const val PERMISSIONS_REQUEST_FINE_LOCATION = 1
     }
@@ -361,4 +375,124 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener {
             )
         }
     }
+
+    //user location
+    private fun requestLocationPermission(grant : Boolean = false, denied : Boolean = false) {
+        if(checkFineLocationDenied() && denied){
+            fineLocationDialog()
+        } else if (!checkFineLocationGrant() && grant)
+        {
+            ActivityCompat.requestPermissions(this, arrayOf("android.permission.ACCESS_FINE_LOCATION"),
+                PERMISSIONS_REQUEST_FINE_LOCATION)
+        }
+    }
+
+    private fun fineLocationDialog(){
+        val dialogView = layoutInflater.inflate(R.layout.dialog_intent_settings, null)
+
+        val customDialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .show()
+
+        val dialogText = dialogView.findViewById<TextView>(R.id.intentSettingsTextView)
+        dialogText.text = getString(R.string.intent_settings_text_view_fine_location)
+
+        val dialogButton = dialogView.findViewById<Button>(R.id.intentSettingsButton)
+        dialogButton.setOnClickListener {
+            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            intent.data = Uri.parse("package:" + this.packageName)
+            startActivity(intent)
+            customDialog.dismiss()
+        }
+    }
+
+    private fun geoStatusDialog(){
+        val dialogView = layoutInflater.inflate(R.layout.dialog_intent_settings, null)
+
+        val customDialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .show()
+
+        val dialogText = dialogView.findViewById<TextView>(R.id.intentSettingsTextView)
+        dialogText.text = getString(R.string.intent_settings_text_view_geo_status)
+
+        val dialogButton = dialogView.findViewById<Button>(R.id.intentSettingsButton)
+        dialogButton.setOnClickListener {
+            val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+            startActivity(intent)
+            customDialog.dismiss()
+        }
+
+        GlobalScope.launch() {
+            while (true){
+                if (checkGEOStatus()){
+                    customDialog.dismiss()
+                }
+                delay(250L)
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int,
+                                            permissions: Array<out String>, grantResults: IntArray) {
+        if (requestCode == PERMISSIONS_REQUEST_FINE_LOCATION) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startActivity(Intent.makeRestartActivityTask(this.intent?.component))
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    private fun setUserLocationLayer(){
+        userLocationLayer = mapKit?.createUserLocationLayer(mapView!!.mapWindow)
+        userLocationLayer!!.isVisible = true
+        userLocationLayer!!.isHeadingEnabled = false
+        userLocationLayer!!.setObjectListener(this)
+    }
+
+    private fun checkUserLocation(){
+        GlobalScope.launch(Dispatchers.Main) {
+            var t = 0
+            while (t < 10000){
+                if (userLocationLayer!!.cameraPosition()?.target != null){
+                    centerCameraByUser()
+                    break
+                }
+                delay(250L)
+                t += 250
+            }
+        }
+    }
+
+    private fun checkFineLocationGrant(): Boolean {
+        return (ContextCompat.checkSelfPermission(this, "android.permission.ACCESS_FINE_LOCATION")
+                == PackageManager.PERMISSION_GRANTED)
+    }
+
+    private fun checkFineLocationDenied(): Boolean {
+        return (ContextCompat.checkSelfPermission(this, "android.permission.ACCESS_FINE_LOCATION")
+                == PackageManager.PERMISSION_DENIED)
+    }
+
+    private fun checkGEOStatus(): Boolean {
+        val manager: LocationManager = getSystemService(LOCATION_SERVICE) as LocationManager
+        return manager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+    }
+
+    private fun centerCameraByUser() {
+        mapView!!.map.move(
+            CameraPosition(Point(userLocationLayer!!.cameraPosition()?.target!!.latitude, userLocationLayer!!.cameraPosition()?.target!!.longitude), 16f, 0.0f, 0.0f),
+            Animation(Animation.Type.SMOOTH, 0F),
+            null)
+    }
+
+    override fun onObjectAdded(userLocationView: UserLocationView) {
+        val pinIcon = userLocationView.pin.useCompositeIcon()
+
+        userLocationView.accuracyCircle.fillColor = Color.BLUE and -0x66000001
+    }
+
+    override fun onObjectRemoved(userLocationView: UserLocationView) {}
+
+    override fun onObjectUpdated(userLocationView: UserLocationView, objectEvent: ObjectEvent) {}
 }
