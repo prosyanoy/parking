@@ -3,14 +3,25 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/parking/app/src/main/res/drawable/active_dots.xml" value="0.14" />
+        <entry key="..\:/parking/app/src/main/res/drawable/background_splash.xml" value="0.14" />
+        <entry key="..\:/parking/app/src/main/res/drawable/bottom_sheet_background.xml" value="0.14" />
+        <entry key="..\:/parking/app/src/main/res/drawable/ic_sliders.xml" value="0.14" />
+        <entry key="..\:/parking/app/src/main/res/drawable/inactive_dots.xml" value="0.8" />
         <entry key="..\:/parking/app/src/main/res/drawable/round_corner.xml" value="0.123" />
         <entry key="..\:/parking/app/src/main/res/layout-v26/activity_main.xml" value="0.13722826086956522" />
         <entry key="..\:/parking/app/src/main/res/layout-v26/dialog_intent_settings.xml" value="0.13722826086956522" />
         <entry key="..\:/parking/app/src/main/res/layout/activity_intro.xml" value="0.136" />
         <entry key="..\:/parking/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/parking/app/src/main/res/layout/activity_splash_screen.xml" value="0.25025641025641027" />
         <entry key="..\:/parking/app/src/main/res/layout/bottom_sheet.xml" value="0.13722826086956522" />
+        <entry key="..\:/parking/app/src/main/res/layout/bottom_sheet_layout.xml" value="0.11302083333333333" />
         <entry key="..\:/parking/app/src/main/res/layout/dialog_intent_settings.xml" value="0.2" />
+        <entry key="..\:/parking/app/src/main/res/layout/fragment_auth.xml" value="0.25025641025641027" />
+        <entry key="..\:/parking/app/src/main/res/layout/fragment_on_boarding.xml" value="0.25025641025641027" />
         <entry key="..\:/parking/app/src/main/res/layout/intent_settings_card.xml" value="0.264" />
+        <entry key="..\:/parking/app/src/main/res/layout/item_page.xml" value="0.25025641025641027" />
+        <entry key="..\:/parking/app/src/main/res/layout/ui_map_layout.xml" value="0.536" />
         <entry key="app/src/main/res/drawable/default_pager_dot.xml" value="0.1645" />
         <entry key="app/src/main/res/drawable/selected_pager_dot.xml" value="0.1645" />
         <entry key="app/src/main/res/drawable/tab_pager_selector.xml" value="0.1645" />
