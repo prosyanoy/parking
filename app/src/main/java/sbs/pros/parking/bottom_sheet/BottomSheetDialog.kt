@@ -1,5 +1,6 @@
 package sbs.pros.parking.bottom_sheet
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -19,7 +20,7 @@ import sbs.pros.parking.model.PinData
 
 private const val COLLAPSED_HEIGHT = 125
 
-class BottomSheetDialog(val data: PinData ) : BottomSheetDialogFragment() {
+class BottomSheetDialog(val data: PinData, val onDismiss: ()->Unit) : BottomSheetDialogFragment() {
 
 
     override fun getTheme() = R.style.AppBottomSheetDialogTheme
@@ -98,5 +99,10 @@ class BottomSheetDialog(val data: PinData ) : BottomSheetDialogFragment() {
                 }
             })
         }
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        onDismiss.invoke()
     }
 }
