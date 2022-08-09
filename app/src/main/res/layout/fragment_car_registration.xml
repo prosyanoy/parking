@@ -3,24 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".intro.AuthFragment">
+    tools:context=".intro.CarRegistrationFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="308dp"
-        android:text="Вход в приложение"
-        android:textSize="28dp" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/buttonSkipReg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="99dp"
+        android:layout_marginEnd="137dp"
+        android:layout_marginBottom="241dp"
         android:text="пропустить" />
 
+    <TextView
+        android:id="@+id/textViewReg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="регистрация авто" />
 </RelativeLayout>

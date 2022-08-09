@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".intro.LocationFragment">
+
+
+    <Button
+        android:id="@+id/buttonSkipAuth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonRequest"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="19dp"
+        android:backgroundTint="@color/primary"
+        android:text="пропустить" />
+
+    <Button
+        android:id="@+id/buttonRequest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewAuth"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="36dp"
+        android:backgroundTint="@color/primary"
+        android:text="дать разрешение" />
+
+    <TextView
+        android:id="@+id/textViewAuth"
+        android:layout_width="315dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="267dp"
+        android:gravity="center"
+        android:text="Для корректной работы нам нужно ваше разрешение на определение местоположения"
+        android:textSize="22dp" />
+</RelativeLayout>

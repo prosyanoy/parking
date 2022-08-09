@@ -13,7 +13,7 @@ import sbs.pros.parking.databinding.ActivityIntroBinding
 
 class IntroActivity : AppCompatActivity() {
 
-    private var prefs: SharedPreferences? = null
+    var prefs : SharedPreferences? = null
     private lateinit var binding: ActivityIntroBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,6 +23,7 @@ class IntroActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         prefs = getSharedPreferences("com.mycompany.myAppName", MODE_PRIVATE);
+
     }
 
 

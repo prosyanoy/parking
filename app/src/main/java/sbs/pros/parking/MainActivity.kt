@@ -131,7 +131,6 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
 
         val uiMapAccessibleFAB = findViewById<ExtendedFloatingActionButton>(R.id.uiMapAccessibleFAB)
         uiMapAccessibleFAB.setOnClickListener {
-            val textColor = resources.getColor(R.color.primary)
             if (uiMapInfoFAB.visibility == View.GONE) {
                 uiMapAccessibleFAB.setIconTintResource(R.color.primary)
                 uiMapInfoFAB.visibility = View.VISIBLE

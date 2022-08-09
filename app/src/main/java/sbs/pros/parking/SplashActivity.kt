@@ -16,13 +16,10 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
 
-        requestLocationPermission()
 
         prefs = getSharedPreferences("com.mycompany.myAppName", MODE_PRIVATE);
 
         if (prefs!!.getBoolean("firstrun", true)) {
-
-
             startActivity(Intent(this, IntroActivity::class.java))
             finish()
         }else{
@@ -33,17 +30,4 @@ class SplashActivity : AppCompatActivity() {
 
     }
 
-    private fun requestLocationPermission() {
-        if (!checkFineLocationGrant())
-        {
-            ActivityCompat.requestPermissions(this, arrayOf("android.permission.ACCESS_FINE_LOCATION"),
-                MainActivity.PERMISSIONS_REQUEST_FINE_LOCATION
-            )
-        }
-    }
-
-    private fun checkFineLocationGrant(): Boolean {
-        return (ContextCompat.checkSelfPermission(this, "android.permission.ACCESS_FINE_LOCATION")
-                == PackageManager.PERMISSION_GRANTED)
-    }
 }
