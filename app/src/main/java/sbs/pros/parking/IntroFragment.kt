@@ -7,29 +7,22 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import sbs.pros.parking.databinding.FragmentIntroBinding
+import sbs.pros.parking.utils.viewLifecycleLazy
 
-class IntroFragment : Fragment() {
+class IntroFragment : Fragment(R.layout.fragment_intro) {
 
-    private var _binding: FragmentIntroBinding? = null
-    private val binding get() = _binding!!
+    private val binding by viewLifecycleLazy { FragmentIntroBinding.bind(requireView()) }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.viewPager2.adapter = ViewPagerAdapter()
 
         TabLayoutMediator(binding.intoTabLayout, binding.viewPager2)
         { tab, position ->}.attach()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentIntroBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
-    companion object {
-    }
+
+
 }

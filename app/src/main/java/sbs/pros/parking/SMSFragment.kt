@@ -11,14 +11,19 @@ import androidx.navigation.Navigation
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import sbs.pros.parking.databinding.FragmentSmsBinding
+import sbs.pros.parking.utils.viewLifecycleLazy
 
 class SMSFragment : Fragment(R.layout.fragment_sms) {
 
-    private var _binding: FragmentSmsBinding? = null
-    private val binding get() = _binding!!
+    private val binding by viewLifecycleLazy { FragmentSmsBinding.bind(requireView()) }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.toMap.setOnClickListener{
+            Navigation.findNavController(view).navigate(R.id.navigateTomapFragment)
+        }
+
 
         val code = (1000..9999).random()
         val phone = "79673204350"
@@ -27,27 +32,9 @@ class SMSFragment : Fragment(R.layout.fragment_sms) {
 
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentSmsBinding.inflate(inflater, container, false)
-        val view = inflater.inflate(R.layout.fragment_sms, container, false)
 
-        binding.toMap.setOnClickListener{
-            Navigation.findNavController(view).navigate(R.id.navigateTomapFragment)
-        }
 
-        return binding.root
-    }
 
-    /*override fun onDestoy() {
-        super.onDestroy()
-
-    }*/
-
-    companion object {
-    }
 }
 
 class SMSRequest (context : Context, code : Int, phone : String) {

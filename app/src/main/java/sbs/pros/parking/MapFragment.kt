@@ -47,10 +47,11 @@ import sbs.pros.parking.databinding.FragmentMapBinding
 import sbs.pros.parking.model.PinData
 import sbs.pros.parking.utils.MapKitInitializer
 import sbs.pros.parking.utils.drawSimpleBitmap
+import sbs.pros.parking.utils.viewLifecycleLazy
 import kotlin.math.abs
 
 
-class MapFragment : Fragment(), ClusterListener, ClusterTapListener, UserLocationObjectListener {
+class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTapListener, UserLocationObjectListener {
 
     private val MAPKIT_API_KEY = "024ae79a-58dc-4626-ac7e-1ba6ba83121e"
 
@@ -70,8 +71,7 @@ class MapFragment : Fragment(), ClusterListener, ClusterTapListener, UserLocatio
 
 
 
-    private var _binding: FragmentMapBinding? = null
-    private val binding get() = _binding!!
+    private val binding by viewLifecycleLazy { FragmentMapBinding.bind( requireView()) }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -102,23 +102,16 @@ class MapFragment : Fragment(), ClusterListener, ClusterTapListener, UserLocatio
         getParkings(requireContext(), url, mapObjects, clusterizedCollection!!)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentMapBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onStop() {
         mapView?.onStop()
-        MapKitFactory.getInstance().onStop()
+        mapKit?.onStop()
         super.onStop()
     }
 
     override fun onStart() {
         super.onStart()
-        MapKitFactory.getInstance().onStart()
+        mapKit?.onStart()
         mapView?.onStart()
     }
 
@@ -223,15 +216,12 @@ class MapFragment : Fragment(), ClusterListener, ClusterTapListener, UserLocatio
 
             clearSelection()
 
-
             if (mapObject is PlacemarkMapObject) {
                 val parkingData = mapObject.userData as PinData
-
                 val style = IconStyle().apply { scale = 1.3f }
+
                 mapObject.setIcon(ImageProvider.fromBitmap(drawSimpleBitmap("${parkingData.hour_cost}\u2006₽", requireContext(), green)))
-
                 mapObject.setIconStyle(style)
-
 
                 when(parkingData.parking){
                     is PolylineMapObject -> setSelectedPolyline(parkingData.parking)
@@ -414,7 +404,7 @@ class MapFragment : Fragment(), ClusterListener, ClusterTapListener, UserLocatio
     }
 
     private fun checkGEOStatus(): Boolean {
-        val manager: LocationManager = getSystemService(LOCATION_SERVICE) as LocationManager
+        val manager: LocationManager = requireContext().getSystemService(LOCATION_SERVICE) as LocationManager
         return manager.isProviderEnabled(LocationManager.GPS_PROVIDER)
     }
 
