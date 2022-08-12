@@ -11,6 +11,7 @@ import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -21,7 +22,6 @@ import androidx.core.content.ContextCompat
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
@@ -42,6 +42,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import sbs.pros.parking.bottom_sheet.BottomSheetDialog
 import sbs.pros.parking.model.PinData
+import sbs.pros.parking.utils.drawLocationPoint
 import sbs.pros.parking.utils.drawSimpleBitmap
 import sbs.pros.parking.utils.moveWithBottomPadding
 
@@ -492,8 +493,21 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
     }
 
     override fun onObjectAdded(userLocationView: UserLocationView) {
-        val pinIcon = userLocationView.pin.useCompositeIcon()
+        userLocationView.arrow.setIcon(ImageProvider.fromBitmap(drawLocationPoint()))
+        userLocationView.arrow.setIconStyle(IconStyle().setAnchor(PointF(0.5f, 0.5f))
+            .setRotationType(RotationType.ROTATE)
+            .setZIndex(1f)
+            .setScale(0.5f))
 
+        val pinIcon = userLocationView.pin.useCompositeIcon()
+        pinIcon.setIcon(
+            "pin",
+            ImageProvider.fromBitmap(drawLocationPoint()),
+            IconStyle().setAnchor(PointF(0.5f, 0.5f))
+                .setRotationType(RotationType.ROTATE)
+                .setZIndex(1f)
+                .setScale(0.5f)
+        )
         userLocationView.accuracyCircle.fillColor = Color.BLUE and -0x66000001
     }
 
