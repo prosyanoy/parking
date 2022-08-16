@@ -1,0 +1,40 @@
+package sbs.pros.parking.intro
+
+import android.content.Intent
+import android.content.SharedPreferences
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
+import sbs.pros.parking.MainActivity
+import sbs.pros.parking.R
+
+
+class CarRegistrationFragment : Fragment() {
+
+    private var prefs: SharedPreferences? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+       val view : View = inflater.inflate(R.layout.fragment_car_registration, container, false)
+
+
+        prefs = activity?.getSharedPreferences("com.mycompany.myAppName", AppCompatActivity.MODE_PRIVATE);
+
+        val openMap = view.findViewById<Button>(R.id.button4)
+        openMap.setOnClickListener(View.OnClickListener {
+            startActivity(Intent(context, MainActivity::class.java))
+
+            prefs?.edit()?.putBoolean("firstrun", false)?.commit();
+        })
+
+        return view
+    }
+
+}

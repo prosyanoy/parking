@@ -3,6 +3,7 @@ package sbs.pros.parking
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.Color.rgb
@@ -41,6 +42,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import sbs.pros.parking.bottom_sheet.BottomSheetDialog
+import sbs.pros.parking.intro.IntroActivity
 import sbs.pros.parking.model.PinData
 import sbs.pros.parking.utils.drawLocationPoint
 import sbs.pros.parking.utils.drawSimpleBitmap
@@ -85,7 +87,6 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         MapKitInitializer.initialize(MAPKIT_API_KEY, applicationContext)
         setContentView(R.layout.activity_main)
 
@@ -95,7 +96,6 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
         mapKit = MapKitFactory.getInstance()
         mapKit?.resetLocationManagerToDefault()
 
-        requestLocationPermission(grant = true)
         setUserLocationLayer()
         checkUserLocation()
 
@@ -131,7 +131,6 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
 
         val uiMapAccessibleFAB = findViewById<ExtendedFloatingActionButton>(R.id.uiMapAccessibleFAB)
         uiMapAccessibleFAB.setOnClickListener {
-            val textColor = resources.getColor(R.color.primary)
             if (uiMapInfoFAB.visibility == View.GONE) {
                 uiMapAccessibleFAB.setIconTintResource(R.color.primary)
                 uiMapInfoFAB.visibility = View.VISIBLE
@@ -162,7 +161,6 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
                     val point = Point(lat, lon)
 
                     val list = org.json.JSONTokener(coordinates.getString("list")).nextValue() as org.json.JSONArray
-                    //Toast.makeText(context, coordinates.getString("list"), Toast.LENGTH_SHORT)
 
                     var myList = mutableListOf<Point>()
                     for (i in 0 until list.length()) {
@@ -223,8 +221,6 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
         )
         return true
     }
-
-
 
     private val parkingMapObjectTapListener =
            MapObjectTapListener { mapObject, point ->
@@ -514,4 +510,5 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
     override fun onObjectRemoved(userLocationView: UserLocationView) {}
 
     override fun onObjectUpdated(userLocationView: UserLocationView, objectEvent: ObjectEvent) {}
+    //end user location
 }
