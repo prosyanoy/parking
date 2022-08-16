@@ -53,7 +53,6 @@ import kotlin.math.abs
 
 class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTapListener, UserLocationObjectListener {
 
-    private val MAPKIT_API_KEY = "024ae79a-58dc-4626-ac7e-1ba6ba83121e"
 
     private val url = "https://pros.sbs/parking/getting.php"
 
@@ -76,7 +75,6 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        MapKitInitializer.initialize(MAPKIT_API_KEY, requireContext())
 
         mapView = binding.mapview
 
@@ -295,7 +293,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         } else if (!checkFineLocationGrant() && grant)
         {
             ActivityCompat.requestPermissions(requireActivity(), arrayOf("android.permission.ACCESS_FINE_LOCATION"),
-                PERMISSIONS_REQUEST_FINE_LOCATION
+                Constants.PERMISSIONS_REQUEST_FINE_LOCATION
             )
         }
     }
@@ -376,15 +374,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int,
-                                            permissions: Array<out String>, grantResults: IntArray) {
-        if (requestCode == PERMISSIONS_REQUEST_FINE_LOCATION) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                startActivity(Intent.makeRestartActivityTask(requireActivity().intent?.component))
-            }
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
+
 
     private fun setUserLocationLayer(){
         userLocationLayer = mapKit?.createUserLocationLayer(mapView!!.mapWindow)
@@ -472,7 +462,6 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         private val lightGreen = Color.rgb(92, 233, 70)
         private val darkGreen = Color.rgb(30, 141, 13)
 
-        private const val PERMISSIONS_REQUEST_FINE_LOCATION = 1
     }
 
 }
