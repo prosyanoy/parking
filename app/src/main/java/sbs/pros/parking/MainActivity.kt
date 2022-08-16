@@ -7,11 +7,12 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
+import dagger.hilt.android.AndroidEntryPoint
 import sbs.pros.parking.Constants.MAPKIT_API_KEY
 import sbs.pros.parking.databinding.ActivityMainBinding
 import sbs.pros.parking.utils.MapKitInitializer
 
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(){
 
     private lateinit var binding: ActivityMainBinding
@@ -28,10 +29,12 @@ class MainActivity : AppCompatActivity(){
     }
 
 
-    override fun onRequestPermissionsResult(requestCode: Int,
-                                            permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>, grantResults: IntArray){
+
         if (requestCode == Constants.PERMISSIONS_REQUEST_FINE_LOCATION) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 startActivity(Intent.makeRestartActivityTask(this.intent?.component))
             }
         }
