@@ -113,6 +113,8 @@ class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
         getParkings(applicationContext, url, mapObjects, clusterizedCollection!!)
     }
 
+
+
     private fun setClickListeners() {
 
         val uiMapLocationFAB = findViewById<ExtendedFloatingActionButton>(R.id.uiMapLocationFAB)

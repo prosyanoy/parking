@@ -46,6 +46,7 @@ import sbs.pros.parking.bottom_sheet.BottomSheetDialog
 import sbs.pros.parking.databinding.FragmentMapBinding
 import sbs.pros.parking.model.PinData
 import sbs.pros.parking.utils.MapKitInitializer
+import sbs.pros.parking.utils.drawLocationPoint
 import sbs.pros.parking.utils.drawSimpleBitmap
 import sbs.pros.parking.utils.viewLifecycleLazy
 import kotlin.math.abs
@@ -431,8 +432,21 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
 
     override fun onObjectAdded(userLocationView: UserLocationView) {
-        val pinIcon = userLocationView.pin.useCompositeIcon()
+        userLocationView.arrow.setIcon(ImageProvider.fromBitmap(drawLocationPoint()))
+        userLocationView.arrow.setIconStyle(IconStyle().setAnchor(PointF(0.5f, 0.5f))
+            .setRotationType(RotationType.ROTATE)
+            .setZIndex(1f)
+            .setScale(0.5f))
 
+        val pinIcon = userLocationView.pin.useCompositeIcon()
+        pinIcon.setIcon(
+            "pin",
+            ImageProvider.fromBitmap(drawLocationPoint()),
+            IconStyle().setAnchor(PointF(0.5f, 0.5f))
+                .setRotationType(RotationType.ROTATE)
+                .setZIndex(1f)
+                .setScale(0.5f)
+        )
         userLocationView.accuracyCircle.fillColor = Color.BLUE and -0x66000001
     }
 
