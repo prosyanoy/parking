@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -20,9 +21,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKit
@@ -70,6 +73,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
     private var clusterizedCollection: ClusterizedPlacemarkCollection? = null
 
+    private var menuBottomSheetBehaviour: BottomSheetBehavior<NestedScrollView>? = null
 
 
     private val binding by viewLifecycleLazy { FragmentMapBinding.bind( requireView()) }
@@ -87,7 +91,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         requestLocationPermission(grant = true)
         setUserLocationLayer()
         checkUserLocation()
-
+        setupMenu()
         setClickListeners()
 
 
@@ -100,6 +104,14 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         clusterizedCollection = mapView!!.map.mapObjects.addClusterizedPlacemarkCollection(this)
 
         getParkings(requireContext(), url, mapObjects, clusterizedCollection!!)
+    }
+
+    private fun setupMenu(){
+        menuBottomSheetBehaviour = BottomSheetBehavior.from(binding.bottomMenu.bottomSheet)
+
+        binding.mapUi.uiMapMenuFAB.setOnClickListener {
+            menuBottomSheetBehaviour?.setState(BottomSheetBehavior.STATE_EXPANDED);
+        }
     }
 
 
@@ -130,6 +142,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         )
         return true
     }
+
     private fun setClickListeners() {
 
         val uiMapLocationFAB = binding.mapUi.uiMapLocationFAB
@@ -326,7 +339,6 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
             }
         }
     }
-
 
 
     private fun fineLocationDialog(){
