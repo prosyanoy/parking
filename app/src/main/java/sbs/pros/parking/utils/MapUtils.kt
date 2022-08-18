@@ -6,7 +6,6 @@ import com.yandex.mapkit.Animation
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.map.Map
-import sbs.pros.parking.MainActivity
 import kotlin.math.abs
 
 
@@ -30,6 +29,32 @@ fun Map.moveWithBottomPadding(
             animation, callback
         )
     }
+
+fun drawLocationPoint(color: Int = Color.rgb(13, 174, 252)): Bitmap {
+
+    val bitmap = Bitmap.createBitmap(100, 120, Bitmap.Config.ARGB_8888)
+    val canvas = Canvas(bitmap)
+
+    val shadowPaint = Paint()
+    shadowPaint.shader = RadialGradient (
+        50F,
+        70F,
+        50F,
+        intArrayOf(Color.argb(100, 0,0,0), Color.argb(0,0,0,0)),
+        floatArrayOf(0F, 1F),
+        Shader.TileMode.REPEAT)
+
+    canvas.drawCircle(50F,70F,50F, shadowPaint)
+
+    val backgroundPaint = Paint()
+    backgroundPaint.color = Color.WHITE
+    canvas.drawCircle(50F,50F,50F, backgroundPaint)
+
+    val paint = Paint()
+    backgroundPaint.color = color
+    canvas.drawCircle(50F,50F,40F, backgroundPaint)
+    return bitmap
+}
 
  fun drawSimpleBitmap(
     number: String,
