@@ -3,6 +3,7 @@ package sbs.pros.parking
 
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +18,8 @@ class MainActivity : AppCompatActivity(){
 
     private lateinit var binding: ActivityMainBinding
 
+    private var prefs: SharedPreferences? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MapKitInitializer.initialize(MAPKIT_API_KEY, this)
@@ -24,8 +27,14 @@ class MainActivity : AppCompatActivity(){
 
         setContentView(binding.root)
 
+        prefs = getSharedPreferences("sbs.pros.parking", MODE_PRIVATE)
+
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
+
+        if (prefs!!.getBoolean("firstrun", true)) {
+            navController.navigate(R.id.action_mapFragment2_to_introFragment)
+        }
     }
 
 

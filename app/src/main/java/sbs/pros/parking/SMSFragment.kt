@@ -21,7 +21,6 @@ class SMSFragment : Fragment(R.layout.fragment_sms) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.toMap.setOnClickListener{
-            Navigation.findNavController(view).navigate(R.id.navigateTomapFragment)
         }
 
 

@@ -18,7 +18,6 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryVariant">@color/secondary</item>
         <item name="colorOnPrimary">@color/white</item>
-        <item name="android:windowBackground">@drawable/background_splash</item>
     </style>
 
     <style name="AppBottomSheetDialogTheme"

@@ -1,5 +1,6 @@
 package sbs.pros.parking.intro
 
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -28,10 +29,6 @@ class OnBoardingFragment : Fragment() {
 
     var currentPage : Int = 0
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_on_boarding, container, false)
 
@@ -45,7 +42,11 @@ class OnBoardingFragment : Fragment() {
         val nextPage : Button = view.findViewById(R.id.nextPage)
         nextPage.setOnClickListener(View.OnClickListener {
             if(currentPage == pages.size - 1){
-                findNavController().navigate(R.id.action_onBoardingFragment_to_locationFragment)
+                if(checkFineLocationGrant()){
+                    findNavController().navigate(R.id.action_onBoardingFragment_to_authFragment)
+                }else{
+                    findNavController().navigate(R.id.action_onBoardingFragment_to_locationFragment)
+                }
             } else{
                 mPager.currentItem = currentPage + 1
             }
@@ -68,7 +69,11 @@ class OnBoardingFragment : Fragment() {
 
         val buttonScip = view.findViewById<Button>(R.id.buttonSkipOnboard)
         buttonScip.setOnClickListener(View.OnClickListener {
-            findNavController().navigate(R.id.action_onBoardingFragment_to_locationFragment)
+            if(checkFineLocationGrant()){
+                findNavController().navigate(R.id.action_onBoardingFragment_to_authFragment)
+            }else{
+                findNavController().navigate(R.id.action_onBoardingFragment_to_locationFragment)
+            }
         })
 
         return view
@@ -98,5 +103,10 @@ class OnBoardingFragment : Fragment() {
             params.setMargins(4,0,4,0)
             dotLayout.addView(dots[i], params)
         }
+    }
+
+    private fun checkFineLocationGrant(): Boolean {
+        return (ContextCompat.checkSelfPermission(requireContext(), "android.permission.ACCESS_FINE_LOCATION")
+                == PackageManager.PERMISSION_GRANTED)
     }
 }
