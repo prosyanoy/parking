@@ -108,6 +108,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
     private fun setupMenu(){
         menuBottomSheetBehaviour = BottomSheetBehavior.from(binding.bottomMenu.bottomSheet)
+        menuBottomSheetBehaviour?.state = BottomSheetBehavior.STATE_HIDDEN;
 
         binding.mapUi.uiMapMenuFAB.setOnClickListener {
             menuBottomSheetBehaviour?.setState(BottomSheetBehavior.STATE_EXPANDED);

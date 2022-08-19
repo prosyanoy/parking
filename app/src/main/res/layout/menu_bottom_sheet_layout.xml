@@ -42,6 +42,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:divider="@drawable/divider"
+                    android:showDividers="middle"
                     android:orientation="vertical"
                     >
                     <TextView
@@ -57,7 +58,8 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"                         >
 
                         <ImageView
                             android:id="@+id/accountImg"
@@ -93,7 +95,7 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
+                        android:background="?android:attr/selectableItemBackground"                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
                         <ImageView
@@ -130,7 +132,7 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
+                        android:background="?android:attr/selectableItemBackground"                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
                         <ImageView
@@ -167,7 +169,7 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
+                        android:background="?android:attr/selectableItemBackground"                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
                         <ImageView
@@ -216,7 +218,7 @@
                         />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
+                        android:background="?android:attr/selectableItemBackground"                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
                         <ImageView
@@ -253,7 +255,7 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
+                        android:background="?android:attr/selectableItemBackground"                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
                         <ImageView
@@ -290,7 +292,7 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
+                        android:background="?android:attr/selectableItemBackground"                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
                         <ImageView
@@ -337,7 +339,7 @@
                         />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
+                        android:background="?android:attr/selectableItemBackground"                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
                         <ImageView
@@ -373,7 +375,7 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
+                        android:background="?android:attr/selectableItemBackground"                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
                         <ImageView
@@ -409,7 +411,7 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
+                        android:background="?android:attr/selectableItemBackground"                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
                         <ImageView
@@ -445,7 +447,7 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
+                        android:background="?android:attr/selectableItemBackground"                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="20dp"
                         >
