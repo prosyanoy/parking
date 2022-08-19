@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
 
     <com.yandex.mapkit.mapview.MapView
         android:id="@+id/mapview"
@@ -12,6 +14,19 @@
 
     <include android:id="@+id/map_ui"
         layout="@layout/ui_map_layout" />
+
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_anchor="@id/map_ui"
+        app:layout_anchorGravity="bottom">
+
+        <include android:id="@+id/bottom_sheet"
+            layout="@layout/bottom_sheet_layout" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

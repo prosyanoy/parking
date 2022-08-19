@@ -140,5 +140,22 @@
         app:layout_constraintTop_toTopOf="@+id/uiMapDepositButton"
         app:shapeAppearanceOverlay="@style/fab_right_square" />
 
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/uiMapParkingFAB"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginBottom="30dp"
+        android:backgroundTint="@color/primary"
+        android:clickable="true"
+        android:padding="0dp"
+        app:borderWidth="0dp"
+        app:collapsedSize="80dp"
+        app:icon="@drawable/ic_parking"
+        app:iconSize="45dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/uiMapSearchFAB"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
