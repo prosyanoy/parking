@@ -9,21 +9,18 @@ import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
@@ -43,14 +40,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import sbs.pros.parking.bottom_sheet.BottomSheetDialog
 import sbs.pros.parking.databinding.FragmentMapBinding
 import sbs.pros.parking.model.PinData
-import sbs.pros.parking.utils.MapKitInitializer
 import sbs.pros.parking.utils.drawLocationPoint
 import sbs.pros.parking.utils.drawSimpleBitmap
 import sbs.pros.parking.utils.viewLifecycleLazy
-import kotlin.math.abs
 
 @AndroidEntryPoint
 class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTapListener, UserLocationObjectListener {
@@ -66,11 +60,13 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
     private var selectedObject: MapObject? = null
 
+    private var selectedPlacemark: PlacemarkMapObject? = null
+
     private var userLocationLayer: UserLocationLayer? = null
 
     private var clusterizedCollection: ClusterizedPlacemarkCollection? = null
 
-
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
 
     private val binding by viewLifecycleLazy { FragmentMapBinding.bind( requireView()) }
 
@@ -79,6 +75,8 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         super.onViewCreated(view, savedInstanceState)
 
         mapView = binding.mapview
+
+        bottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.bottom_sheet))
 
         //location
         mapKit = MapKitFactory.getInstance()
@@ -89,7 +87,6 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         checkUserLocation()
 
         setClickListeners()
-
 
         mapView!!.map.move(
             CameraPosition(TARGET_LOCATION, 13.0f, 0.0f, 0.0f),
@@ -130,6 +127,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         )
         return true
     }
+
     private fun setClickListeners() {
 
         val uiMapLocationFAB = binding.mapUi.uiMapLocationFAB
@@ -218,23 +216,68 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
             if (mapObject is PlacemarkMapObject) {
                 val parkingData = mapObject.userData as PinData
-                val style = IconStyle().apply { scale = 1.3f }
 
-                mapObject.setIcon(ImageProvider.fromBitmap(drawSimpleBitmap("${parkingData.hour_cost}\u2006₽", requireContext(), green)))
-                mapObject.setIconStyle(style)
+                var lastState = "STATE_HALF_EXPANDED"
 
+                setSelectedPlacemark(mapObject)
                 when(parkingData.parking){
                     is PolylineMapObject -> setSelectedPolyline(parkingData.parking)
                     is PolygonMapObject -> setSelectedPolygon(parkingData.parking)
                 }
 
+                binding.bottomSheet.addressText.setText(parkingData.address)
 
-                val bottomSheetDialog = BottomSheetDialog(parkingData) {
-                    mapObject.setIcon(ImageProvider.fromBitmap(drawSimpleBitmap("${parkingData.hour_cost}\u2006₽", requireContext())))
-                    clearSelection()
+                if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+                    binding.mapUi.uiMapParkingFAB.visibility = View.GONE
                 }
 
-                bottomSheetDialog.show(childFragmentManager,"tag")
+                mapView!!.map.move(
+                    CameraPosition(Point(point.latitude - 0.0001,point.longitude), 16f, 0.0f, 0.0f),
+                    Animation(Animation.Type.SMOOTH, 0.5F),
+                    null)
+
+                bottomSheetBehavior.addBottomSheetCallback(object: BottomSheetBehavior.BottomSheetCallback(){
+                    override fun onStateChanged(bottomSheet: View, state: Int) {
+                        when (state) {
+
+                            BottomSheetBehavior.STATE_HIDDEN -> {}
+
+                            BottomSheetBehavior.STATE_EXPANDED -> {
+                                lastState = "STATE_EXPANDED"
+                                mapView!!.map.move(
+                                    CameraPosition(Point(point.latitude - 0.0002,point.longitude), 16f, 0.0f, 0.0f),
+                                    Animation(Animation.Type.SMOOTH, 0.5F),
+                                    null)
+                            }
+
+                            BottomSheetBehavior.STATE_COLLAPSED -> {
+                                mapView!!.map.move(
+                                    CameraPosition(Point(mapView!!.map.cameraPosition.target.latitude + 0.0002, mapView!!.map.cameraPosition.target.longitude ), 16f, 0.0f, 0.0f),
+                                    Animation(Animation.Type.SMOOTH, 0.5F),
+                                    null)
+                                clearSelection()
+                                binding.mapUi.uiMapParkingFAB.visibility = View.VISIBLE
+                            }
+
+                            BottomSheetBehavior.STATE_DRAGGING -> {}
+                            BottomSheetBehavior.STATE_SETTLING -> {}
+                            BottomSheetBehavior.STATE_HALF_EXPANDED -> {
+
+                                if (lastState == "STATE_EXPANDED"){
+                                    mapView!!.map.move(
+                                        CameraPosition(Point(point.latitude - 0.0001,point.longitude), 16f, 0.0f, 0.0f),
+                                        Animation(Animation.Type.SMOOTH, 0.5F),
+                                        null)
+                                }
+                                lastState = "STATE_HALF_EXPANDED"
+                            }
+                        }
+                    }
+
+                    override fun onSlide(bottomSheet: View, slideOffset: Float) { }
+                })
+
             }
             true
         }
@@ -300,6 +343,15 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         }
     }
 
+    private fun setSelectedPlacemark(mapObject: PlacemarkMapObject){
+        val style = IconStyle().apply { scale = 1.3f }
+        val parkingData = mapObject.userData as PinData
+
+        mapObject.setIcon(ImageProvider.fromBitmap(drawSimpleBitmap("${parkingData.hour_cost}\u2006₽", requireContext(), green)))
+        mapObject.setIconStyle(style)
+        selectedPlacemark = mapObject
+    }
+
     private fun setSelectedPolyline(polyline: PolylineMapObject){
         polyline.setStrokeColor(green)
         selectedObject = polyline
@@ -324,6 +376,11 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                     it.strokeColor = darkBlue
                 }
             }
+        }
+
+        selectedPlacemark?.let {
+            val parkingData = it.userData as PinData
+            it.setIcon(ImageProvider.fromBitmap(drawSimpleBitmap("${parkingData.hour_cost}\u2006₽", requireContext())))
         }
     }
 
