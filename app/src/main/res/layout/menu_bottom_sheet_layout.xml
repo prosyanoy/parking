@@ -9,8 +9,8 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="400dp"
+        android:layout_height="600dp"
+        android:layout_gravity="bottom"
         android:background="@drawable/bottom_sheet_background"
         app:behavior_hideable="true"
         android:elevation="20dp"
@@ -21,25 +21,31 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             >
-            <View
-                android:layout_width="50dp"
-                android:layout_height="3dp"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/rounded_layout"
+                android:text="Меню"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
                 />
 
             <com.amar.library.ui.StickyScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="10dp"
+                android:paddingTop="30dp"
+                app:stickyHeader="@id/main"
                 >
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:divider="@drawable/divider"
                     android:orientation="vertical"
                     >
                     <TextView
+                        android:id="@+id/main"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Основные"
@@ -47,9 +53,386 @@
                         android:padding="12dp"
                         android:gravity="center_vertical"
                         android:textSize="20sp"
-
                         />
 
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/accountImg"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_margin="12dp"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Личный кабинет"
+                            android:textSize="18sp"
+                            android:layout_marginStart="12dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/accountImg"
+                            app:layout_constraintStart_toEndOf="@+id/accountImg"
+                            app:layout_constraintTop_toTopOf="@+id/accountImg" />
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="17dp"
+                            android:layout_marginEnd="12dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:src="@drawable/arrow"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/notifyImg"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_margin="12dp"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Уведомления"
+                            android:textSize="18sp"
+                            android:layout_marginStart="12dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/notifyImg"
+                            app:layout_constraintStart_toEndOf="@+id/notifyImg"
+                            app:layout_constraintTop_toTopOf="@+id/notifyImg" />
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="17dp"
+                            android:layout_marginEnd="12dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:src="@drawable/arrow"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/newsImg"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_margin="12dp"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Новости"
+                            android:textSize="18sp"
+                            android:layout_marginStart="12dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/newsImg"
+                            app:layout_constraintStart_toEndOf="@+id/newsImg"
+                            app:layout_constraintTop_toTopOf="@+id/newsImg" />
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="17dp"
+                            android:layout_marginEnd="12dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:src="@drawable/arrow"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/storyImg"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_margin="12dp"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="История"
+                            android:layout_marginStart="12dp"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/storyImg"
+                            app:layout_constraintStart_toEndOf="@+id/storyImg"
+                            app:layout_constraintTop_toTopOf="@+id/storyImg" />
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="17dp"
+                            android:layout_marginEnd="12dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:src="@drawable/arrow"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/payment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Оплата"
+                        android:background="@color/black_overlay"
+                        android:padding="12dp"
+                        android:gravity="center_vertical"
+                        android:textSize="20sp"
+                        />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/payImg"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_margin="12dp"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Пополнить счёт"
+                            android:layout_marginStart="12dp"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/payImg"
+                            app:layout_constraintStart_toEndOf="@+id/payImg"
+                            app:layout_constraintTop_toTopOf="@+id/payImg" />
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="17dp"
+                            android:layout_marginEnd="12dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:src="@drawable/arrow"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/analyticsImg"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_margin="12dp"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Аналитика расходов"
+                            android:layout_marginStart="12dp"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/analyticsImg"
+                            app:layout_constraintStart_toEndOf="@+id/analyticsImg"
+                            app:layout_constraintTop_toTopOf="@+id/analyticsImg" />
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="17dp"
+                            android:layout_marginEnd="12dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:src="@drawable/arrow"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/cardsImg"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_margin="12dp"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Банковские карты"
+                            android:layout_marginStart="12dp"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/cardsImg"
+                            app:layout_constraintStart_toEndOf="@+id/cardsImg"
+                            app:layout_constraintTop_toTopOf="@+id/cardsImg" />
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="17dp"
+                            android:layout_marginEnd="12dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:src="@drawable/arrow"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/others"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Другое"
+                        android:background="@color/black_overlay"
+                        android:padding="12dp"
+                        android:gravity="center_vertical"
+                        android:textSize="20sp"
+                        />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/carsImg"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_margin="12dp"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Банковские карты"
+                            android:layout_marginStart="12dp"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/carsImg"
+                            app:layout_constraintStart_toEndOf="@+id/carsImg"
+                            app:layout_constraintTop_toTopOf="@+id/carsImg" />
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="17dp"
+                            android:layout_marginEnd="12dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:src="@drawable/arrow"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/evacImg"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_margin="12dp"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Банковские карты"
+                            android:layout_marginStart="12dp"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/evacImg"
+                            app:layout_constraintStart_toEndOf="@+id/evacImg"
+                            app:layout_constraintTop_toTopOf="@+id/evacImg" />
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="17dp"
+                            android:layout_marginEnd="12dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:src="@drawable/arrow"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/supportImg"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_margin="12dp"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Банковские карты"
+                            android:layout_marginStart="12dp"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/supportImg"
+                            app:layout_constraintStart_toEndOf="@+id/supportImg"
+                            app:layout_constraintTop_toTopOf="@+id/supportImg" />
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="17dp"
+                            android:layout_marginEnd="12dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:src="@drawable/arrow"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </LinearLayout>
 
