@@ -110,6 +110,44 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"                         >
+
+                        <ImageView
+                            android:id="@+id/cityImg"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/ic_mappin"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_margin="12dp"
+                            app:tint="@color/purple_200" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Изменить город"
+                            android:textSize="18sp"
+                            android:layout_marginStart="12dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/cityImg"
+                            app:layout_constraintStart_toEndOf="@+id/cityImg"
+                            app:layout_constraintTop_toTopOf="@+id/cityImg" />
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="17dp"
+                            android:layout_marginEnd="12dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:src="@drawable/arrow"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:background="?android:attr/selectableItemBackground"                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
