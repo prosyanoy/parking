@@ -42,6 +42,7 @@ import com.yandex.mapkit.user_location.UserLocationObjectListener
 import com.yandex.mapkit.user_location.UserLocationView
 import com.yandex.runtime.image.ImageProvider
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.menu_bottom_sheet_layout.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -112,6 +113,10 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
         binding.mapUi.uiMapMenuFAB.setOnClickListener {
             menuBottomSheetBehaviour?.setState(BottomSheetBehavior.STATE_EXPANDED);
+        }
+
+        binding.bottomMenu.bottomSheet.close.setOnClickListener {
+            menuBottomSheetBehaviour?.setState(BottomSheetBehavior.STATE_HIDDEN);
         }
     }
 

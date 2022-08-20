@@ -14,23 +14,39 @@
         android:background="@drawable/bottom_sheet_background"
         app:behavior_hideable="true"
         android:elevation="20dp"
-        app:layout_behavior="@string/bottom_sheet_behavior">
+        app:layout_behavior=".menu.BottomSheetCustomBehaviour">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:text="Меню"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Меню"
+                    android:layout_margin="12dp"
+                    android:textSize="20sp"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/close"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="20dp"
+                    android:src="@color/black"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.amar.library.ui.StickyScrollView
                 android:layout_width="match_parent"
@@ -50,7 +66,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Основные"
-                        android:background="@color/black_overlay"
                         android:padding="12dp"
                         android:gravity="center_vertical"
                         android:textSize="20sp"
@@ -63,14 +78,14 @@
 
                         <ImageView
                             android:id="@+id/accountImg"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:src="@drawable/ic_user"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             android:layout_margin="12dp"
-                            />
+                            app:tint="@color/purple_200" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -100,8 +115,9 @@
 
                         <ImageView
                             android:id="@+id/notifyImg"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            app:tint="@color/purple_200"
                             android:src="@drawable/ic_bellsimple"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -137,8 +153,9 @@
 
                         <ImageView
                             android:id="@+id/newsImg"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            app:tint="@color/purple_200"
                             android:src="@drawable/ic_globehemispherewest"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -174,8 +191,9 @@
 
                         <ImageView
                             android:id="@+id/storyImg"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            app:tint="@color/purple_200"
                             android:src="@drawable/ic_maptrifold"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -211,8 +229,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Оплата"
-                        android:background="@color/black_overlay"
                         android:padding="12dp"
+                        android:layout_marginTop="35dp"
                         android:gravity="center_vertical"
                         android:textSize="20sp"
                         />
@@ -223,8 +241,9 @@
 
                         <ImageView
                             android:id="@+id/payImg"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            app:tint="@color/purple_200"
                             android:src="@drawable/ic_currencyrub"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -260,8 +279,9 @@
 
                         <ImageView
                             android:id="@+id/analyticsImg"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            app:tint="@color/purple_200"
                             android:src="@drawable/ic_chartbar"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -297,8 +317,9 @@
 
                         <ImageView
                             android:id="@+id/cardsImg"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            app:tint="@color/purple_200"
                             android:src="@drawable/ic_creditcard"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -332,8 +353,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Другое"
-                        android:background="@color/black_overlay"
                         android:padding="12dp"
+                        android:layout_marginTop="35dp"
                         android:gravity="center_vertical"
                         android:textSize="20sp"
                         />
@@ -344,9 +365,10 @@
 
                         <ImageView
                             android:id="@+id/carsImg"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:src="@drawable/ic_car"
+                            app:tint="@color/purple_200"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -380,9 +402,10 @@
 
                         <ImageView
                             android:id="@+id/evacImg"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:src="@drawable/ic_note"
+                            app:tint="@color/purple_200"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -416,9 +439,10 @@
 
                         <ImageView
                             android:id="@+id/supportImg"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:src="@drawable/ic_chats"
+                            app:tint="@color/purple_200"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -454,9 +478,10 @@
 
                         <ImageView
                             android:id="@+id/infoImg"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:src="@drawable/ic_info"
+                            app:tint="@color/purple_200"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
