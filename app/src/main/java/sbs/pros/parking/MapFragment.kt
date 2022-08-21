@@ -21,8 +21,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -50,10 +55,7 @@ import kotlinx.coroutines.launch
 import sbs.pros.parking.bottom_sheet.BottomSheetDialog
 import sbs.pros.parking.databinding.FragmentMapBinding
 import sbs.pros.parking.model.PinData
-import sbs.pros.parking.utils.MapKitInitializer
-import sbs.pros.parking.utils.drawLocationPoint
-import sbs.pros.parking.utils.drawSimpleBitmap
-import sbs.pros.parking.utils.viewLifecycleLazy
+import sbs.pros.parking.utils.*
 import kotlin.math.abs
 
 @AndroidEntryPoint
@@ -65,13 +67,10 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
     private val TARGET_LOCATION = Point(43.590097, 39.721887)
 
     private var mapView: MapView? = null
-
     private var mapKit: MapKit? = null
-
     private var selectedObject: MapObject? = null
 
     private var userLocationLayer: UserLocationLayer? = null
-
     private var clusterizedCollection: ClusterizedPlacemarkCollection? = null
 
     private var menuBottomSheetBehaviour: BottomSheetBehavior<NestedScrollView>? = null
@@ -108,16 +107,34 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
     }
 
     private fun setupMenu(){
-        menuBottomSheetBehaviour = BottomSheetBehavior.from(binding.bottomMenu.bottomSheet)
+        val menuBinding = binding.bottomMenu.bottomSheet
+
+        val navHost = NavHostFragment()
+        childFragmentManager.beginTransaction().replace(R.id.menu_host_fragment, navHost).commitNow()
+        navHost.navController.setGraph(R.navigation.menu_nav, Bundle())
+
+        navHost.navController.addOnDestinationChangedListener {
+                controller, destination, arguments ->
+            menuBinding.back.isVisible = destination.id != R.id.menuFragment
+        }
+
+        menuBottomSheetBehaviour = BottomSheetBehavior.from(menuBinding)
         menuBottomSheetBehaviour?.state = BottomSheetBehavior.STATE_HIDDEN;
 
-        binding.mapUi.uiMapMenuFAB.setOnClickListener {
+
+        binding.mapUi.uiMapMenuFAB.setSafeOnClickListener {
             menuBottomSheetBehaviour?.setState(BottomSheetBehavior.STATE_EXPANDED);
         }
 
-        binding.bottomMenu.bottomSheet.close.setOnClickListener {
+        menuBinding.close.setSafeOnClickListener {
             menuBottomSheetBehaviour?.setState(BottomSheetBehavior.STATE_HIDDEN);
         }
+
+        binding.bottomMenu.back.setSafeOnClickListener {
+            navHost.navController.navigateUp()
+        }
+
+
     }
 
 
