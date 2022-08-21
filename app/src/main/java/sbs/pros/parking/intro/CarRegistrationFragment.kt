@@ -3,16 +3,12 @@ package sbs.pros.parking.intro
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentContainerView
-import androidx.fragment.app.FragmentManager
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.Fragment
 import sbs.pros.parking.MainActivity
 import sbs.pros.parking.R
 
@@ -28,7 +24,7 @@ class CarRegistrationFragment : Fragment() {
 
         val openMap = view.findViewById<Button>(R.id.buttonSkipReg)
         openMap.setOnClickListener(View.OnClickListener {
-            prefs?.edit()?.putBoolean("firstrun", false)?.commit();
+            prefs?.edit()?.putBoolean("firstrun", false)?.apply()
 
             startActivity(Intent(context, MainActivity::class.java))
         })

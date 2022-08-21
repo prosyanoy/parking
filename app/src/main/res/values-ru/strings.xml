@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Parking</string>
+    <string name="intent_settings_text_view_geo_status">Включите геолокацию на вашем устройстве</string>
+    <string name="intent_settings_button">Перейти в Настройки</string>
+    <string name="intent_settings_text_view_fine_location">Разрешите определить ваше местоположение в Настройках устройства</string>
+    <string name="bottom_sheet_content">Контент</string>
+    <string name="bottom_sheet_peek">Пик</string>
+    <string name="successful">СМС было отправлено на ваш номер телефона</string>
+    <string name="server_error">Не получается соединиться с сервером</string>
+    <string name="ruble">1000&#8198;&#8381;</string>
+    <string name="geolocation_request">Чтобы правильно определять ваше местоположение, приложение запросит доступ к данным геолокации</string>
+    <string name="continue_text">Продолжить</string>
+    <string name="greetings">Добро пожаловать</string>
+    <string name="phone_confirmation">Подтверждение телефона</string>
+    <string name="name">ПроПарковки</string>
+    <string name="logo_description">Логотип</string>
+</resources>

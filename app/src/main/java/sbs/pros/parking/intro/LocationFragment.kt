@@ -1,33 +1,40 @@
 package sbs.pros.parking.intro
 
-import android.content.pm.PackageManager
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import sbs.pros.parking.R
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import sbs.pros.parking.databinding.FragmentLocationBinding
+import sbs.pros.parking.utils.viewLifecycleLazy
+import kotlin.math.roundToInt
 
 
-class LocationFragment : Fragment() {
+class LocationFragment : Fragment(sbs.pros.parking.R.layout.fragment_location) {
 
+    private val binding by viewLifecycleLazy { FragmentLocationBinding.bind( requireView()) }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view : View = inflater.inflate(R.layout.fragment_location, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        val buttonSendRequest : Button = view.findViewById(R.id.buttonRequest)
+        val buttonSendRequest : Button = view.findViewById(sbs.pros.parking.R.id.buttonRequest)
         buttonSendRequest.setOnClickListener(View.OnClickListener {
             requestLocationPermission()
         })
 
-        val buttonNextFragment : Button = view.findViewById(R.id.buttonSkipAuth)
-        buttonNextFragment.setOnClickListener(View.OnClickListener {
-            findNavController().navigate(R.id.action_locationFragment_to_authFragment)
-        })
+        binding.guideline.setGuidelineBegin(((requireContext().resources.displayMetrics.widthPixels/2-135)/requireContext().resources.displayMetrics.density).roundToInt())
 
-        return view
+        val iconImage = binding.iconImage
+        val radius = 150 // corner radius, higher value = more rounded
+        Glide.with(this)
+            .load("file:///android_asset/PPicon.png")
+            .override(300, 300)
+            .centerCrop() // scale image to fill the entire ImageView
+            .transform(RoundedCorners(radius))
+            .into(iconImage)
+
     }
 
     private fun requestLocationPermission() {
@@ -37,11 +44,11 @@ class LocationFragment : Fragment() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         val PERMISSIONS_REQUEST_FINE_LOCATION = 1
-        if (requestCode == PERMISSIONS_REQUEST_FINE_LOCATION) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                findNavController().navigate(R.id.action_locationFragment_to_authFragment)
-            }
-        }
+        /*if (requestCode == PERMISSIONS_REQUEST_FINE_LOCATION) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {*/
+                findNavController().navigate(sbs.pros.parking.R.id.action_locationFragment_to_authFragment)
+            //}
+        //}
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 

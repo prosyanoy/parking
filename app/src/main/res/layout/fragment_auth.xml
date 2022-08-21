@@ -1,26 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".intro.AuthFragment">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/phoneConfirmationTextView"
+        android:layout_width="270dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="308dp"
-        android:text="Вход в приложение"
-        android:textSize="28dp" />
+        android:layout_marginTop="30dp"
+        android:text="@string/phone_confirmation"
+        android:textSize="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/Theme.Parking"
+        tools:ignore="MissingConstraints">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/phoneConfirmationTextView"
+
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/Theme.Parking" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <include layout="@layout/custom_tab" />
+
+    <!--<Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="99dp"
-        android:text="пропустить" />
+        android:text="пропустить" />-->
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

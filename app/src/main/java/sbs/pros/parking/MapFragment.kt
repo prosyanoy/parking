@@ -4,7 +4,8 @@ import android.content.Context
 import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.*
+import android.graphics.Color
+import android.graphics.PointF
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
@@ -115,7 +116,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
     override fun onClusterAdded(cluster: Cluster) {
         // We setup cluster appearance and tap handler in this method
         cluster.appearance.setIcon(
-            ImageProvider.fromAsset(requireContext(), "search_result.png"))
+            ImageProvider.fromAsset(requireContext(), "parking.png"))
         cluster.addClusterTapListener(this)
     }
 

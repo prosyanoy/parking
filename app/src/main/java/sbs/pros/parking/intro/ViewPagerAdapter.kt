@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.viewpager.widget.PagerAdapter
@@ -13,16 +12,8 @@ import androidx.viewpager.widget.ViewPager
 import sbs.pros.parking.R
 
 
-class ViewPagerAdapter : PagerAdapter {
+class ViewPagerAdapter(var con: Context, var itemPages: Array<ItemPage>) : PagerAdapter() {
 
-
-    var itemPages : Array<ItemPage>
-    var con : Context
-
-    constructor(con: Context, itemPages : Array<ItemPage>) : super() {
-        this.con = con
-        this.itemPages = itemPages
-    }
 
     override fun getCount(): Int {return itemPages.size}
 
@@ -38,9 +29,8 @@ class ViewPagerAdapter : PagerAdapter {
         val txt : TextView = view.findViewById(R.id.textView2) as TextView
 
         img.setImageResource(itemPages[position].image)
-        txt.setText(itemPages[position].text)
+        txt.text = itemPages[position].text
         container.addView(view)
-
 
         return view
     }
