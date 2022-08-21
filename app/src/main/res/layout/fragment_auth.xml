@@ -37,7 +37,9 @@
             app:popupTheme="@style/Theme.Parking" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/custom_tab" />
+    <include
+        android:id="@+id/tabView"
+        layout="@layout/custom_tab" />
 
     <!--<Button
         android:id="@+id/button"

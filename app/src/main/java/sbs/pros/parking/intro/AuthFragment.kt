@@ -15,7 +15,6 @@ import sbs.pros.parking.utils.viewLifecycleLazy
 class AuthFragment : Fragment(sbs.pros.parking.R.layout.fragment_auth) {
 
     private val binding by viewLifecycleLazy { FragmentAuthBinding.bind( requireView()) }
-    private val tabBinding by viewLifecycleLazy { CustomTabBinding.bind( requireView()) }
 
     var def: ColorStateList? = null
     var item1: TextView? = null
@@ -26,6 +25,7 @@ class AuthFragment : Fragment(sbs.pros.parking.R.layout.fragment_auth) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val tabBinding = binding.tabView
         val toolbar = binding.toolbar
         (activity as AppCompatActivity).setSupportActionBar(toolbar)
         item1 = tabBinding.item1
