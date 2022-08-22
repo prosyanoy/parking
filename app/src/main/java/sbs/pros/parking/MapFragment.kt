@@ -217,15 +217,21 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
             if (mapObject is PlacemarkMapObject) {
                 val parkingData = mapObject.userData as PinData
 
-                var lastState = "STATE_HALF_EXPANDED"
-
                 setSelectedPlacemark(mapObject)
                 when(parkingData.parking){
                     is PolylineMapObject -> setSelectedPolyline(parkingData.parking)
                     is PolygonMapObject -> setSelectedPolygon(parkingData.parking)
                 }
 
-                binding.bottomSheet.addressText.setText(parkingData.address)
+                binding.bottomSheet.button12.setOnClickListener(View.OnClickListener {
+                    when(binding.bottomSheet.middle.visibility)
+                    {
+                        View.GONE -> binding.bottomSheet.middle.visibility = View.VISIBLE
+                        View.VISIBLE -> binding.bottomSheet.middle.visibility = View.GONE
+                    }
+                })
+
+                binding.bottomSheet.addressText.text = parkingData.address
 
                 if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
@@ -244,7 +250,6 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                             BottomSheetBehavior.STATE_HIDDEN -> {}
 
                             BottomSheetBehavior.STATE_EXPANDED -> {
-                                lastState = "STATE_EXPANDED"
                                 mapView!!.map.move(
                                     CameraPosition(Point(point.latitude - 0.0002,point.longitude), 16f, 0.0f, 0.0f),
                                     Animation(Animation.Type.SMOOTH, 0.5F),
@@ -263,14 +268,11 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                             BottomSheetBehavior.STATE_DRAGGING -> {}
                             BottomSheetBehavior.STATE_SETTLING -> {}
                             BottomSheetBehavior.STATE_HALF_EXPANDED -> {
-
-                                if (lastState == "STATE_EXPANDED"){
-                                    mapView!!.map.move(
-                                        CameraPosition(Point(point.latitude - 0.0001,point.longitude), 16f, 0.0f, 0.0f),
-                                        Animation(Animation.Type.SMOOTH, 0.5F),
-                                        null)
-                                }
-                                lastState = "STATE_HALF_EXPANDED"
+                                //при сокрытии наполовину, переносит на прошлую точку
+                                mapView!!.map.move(
+                                    CameraPosition(Point(point.latitude - 0.0001,point.longitude), 16f, 0.0f, 0.0f),
+                                    Animation(Animation.Type.SMOOTH, 0.5F),
+                                    null)
                             }
                         }
                     }
