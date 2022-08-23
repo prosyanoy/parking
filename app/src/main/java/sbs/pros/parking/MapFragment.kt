@@ -47,16 +47,13 @@ import com.yandex.mapkit.user_location.UserLocationObjectListener
 import com.yandex.mapkit.user_location.UserLocationView
 import com.yandex.runtime.image.ImageProvider
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.menu_bottom_sheet_layout.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import sbs.pros.parking.bottom_sheet.BottomSheetDialog
 import sbs.pros.parking.databinding.FragmentMapBinding
 import sbs.pros.parking.model.PinData
 import sbs.pros.parking.utils.*
-import kotlin.math.abs
 import sbs.pros.parking.utils.drawLocationPoint
 import sbs.pros.parking.utils.drawSimpleBitmap
 import sbs.pros.parking.utils.viewLifecycleLazy
@@ -264,11 +261,10 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
             if (mapObject is PlacemarkMapObject) {
                 val parkingData = mapObject.userData as PinData
-                val style = IconStyle().apply { scale = 1.3f }
 
-                mapObject.setIcon(ImageProvider.fromBitmap(drawSimpleBitmap("${parkingData.hour_cost}\u2006₽", requireContext(), green)))
-                mapObject.setIconStyle(style)
+                var lastState = "STATE_HALF_EXPANDED"
 
+                setSelectedPlacemark(mapObject)
                 when(parkingData.parking){
                     is PolylineMapObject -> setSelectedPolyline(parkingData.parking)
                     is PolygonMapObject -> setSelectedPolygon(parkingData.parking)
@@ -300,7 +296,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                                     null)
                             }
 
-                            BottomSheetBehavior.STATE_COLLAPSED -> {
+                            BottomSheetBehavior.STATE_COLLAPSED ->{
                                 mapView!!.map.move(
                                     CameraPosition(Point(mapView!!.map.cameraPosition.target.latitude + 0.0002, mapView!!.map.cameraPosition.target.longitude ), 16f, 0.0f, 0.0f),
                                     Animation(Animation.Type.SMOOTH, 0.5F),
@@ -311,7 +307,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
                             BottomSheetBehavior.STATE_DRAGGING -> {}
                             BottomSheetBehavior.STATE_SETTLING -> {}
-                            BottomSheetBehavior.STATE_HALF_EXPANDED -> {
+                            BottomSheetBehavior.STATE_HALF_EXPANDED ->{
 
                                 if (lastState == "STATE_EXPANDED"){
                                     mapView!!.map.move(
