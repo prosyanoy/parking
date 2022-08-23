@@ -14,4 +14,21 @@
     <string name="name">Parking Pros</string>
     <string name="phone_confirmation">Phone confirmation</string>
     <string name="logo_description">Logo</string>
+    <string name="sms">SMS</string>
+    <string name="flash_call">Flash Call</string>
+    <string name="pay">Pay</string>
+    <string name="flash_call_instruction">"Type your phone number. You will receive a call from our number. "</string>
+    <string name="sms_instruction">Type your phone number. We will send you the code via SMS.</string>
+    <string name="next">Next</string>
+    <string name="number_input_field">Number input field</string>
+    <string name="invalid_number">Invalid number</string>
+    <string name="not_deliver">The message was not delivered</string>
+    <string name="expired">The subscriber is unavailable right now</string>
+    <string name="deliver">The message has been sent successfully</string>
+    <string name="sms_second">Type code from SMS</string>
+    <string name="flash_call_second">Type 4 last digits of the number of incoming call</string>
+    <string name="remaining1">You can request code one more time in</string>
+    <string name="remaining2">seconds</string>
+    <string name="repeated_request">Request code</string>
+    <!-- TODO: Remove or change this placeholder text -->
 </resources>

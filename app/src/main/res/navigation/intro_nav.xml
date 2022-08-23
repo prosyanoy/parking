@@ -23,8 +23,8 @@
         android:label="fragment_auth"
         tools:layout="@layout/fragment_auth" >
         <action
-            android:id="@+id/action_authFragment_to_carRegistrationFragment"
-            app:destination="@id/carRegistrationFragment" />
+            android:id="@+id/action_authFragment_to_confirmationFragment"
+            app:destination="@id/confirmationFragment" />
     </fragment>
     <fragment
         android:id="@+id/locationFragment"
@@ -40,4 +40,13 @@
         android:name="sbs.pros.parking.intro.CarRegistrationFragment"
         android:label="fragment_car_registration"
         tools:layout="@layout/fragment_car_registration" />
+    <fragment
+        android:id="@+id/confirmationFragment"
+        android:name="sbs.pros.parking.intro.ConfirmationFragment"
+        android:label="fragment_confirmation"
+        tools:layout="@layout/fragment_confirmation" >
+        <action
+            android:id="@+id/action_confirmationFragment_to_carRegistrationFragment"
+            app:destination="@id/carRegistrationFragment" />
+    </fragment>
 </navigation>

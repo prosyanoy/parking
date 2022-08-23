@@ -16,6 +16,12 @@
         <item name="fontFamily">@font/overpass</item>
     </style>
 
+    <style name="EditTextTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorControlNormal">@color/purple</item>
+        <item name="colorControlActivated">@color/purple</item>
+        <item name="colorControlHighlight">@color/purple</item>
+    </style>
+
     <style name="SplashScreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryVariant">@color/secondary</item>

@@ -310,8 +310,8 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         val polygon = mapObjects.addPolygon(
             Polygon(LinearRing(list), ArrayList())
         )
-        polygon.fillColor = lightBlue
-        polygon.strokeColor = darkBlue
+        polygon.fillColor = (activity as MainActivity).lightBlue
+        polygon.strokeColor = (activity as MainActivity).darkBlue
         polygon.strokeWidth = 1.0f
         polygon.zIndex = 100.0f
 
@@ -348,19 +348,19 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         val style = IconStyle().apply { scale = 1.3f }
         val parkingData = mapObject.userData as PinData
 
-        mapObject.setIcon(ImageProvider.fromBitmap(drawSimpleBitmap("${parkingData.hour_cost}\u2006₽", requireContext(), green)))
+        mapObject.setIcon(ImageProvider.fromBitmap(drawSimpleBitmap("${parkingData.hour_cost}\u2006₽", requireContext(), (activity as MainActivity).green)))
         mapObject.setIconStyle(style)
         selectedPlacemark = mapObject
     }
 
     private fun setSelectedPolyline(polyline: PolylineMapObject){
-        polyline.setStrokeColor(green)
+        polyline.setStrokeColor((activity as MainActivity).green)
         selectedObject = polyline
     }
 
     private fun setSelectedPolygon(polygon: PolygonMapObject){
-        polygon.fillColor = lightGreen
-        polygon.strokeColor = darkGreen
+        polygon.fillColor = (activity as MainActivity).lightGreen
+        polygon.strokeColor = (activity as MainActivity).darkGreen
         selectedObject = polygon
     }
 
@@ -369,12 +369,12 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         selectedObject?.let {
             when(it){
                 is PolylineMapObject -> {
-                    it.setStrokeColor(blue)
+                    it.setStrokeColor((activity as MainActivity).blue)
                 }
 
                 is PolygonMapObject -> {
-                    it.fillColor = lightBlue
-                    it.strokeColor = darkBlue
+                    it.fillColor = (activity as MainActivity).lightBlue
+                    it.strokeColor = (activity as MainActivity).darkBlue
                 }
             }
         }
@@ -515,9 +515,9 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
             var currentSelection = parking
 
             if (parking is PolylineMapObject) {
-                parking.setStrokeColor(green)
+                parking.setStrokeColor(Color.rgb(57, 180, 36))
             } else if (parking is PolygonMapObject) {
-                parking.strokeColor = green
+                parking.strokeColor = Color.rgb(57, 180, 36)
             }
         }
 
@@ -528,12 +528,6 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         const val STROKE_SIZE = 3f
         const val POINTS_ZOOM = 13 //9-12.99 (точки)
 
-        private val blue = Color.rgb(13, 174, 252)
-        private val lightBlue = Color.rgb(91, 200, 252)
-        private val darkBlue = Color.rgb(9, 133, 192)
-        private val green = Color.rgb(57, 180, 36)
-        private val lightGreen = Color.rgb(92, 233, 70)
-        private val darkGreen = Color.rgb(30, 141, 13)
 
     }
 

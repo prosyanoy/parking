@@ -15,4 +15,20 @@
     <string name="phone_confirmation">Подтверждение телефона</string>
     <string name="name">ПроПарковки</string>
     <string name="logo_description">Логотип</string>
+    <string name="sms">SMS</string>
+    <string name="flash_call">Flash Call</string>
+    <string name="pay">Оплатить</string>
+    <string name="flash_call_instruction">Введите ваш номер мобильного телефона. Вам поступит звонок с нашего номера.</string>
+    <string name="sms_instruction">Введите номер мобильного телефона. Мы отправим одноразовый код в SMS.</string>
+    <string name="next">Далее</string>
+    <string name="number_input_field">Поле для ввода номера</string>
+    <string name="invalid_number">Номер введен некорректно</string>
+    <string name="not_deliver">SMS не было доставлено</string>
+    <string name="expired">Получатель вне зоны доступа</string>
+    <string name="deliver">SMS отправлено успешно</string>
+    <string name="sms_second">Введите одноразовый код из SMS</string>
+    <string name="flash_call_second">Введите последние 4 цифры номера входящего звонка</string>
+    <string name="remaining1">Запросить код повторно через</string>
+    <string name="remaining2">секунд(ы)</string>
+    <string name="repeated_request">Запросить код</string>
 </resources>
