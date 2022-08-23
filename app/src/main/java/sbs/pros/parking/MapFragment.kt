@@ -123,7 +123,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
         navHost.navController.addOnDestinationChangedListener {
                 controller, destination, arguments ->
-            menuBinding.back.isVisible = destination.id != R.id.menuFragment
+            binding.bottomMenu.back.isVisible = destination.id != R.id.menuFragment
         }
 
         menuBottomSheetBehaviour = BottomSheetBehavior.from(menuBinding)
@@ -134,7 +134,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
             menuBottomSheetBehaviour?.setState(BottomSheetBehavior.STATE_EXPANDED);
         }
 
-        menuBinding.close.setSafeOnClickListener {
+        binding.bottomMenu.close.setSafeOnClickListener {
             menuBottomSheetBehaviour?.setState(BottomSheetBehavior.STATE_HIDDEN);
         }
 
