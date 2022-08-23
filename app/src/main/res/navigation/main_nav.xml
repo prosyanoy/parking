@@ -3,17 +3,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/my_nav"
-    app:startDestination="@id/mapFragment2">
+    app:startDestination="@id/mapFragment">
+
     <fragment
-        android:id="@+id/mapFragment2"
+        android:id="@+id/mapFragment"
         android:name="sbs.pros.parking.MapFragment"
-        android:label="MapFragment" >
+        android:label="fragment_map"
+        tools:layout="@layout/fragment_map" >
         <action
-            android:id="@+id/action_mapFragment2_to_introFragment"
-            app:destination="@id/introFragment" />
+            android:id="@+id/navigateToSMSFragment"
+            app:destination="@id/SMSFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/SMSFragment"
+        android:name="sbs.pros.parking.SMSFragment"
+        android:label="fragment_sms"
+        tools:layout="@layout/fragment_sms" >
+        <action
+            android:id="@+id/navigateTomapFragment"
+            app:destination="@id/mapFragment" />
     </fragment>
     <fragment
         android:id="@+id/introFragment"
-        android:name="sbs.pros.parking.intro.IntroFragment"
-        android:label="IntroFragment" />
+        android:name="sbs.pros.parking.IntroFragment"
+        android:label="fragment_intro"
+        tools:layout="@layout/fragment_intro" >
+        <action
+            android:id="@+id/action_introFragment_to_SMSFragment"
+            app:destination="@id/SMSFragment" />
+    </fragment>
 </navigation>

@@ -9,18 +9,29 @@ import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.view.isVisible
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
@@ -36,12 +47,16 @@ import com.yandex.mapkit.user_location.UserLocationObjectListener
 import com.yandex.mapkit.user_location.UserLocationView
 import com.yandex.runtime.image.ImageProvider
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.menu_bottom_sheet_layout.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import sbs.pros.parking.bottom_sheet.BottomSheetDialog
 import sbs.pros.parking.databinding.FragmentMapBinding
 import sbs.pros.parking.model.PinData
+import sbs.pros.parking.utils.*
+import kotlin.math.abs
 import sbs.pros.parking.utils.drawLocationPoint
 import sbs.pros.parking.utils.drawSimpleBitmap
 import sbs.pros.parking.utils.viewLifecycleLazy
@@ -66,6 +81,8 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
     private var clusterizedCollection: ClusterizedPlacemarkCollection? = null
 
+    private var menuBottomSheetBehaviour: BottomSheetBehavior<NestedScrollView>? = null
+
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
 
     private val binding by viewLifecycleLazy { FragmentMapBinding.bind( requireView()) }
@@ -85,8 +102,9 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         requestLocationPermission(grant = true)
         setUserLocationLayer()
         checkUserLocation()
-
+        setupMenu()
         setClickListeners()
+
 
         mapView!!.map.move(
             CameraPosition(TARGET_LOCATION, 13.0f, 0.0f, 0.0f),
@@ -97,6 +115,37 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         clusterizedCollection = mapView!!.map.mapObjects.addClusterizedPlacemarkCollection(this)
 
         getParkings(requireContext(), url, mapObjects, clusterizedCollection!!)
+    }
+
+    private fun setupMenu(){
+        val menuBinding = binding.bottomMenu.bottomSheet
+
+        val navHost = NavHostFragment()
+        childFragmentManager.beginTransaction().replace(R.id.menu_host_fragment, navHost).commitNow()
+        navHost.navController.setGraph(R.navigation.menu_nav, Bundle())
+
+        navHost.navController.addOnDestinationChangedListener {
+                controller, destination, arguments ->
+            menuBinding.back.isVisible = destination.id != R.id.menuFragment
+        }
+
+        menuBottomSheetBehaviour = BottomSheetBehavior.from(menuBinding)
+        menuBottomSheetBehaviour?.state = BottomSheetBehavior.STATE_HIDDEN;
+
+
+        binding.mapUi.uiMapMenuFAB.setSafeOnClickListener {
+            menuBottomSheetBehaviour?.setState(BottomSheetBehavior.STATE_EXPANDED);
+        }
+
+        menuBinding.close.setSafeOnClickListener {
+            menuBottomSheetBehaviour?.setState(BottomSheetBehavior.STATE_HIDDEN);
+        }
+
+        binding.bottomMenu.back.setSafeOnClickListener {
+            navHost.navController.navigateUp()
+        }
+
+
     }
 
 
@@ -127,7 +176,6 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         )
         return true
     }
-
     private fun setClickListeners() {
 
         val uiMapLocationFAB = binding.mapUi.uiMapLocationFAB
@@ -216,10 +264,11 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
             if (mapObject is PlacemarkMapObject) {
                 val parkingData = mapObject.userData as PinData
+                val style = IconStyle().apply { scale = 1.3f }
 
-                var lastState = "STATE_HALF_EXPANDED"
+                mapObject.setIcon(ImageProvider.fromBitmap(drawSimpleBitmap("${parkingData.hour_cost}\u2006₽", requireContext(), green)))
+                mapObject.setIconStyle(style)
 
-                setSelectedPlacemark(mapObject)
                 when(parkingData.parking){
                     is PolylineMapObject -> setSelectedPolyline(parkingData.parking)
                     is PolygonMapObject -> setSelectedPolygon(parkingData.parking)

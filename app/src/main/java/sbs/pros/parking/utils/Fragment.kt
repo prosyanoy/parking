@@ -1,6 +1,7 @@
 package sbs.pros.parking.utils
 
 import android.os.Bundle
+import android.view.View
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.DefaultLifecycleObserver
@@ -68,4 +69,11 @@ fun NavController.navigateSafe(
         navigate(resId, args, navOptions, navExtras)
     }
 
+}
+
+fun View.setSafeOnClickListener(onSafeClick: (View) -> Unit) {
+    val safeClickListener = SafeClickListener {
+        onSafeClick(it)
+    }
+    setOnClickListener(safeClickListener)
 }
