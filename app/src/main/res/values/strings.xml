@@ -9,4 +9,6 @@
     <string name="intent_settings_text_view_geo_status">Включите геолокацию на вашем устройстве</string>
     <string name="intent_settings_button">Перейти в настройки</string>
     <string name="ruble">1000&#8198;&#8381;</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

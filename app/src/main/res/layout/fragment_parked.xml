@@ -3,6 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".landlord_intro.LandlordAuth">
+    tools:context=".landlord_main.FragmentParked">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="page 2" />
 
 </FrameLayout>
