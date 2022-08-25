@@ -25,7 +25,7 @@
         app:layout_anchor="@id/map_ui"
         app:layout_anchorGravity="bottom">
 
-        <include android:id="@+id/bottom_sheet"
+        <include android:id="@+id/bottom_sheet_main"
             layout="@layout/bottom_sheet_layout" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

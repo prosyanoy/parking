@@ -127,15 +127,15 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         }
 
         menuBottomSheetBehaviour = BottomSheetBehavior.from(menuBinding)
-        menuBottomSheetBehaviour?.state = BottomSheetBehavior.STATE_HIDDEN;
+        menuBottomSheetBehaviour?.state = BottomSheetBehavior.STATE_HIDDEN
 
 
         binding.mapUi.uiMapMenuFAB.setSafeOnClickListener {
-            menuBottomSheetBehaviour?.setState(BottomSheetBehavior.STATE_EXPANDED);
+            menuBottomSheetBehaviour?.setState(BottomSheetBehavior.STATE_EXPANDED)
         }
 
         binding.bottomMenu.close.setSafeOnClickListener {
-            menuBottomSheetBehaviour?.setState(BottomSheetBehavior.STATE_HIDDEN);
+            menuBottomSheetBehaviour?.setState(BottomSheetBehavior.STATE_HIDDEN)
         }
 
         binding.bottomMenu.back.setSafeOnClickListener {
@@ -270,7 +270,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                     is PolygonMapObject -> setSelectedPolygon(parkingData.parking)
                 }
 
-                binding.bottomSheet.addressText.setText(parkingData.address)
+                binding.bottomSheetMain.addressText.text = parkingData.address
 
                 if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
@@ -468,7 +468,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
             customDialog.dismiss()
         }
 
-        GlobalScope.launch() {
+        GlobalScope.launch {
             while (true){
                 if (checkGEOStatus()){
                     customDialog.dismiss()
