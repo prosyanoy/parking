@@ -1,16 +1,23 @@
 package sbs.pros.parking
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ValueAnimator
 import android.content.Context
 import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.*
+import android.graphics.Color
+import android.graphics.PointF
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
+import android.view.ViewGroup
+import android.view.animation.AccelerateInterpolator
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -45,6 +52,7 @@ import sbs.pros.parking.model.PinData
 import sbs.pros.parking.utils.drawLocationPoint
 import sbs.pros.parking.utils.drawSimpleBitmap
 import sbs.pros.parking.utils.viewLifecycleLazy
+
 
 @AndroidEntryPoint
 class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTapListener, UserLocationObjectListener {
@@ -223,11 +231,14 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                     is PolygonMapObject -> setSelectedPolygon(parkingData.parking)
                 }
 
+                val params = binding.bottomSheet.middle.layoutParams
+
                 binding.bottomSheet.button12.setOnClickListener(View.OnClickListener {
-                    when(binding.bottomSheet.middle.visibility)
+                    when(binding.bottomSheet.middle.height)
                     {
-                        View.GONE -> binding.bottomSheet.middle.visibility = View.VISIBLE
-                        View.VISIBLE -> binding.bottomSheet.middle.visibility = View.GONE
+                        0 -> {expand(binding.bottomSheet.middle)}
+                        else -> {params.height = 0
+                            binding.bottomSheet.middle.layoutParams = params}
                     }
                 })
 
@@ -284,8 +295,28 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
             true
         }
 
-    private fun parking(context: Context, mapObjects: MapObjectCollection, clusterizedCollection: ClusterizedPlacemarkCollection, point : Point, list : List<Point>, address : String, hour_cost : Int, id : Int) {
-        val polyline = mapObjects
+    fun expand(view: View) {
+        view.measure(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+
+        val targetHeight = view.measuredHeight
+        val anim = ValueAnimator.ofInt(view.measuredHeight, targetHeight)
+
+        anim.interpolator = AccelerateInterpolator()
+        anim.duration = 500
+
+        anim.addUpdateListener { animation ->
+            val layoutParams = view.layoutParams
+            layoutParams.height = (targetHeight * animation.animatedFraction).toInt()
+            view.layoutParams = layoutParams
+        }
+
+
+
+        anim.start()
+    }
+
+        private fun parking(context: Context, mapObjects: MapObjectCollection, clusterizedCollection: ClusterizedPlacemarkCollection, point : Point, list : List<Point>, address : String, hour_cost : Int, id : Int) {
+            val polyline = mapObjects
             .addPolyline(Polyline(list))
             .apply { setStrokeColor(Color.rgb(13, 174, 252)) }
 
