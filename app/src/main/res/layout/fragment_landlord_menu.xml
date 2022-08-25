@@ -8,7 +8,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="3dp">
 
 
         <FrameLayout
@@ -27,6 +29,11 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:menu="@menu/landlord_menu"
+            android:background="#F44336"
+            app:itemTextColor="#ffffff"
+            app:itemIconTint="#ffffff"
+
+
             />
 
 

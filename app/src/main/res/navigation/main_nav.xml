@@ -27,9 +27,5 @@
         android:id="@+id/introFragment"
         android:name="sbs.pros.parking.IntroFragment"
         android:label="fragment_intro"
-        tools:layout="@layout/fragment_intro" >
-        <action
-            android:id="@+id/action_introFragment_to_SMSFragment"
-            app:destination="@id/SMSFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_intro" />
 </navigation>
