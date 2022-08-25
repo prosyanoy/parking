@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/onBoardingFragment"
-        android:name="sbs.pros.parking.intro.OnBoardingFragment"
+        android:name="sbs.pros.parking.users_intro.OnBoardingFragment"
         android:label="fragment_on_boarding"
         tools:layout="@layout/fragment_on_boarding" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/authFragment"
-        android:name="sbs.pros.parking.intro.AuthFragment"
+        android:name="sbs.pros.parking.users_intro.AuthFragment"
         android:label="fragment_auth"
         tools:layout="@layout/fragment_auth" >
         <action
@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/locationFragment"
-        android:name="sbs.pros.parking.intro.LocationFragment"
+        android:name="sbs.pros.parking.users_intro.LocationFragment"
         android:label="fragment_location"
         tools:layout="@layout/fragment_location" >
         <action
@@ -37,12 +37,12 @@
     </fragment>
     <fragment
         android:id="@+id/carRegistrationFragment"
-        android:name="sbs.pros.parking.intro.CarRegistrationFragment"
+        android:name="sbs.pros.parking.users_intro.CarRegistrationFragment"
         android:label="fragment_car_registration"
         tools:layout="@layout/fragment_car_registration" />
     <fragment
         android:id="@+id/confirmationFragment"
-        android:name="sbs.pros.parking.intro.ConfirmationFragment"
+        android:name="sbs.pros.parking.users_intro.ConfirmationFragment"
         android:label="fragment_confirmation"
         tools:layout="@layout/fragment_confirmation" >
         <action

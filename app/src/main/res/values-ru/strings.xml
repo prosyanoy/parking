@@ -31,4 +31,5 @@
     <string name="remaining1">Запросить код повторно через</string>
     <string name="remaining2">секунд(ы)</string>
     <string name="repeated_request">Запросить код</string>
+    <string name="limit">Количество запросов исчерпано. Повторите позже</string>
 </resources>

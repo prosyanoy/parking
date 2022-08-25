@@ -14,6 +14,6 @@
     </fragment>
     <fragment
         android:id="@+id/introFragment"
-        android:name="sbs.pros.parking.intro.IntroFragment"
+        android:name="sbs.pros.parking.users_intro.IntroFragment"
         android:label="IntroFragment" />
 </navigation>

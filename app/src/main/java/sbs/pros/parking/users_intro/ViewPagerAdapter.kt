@@ -1,4 +1,4 @@
-package sbs.pros.parking.intro
+package sbs.pros.parking.users_intro
 
 import android.content.Context
 import android.view.LayoutInflater

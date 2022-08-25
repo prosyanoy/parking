@@ -1,4 +1,4 @@
-package sbs.pros.parking.intro
+package sbs.pros.parking.users_intro
 
 import android.content.res.ColorStateList
 import android.graphics.Color
