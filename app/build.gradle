@@ -17,6 +17,10 @@ android {
         versionCode 1
         versionName "1.0"
 
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file("local.properties").newDataInputStream())
+
+        buildConfigField "String", "mapkit_api_key", "\"${properties.getProperty("mapkit_api_key")}\""
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
