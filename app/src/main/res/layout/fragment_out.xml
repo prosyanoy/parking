@@ -15,11 +15,13 @@
             android:layout_height="wrap_content"
             android:layout_margin="10sp"
             android:background="#AAAAAA">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@+id/view1"
                 android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/car_number1"
                     android:layout_width="wrap_content"
@@ -28,15 +30,16 @@
                     android:text="X 999 XX 99" />
 
 
-
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_toLeftOf="@+id/view_inside"
                         android:orientation="vertical">
+
                         <TextView
                             android:id="@+id/start_time"
                             android:layout_width="wrap_content"
@@ -58,6 +61,7 @@
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@+id/view_inside"
                         android:orientation="vertical">
+
                         <TextView
                             android:id="@+id/price"
                             android:layout_width="wrap_content"
@@ -75,7 +79,7 @@
                 android:id="@+id/view1"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_centerHorizontal="true" />
+                />
 
 
 
@@ -86,42 +90,9 @@
                 android:layout_toRightOf="@+id/view1"
                 android:orientation="horizontal">
 
-                <Button
-                    style=""
+                <RatingBar
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minHeight="0sp"
-                    android:minWidth="0sp"
-                    android:text="1"
-                    />
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minHeight="0sp"
-                    android:minWidth="0sp"
-                    android:text="2"
-                    />
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minHeight="0sp"
-                    android:minWidth="0sp"
-                    android:text="3"
-                    />
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minHeight="0sp"
-                    android:minWidth="0sp"
-                    android:text="4"
-                    />
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minHeight="0sp"
-                    android:minWidth="0sp"
-                    android:text="5"
-                    />
+                    android:layout_height="wrap_content"/>
 
 
 

@@ -130,9 +130,9 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         menuBottomSheetBehaviour?.state = BottomSheetBehavior.STATE_HIDDEN
 
 
-        binding.mapUi.uiMapMenuFAB.setSafeOnClickListener {
-            menuBottomSheetBehaviour?.setState(BottomSheetBehavior.STATE_EXPANDED)
-        }
+        //binding.mapUi.uiMapMenuFAB.setSafeOnClickListener {
+           // menuBottomSheetBehaviour?.setState(BottomSheetBehavior.STATE_EXPANDED)
+        //}
 
         binding.bottomMenu.close.setSafeOnClickListener {
             menuBottomSheetBehaviour?.setState(BottomSheetBehavior.STATE_HIDDEN)
@@ -142,6 +142,9 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
             navHost.navController.navigateUp()
         }
 
+        binding.mapUi.uiMapMenuFAB.setSafeOnClickListener {
+            findNavController().navigateSafe(R.id.action_mapFragment_to_landlordMenu)
+        }
 
     }
 

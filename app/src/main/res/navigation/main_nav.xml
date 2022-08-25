@@ -13,6 +13,9 @@
         <action
             android:id="@+id/navigateToSMSFragment"
             app:destination="@id/SMSFragment" />
+        <action
+            android:id="@+id/action_mapFragment_to_landlordMenu"
+            app:destination="@id/landlordMenu" />
     </fragment>
     <fragment
         android:id="@+id/SMSFragment"
@@ -28,4 +31,9 @@
         android:name="sbs.pros.parking.IntroFragment"
         android:label="fragment_intro"
         tools:layout="@layout/fragment_intro" />
+    <fragment
+        android:id="@+id/landlordMenu"
+        android:name="sbs.pros.parking.landlord_main.LandlordMenu"
+        android:label="fragment_landlord_menu"
+        tools:layout="@layout/fragment_landlord_menu" />
 </navigation>
