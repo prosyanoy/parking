@@ -5,7 +5,59 @@
     android:layout_height="match_parent"
     tools:context=".landlord_main.ParkedFragment">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+    <RelativeLayout
+        android:id="@+id/car1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10sp"
+        android:background="#AAFFFF">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/view1"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/car_number1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="X 999 XX 99" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_centerHorizontal="true" />
+
+        <LinearLayout
+            android:id="@+id/time_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/view1"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/time1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Время въезда: 00:01" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/current_pay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/time_layout"
+            android:layout_centerHorizontal="true"
+            android:text="Плата на данный момент: 30$" />
+    </RelativeLayout>
 
 
-
+    </RelativeLayout>
 </FrameLayout>

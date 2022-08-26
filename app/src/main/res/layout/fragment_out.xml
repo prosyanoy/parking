@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".landlord_main.OutFragment">
 
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/smth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
 
         <RelativeLayout
             android:id="@+id/car1"
@@ -17,7 +25,7 @@
             android:layout_marginTop="10sp"
             android:layout_marginEnd="10sp"
             android:layout_marginBottom="10sp"
-            android:background="#AAAAAA">
+            android:background="#AAFFFF">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -48,7 +56,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="19:00" />
+                            android:text="19:00 - 20:30" />
                     </LinearLayout>
 
 
@@ -102,4 +110,4 @@
 
     </RelativeLayout>
 
-</FrameLayout>
+</ScrollView>
