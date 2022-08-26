@@ -9,7 +9,7 @@ import sbs.pros.parking.utils.viewLifecycleLazy
 
 class AppInfoFragment: Fragment(R.layout.app_info_fragment) {
 
-    private val binding by viewLifecycleLazy { AppInfoFragmentBinding.bind( requireView()) }
+    private val binding by viewLifecycleLazy { AppInfoFragmentBinding.bind(requireView()) }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

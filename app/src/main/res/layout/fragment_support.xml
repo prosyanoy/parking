@@ -85,10 +85,12 @@
     <com.google.android.material.button.MaterialButton
         android:layout_width="match_parent"
         android:layout_height="70dp"
+        app:cornerRadius="7dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_margin="12dp"
+
         app:backgroundTint="@color/white"
         android:text="Отправить"
         android:textColor="@color/grey"
