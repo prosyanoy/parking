@@ -1,30 +1,25 @@
-package sbs.pros.parking.landlord_main;
+package sbs.pros.parking.landlord_main
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import sbs.pros.parking.landlord_main.Parker
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import android.os.Bundle
+import android.view.View
+import androidx.fragment.app.Fragment
+import sbs.pros.parking.R
+import sbs.pros.parking.databinding.FragmentInBinding
+import sbs.pros.parking.utils.viewLifecycleLazy
+import java.util.ArrayList
 
-import androidx.fragment.app.Fragment;
+class InFragment : Fragment(R.layout.fragment_in) {
 
-import java.util.ArrayList;
-import java.util.List;
+    var inParkers: MutableList<Parker> = ArrayList()
 
-import sbs.pros.parking.R;
+    private val binding by viewLifecycleLazy { FragmentInBinding.bind(requireView()) }
 
-public class InFragment extends Fragment {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    List<Parker> inParkers = new ArrayList<Parker>();
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_in, container, false);
-
-        inParkers.add(new Parker("A 123 BC 45", "12:30", 3));
-
-
-
-        return view;
+        inParkers.add(Parker("A 123 BC 45", "12:30", 3))
     }
 }

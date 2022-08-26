@@ -1,28 +1,24 @@
-package sbs.pros.parking.landlord_main;
+package sbs.pros.parking.landlord_main
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import sbs.pros.parking.landlord_main.Parker
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import android.os.Bundle
+import android.view.View
+import androidx.fragment.app.Fragment
+import sbs.pros.parking.R
+import sbs.pros.parking.databinding.FragmentInBinding
+import sbs.pros.parking.databinding.FragmentParkedBinding
+import sbs.pros.parking.utils.viewLifecycleLazy
+import java.util.ArrayList
 
-import androidx.fragment.app.Fragment;
+class ParkedFragment : Fragment(R.layout.fragment_parked) {
 
-import java.util.ArrayList;
-import java.util.List;
+    private val binding by viewLifecycleLazy { FragmentParkedBinding.bind(requireView()) }
 
-import sbs.pros.parking.R;
-
-public class ParkedFragment extends Fragment {
-
-    List<Parker> parkedParkers = new ArrayList<Parker>();
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_parked, container, false);
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
 
-
-        return view;
     }
 }
