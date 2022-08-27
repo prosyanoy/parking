@@ -1,8 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".landlord_intro.LandlordAuth">
 
-</FrameLayout>
+    <EditText
+        android:id="@+id/login"
+        android:layout_width="200sp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/password"
+        android:layout_centerHorizontal="true"
+        android:hint="Логин"/>
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="200sp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/enter"
+        android:layout_marginTop="50sp"
+        android:layout_centerHorizontal="true"
+        android:hint="Пароль"
+        />
+
+
+    <Button
+        android:id="@+id/enter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="50sp"
+        android:text="Войти"/>
+
+    <TextView
+        android:id="@+id/or"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/enter"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10sp"
+        android:text="или"/>
+
+    <Button
+        android:id="@+id/register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/or"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10sp"
+        android:text="Зарегистрироваться"/>
+
+
+
+</RelativeLayout>

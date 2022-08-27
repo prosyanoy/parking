@@ -14,8 +14,8 @@
             android:id="@+id/navigateToSMSFragment"
             app:destination="@id/SMSFragment" />
         <action
-            android:id="@+id/action_mapFragment_to_landlordMenu"
-            app:destination="@id/landlordMenu" />
+            android:id="@+id/action_mapFragment_to_landlordAuth"
+            app:destination="@id/landlordAuth" />
     </fragment>
     <fragment
         android:id="@+id/SMSFragment"
@@ -36,4 +36,13 @@
         android:name="sbs.pros.parking.landlord_main.LandlordMenu"
         android:label="fragment_landlord_menu"
         tools:layout="@layout/fragment_landlord_menu" />
+    <fragment
+        android:id="@+id/landlordAuth"
+        android:name="sbs.pros.parking.landlord_intro.LandlordAuth"
+        android:label="fragment_landlord_auth"
+        tools:layout="@layout/fragment_landlord_auth" >
+        <action
+            android:id="@+id/action_landlordAuth_to_landlordMenu"
+            app:destination="@id/landlordMenu" />
+    </fragment>
 </navigation>
