@@ -92,9 +92,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_margin="12dp"
-        app:backgroundTint="@color/white"
+        app:backgroundTint="#58F893"
         android:text="Отправить"
-        android:textColor="@color/grey"
+        android:textColor="@color/white"
         />
 
 

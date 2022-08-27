@@ -16,11 +16,10 @@ class SupportFragment: Fragment(R.layout.fragment_support) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding){
+
             messageField.addTextChangedListener {
-
+                it?.length?.let{ charLength -> sendBtn.isEnabled = charLength > 9 }
             }
-
-
         }
     }
 }
