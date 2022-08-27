@@ -54,6 +54,13 @@ android {
             res.srcDirs = ['src/main/res']
         }
     }
+
+
+
+    //a fix for landlord cards
+    packagingOptions {
+        exclude 'META-INF/androidx.cardview_cardview.version'
+    }
 }
 
 dependencies {
@@ -101,6 +108,11 @@ dependencies {
 
     //Menu
     implementation 'com.google.android.material:material:1.6.1'
+
+    //Landlord tiles
+    //noinspection GradleCompatible
+    implementation 'com.android.support:cardview-v7:28.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
 
 }

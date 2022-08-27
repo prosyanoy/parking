@@ -10,32 +10,31 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.fragment_in.*
 import sbs.pros.parking.databinding.FragmentInBinding
 import sbs.pros.parking.utils.viewLifecycleLazy
 
 
 class InFragment : Fragment(R.layout.fragment_in) {
 
-    //var inParkers: MutableList<Parker> = ArrayList()
+    private var layoutManager: RecyclerView.LayoutManager? = null
+    private var adapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>? = null
 
     private val binding by viewLifecycleLazy { FragmentInBinding.bind(requireView()) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val inflater = layoutInflater
-        val parent = inflater.inflate(R.layout.tile_in, null) as RelativeLayout
+        layoutManager = LinearLayoutManager(context)
 
-        for (i in 0..5) {
-            val custom: View = inflater.inflate(R.layout.tile_in, null)
-            val tv = custom.findViewById<View>(R.id.car_number1) as TextView
-            tv.text = "X $i$i$i XX $i$i"
-            parent.addView(custom)
-        }
+        recycler_view.layoutManager = layoutManager
+
+        adapter = RecyclerAdapter()
+        recycler_view.adapter = adapter
 
 
 
-
-        //inParkers.add(Parker("A 123 BC 45", "12:30", 3))
     }
 }
