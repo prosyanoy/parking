@@ -16,5 +16,12 @@
         <action
             android:id="@+id/action_menuFragment_to_appInfoFragment"
             app:destination="@id/appInfoFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_supportFragment"
+            app:destination="@id/supportFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/supportFragment"
+        android:name="sbs.pros.parking.support.SupportFragment"
+        android:label="SupportFragment" />
 </navigation>

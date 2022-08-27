@@ -28,7 +28,7 @@
         app:layout_constraintTop_toTopOf="@+id/imageView" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/versionText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -51,7 +51,7 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/versionText" />
 
     <TextView
         android:id="@+id/textView6"
@@ -97,7 +97,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/materialButton2"
+        android:id="@+id/moreBtn"
         android:layout_width="0dp"
         android:layout_height="55dp"
         android:layout_marginTop="20dp"
@@ -109,19 +109,20 @@
         app:layout_constraintTop_toBottomOf="@+id/materialButton" />
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/yandexPolicy"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="Условия использования Яндекс.Карт"
         android:textColor="@color/light_blue_600"
         android:textSize="20sp"
+        android:autoLink="web"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/materialButton2"
-        app:layout_constraintTop_toBottomOf="@+id/materialButton2" />
+        app:layout_constraintStart_toStartOf="@+id/moreBtn"
+        app:layout_constraintTop_toBottomOf="@+id/moreBtn" />
 
     <TextView
-        android:id="@+id/textView10"
+        android:id="@+id/appPolicy"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -129,11 +130,11 @@
         android:textColor="@color/light_blue_600"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/materialButton2"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+        app:layout_constraintStart_toStartOf="@+id/moreBtn"
+        app:layout_constraintTop_toBottomOf="@+id/yandexPolicy" />
 
     <TextView
-        android:id="@+id/textView11"
+        android:id="@+id/personalData"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -141,18 +142,18 @@
         android:textColor="@color/light_blue_600"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/materialButton2"
-        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+        app:layout_constraintStart_toStartOf="@+id/moreBtn"
+        app:layout_constraintTop_toBottomOf="@+id/appPolicy" />
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Политика ГКУ АМПП в отношении обработки персональных данных на сайте ГКУ АМПП"
+        android:text="Политика ГКУ «АМПП» в отношении обработки персональных данных на сайте ГКУ «АМПП»"
         android:textColor="@color/light_blue_600"
         android:textSize="20sp"
         android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/materialButton2"
-        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+        app:layout_constraintStart_toStartOf="@+id/moreBtn"
+        app:layout_constraintTop_toBottomOf="@+id/personalData" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

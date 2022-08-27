@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/introFragment"
-        android:name="sbs.pros.parking.IntroFragment"
+        android:name="sbs.pros.parking.intro.IntroFragment"
         android:label="fragment_intro"
         tools:layout="@layout/fragment_intro" >
         <action

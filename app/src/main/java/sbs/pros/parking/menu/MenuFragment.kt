@@ -24,6 +24,10 @@ class MenuFragment: Fragment(R.layout.menu_fragment) {
                 findNavController().navigateSafe(R.id.action_menuFragment_to_appInfoFragment)
             }
 
+            support.setSafeOnClickListener {
+                findNavController().navigateSafe(R.id.action_menuFragment_to_supportFragment)
+            }
+
         }
     }
 
