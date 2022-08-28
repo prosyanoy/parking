@@ -27,6 +27,17 @@ class LandlordMenu : Fragment(R.layout.fragment_landlord_menu) {
 
         val parker: Parker = Parker("A 123 BC 45", "12:30", 0)
         inParkers.add(parker)
+        inParkers.add(parker)
+        inParkers.add(parker)
+        inParkers.add(parker)
+        inParkers.add(parker)
+        inParkers.add(parker)
+        inParkers.add(parker)
+        inParkers.add(parker)
+        inParkers.add(parker)
+        inParkers.add(parker)
+        inParkers.add(parker)
+
 
         inFragment = InFragment(inParkers)
 
