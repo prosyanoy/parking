@@ -20,9 +20,8 @@
             android:layout_height="wrap_content"
             android:text="X 999 XX 99"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/time" />
+            app:layout_constraintEnd_toStartOf="@+id/time"/>
 
         <TextView
             android:id="@+id/time"
@@ -31,8 +30,17 @@
             android:text="Время въезда: 00:01"
             app:layout_constraintStart_toEndOf="@+id/car_number"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/current_pay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/car_number"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="Плата на данный момент: 30$" />
 
 
 

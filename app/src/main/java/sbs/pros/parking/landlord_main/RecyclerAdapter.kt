@@ -9,34 +9,28 @@ import sbs.pros.parking.R
 
 class RecyclerAdapter(var inParkers: ArrayList<Parker>) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
-    private val carNumbers = arrayOf("B 222 BB 22", "A 111 AA 11", "C 333 CC 33")
-    private val startTimes = arrayOf("11:11", "14:15", "00:03")
-
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerAdapter.ViewHolder{
         val v = LayoutInflater.from(parent.context).inflate(R.layout.tile_in, parent, false)
         return ViewHolder(v)
     }
 
     override fun getItemCount(): Int {
-
         return inParkers.size
     }
 
     override fun onBindViewHolder(holder: RecyclerAdapter.ViewHolder, position: Int){
         holder.carNumber.text = inParkers[position].carNumber
-        holder.startTime.text = inParkers[position].startTime
+        holder.time.text = inParkers[position].startTime
     }
 
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         var carNumber: TextView
-        var startTime: TextView
+        var time: TextView
 
         init {
             carNumber = itemView.findViewById(R.id.car_number)
-            startTime = itemView.findViewById(R.id.time)
+            time = itemView.findViewById(R.id.time)
         }
     }
 }
