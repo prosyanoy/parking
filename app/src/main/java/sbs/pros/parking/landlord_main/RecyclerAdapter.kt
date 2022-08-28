@@ -7,9 +7,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import sbs.pros.parking.R
 
-class RecyclerAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
+class RecyclerAdapter(var inParkers: ArrayList<Parker>) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
-    private var inParkers = arrayListOf<Parker>()
     private val carNumbers = arrayOf("B 222 BB 22", "A 111 AA 11", "C 333 CC 33")
     private val startTimes = arrayOf("11:11", "14:15", "00:03")
 
@@ -17,19 +16,17 @@ class RecyclerAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerAdapter.ViewHolder{
         val v = LayoutInflater.from(parent.context).inflate(R.layout.tile_in, parent, false)
-        val parker: Parker = Parker("A 123 BC 45", "12:30", 0)
-        inParkers.add(parker)
-
         return ViewHolder(v)
     }
 
     override fun getItemCount(): Int {
-        return carNumbers.size
+
+        return inParkers.size
     }
 
     override fun onBindViewHolder(holder: RecyclerAdapter.ViewHolder, position: Int){
-        holder.carNumber.text = carNumbers[position]
-        holder.startTime.text = startTimes[position]
+        holder.carNumber.text = inParkers[position].carNumber
+        holder.startTime.text = inParkers[position].startTime
     }
 
 

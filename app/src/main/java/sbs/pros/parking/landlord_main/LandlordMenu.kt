@@ -12,7 +12,10 @@ import sbs.pros.parking.utils.viewLifecycleLazy
 
 class LandlordMenu : Fragment(R.layout.fragment_landlord_menu) {
 
-    private val inFragment = InFragment()
+
+    private var inParkers = arrayListOf<Parker>()
+
+    private var inFragment:InFragment? = null
     private val parkedFragment = ParkedFragment()
     private val outFragment = OutFragment()
 
@@ -22,11 +25,16 @@ class LandlordMenu : Fragment(R.layout.fragment_landlord_menu) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        replaceFragment(inFragment)
+        val parker: Parker = Parker("A 123 BC 45", "12:30", 0)
+        inParkers.add(parker)
+
+        inFragment = InFragment(inParkers)
+
+        replaceFragment(inFragment!!)
 
         bottom_menu.setOnNavigationItemSelectedListener {
             when (it.itemId){
-                R.id.`in` -> replaceFragment(inFragment)
+                R.id.`in` -> replaceFragment(inFragment!!)
                 R.id.out -> replaceFragment(outFragment)
                 R.id.parked -> replaceFragment(parkedFragment)
             }
