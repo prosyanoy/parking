@@ -1,7 +1,6 @@
 package sbs.pros.parking.landlord_main
 
 import android.view.LayoutInflater
-import android.view.SurfaceHolder
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -10,7 +9,9 @@ import sbs.pros.parking.R
 
 class RecyclerAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
-    private val inParkers: ArrayList<Parker> = ArrayList(0)
+    private var inParkers = arrayListOf<Parker>()
+    private val carNumbers = arrayOf("B 222 BB 22", "A 111 AA 11", "C 333 CC 33")
+    private val startTimes = arrayOf("11:11", "14:15", "00:03")
 
 
 
@@ -23,21 +24,21 @@ class RecyclerAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return inParkers.size
+        return carNumbers.size
     }
 
     override fun onBindViewHolder(holder: RecyclerAdapter.ViewHolder, position: Int){
-        holder.carNummber.text = inParkers[position].carNumber
-        holder.startTime.text = inParkers[position].startTime
+        holder.carNumber.text = carNumbers[position]
+        holder.startTime.text = startTimes[position]
     }
 
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        var carNummber: TextView
+        var carNumber: TextView
         var startTime: TextView
 
         init {
-            carNummber = itemView.findViewById(R.id.car_number)
+            carNumber = itemView.findViewById(R.id.car_number)
             startTime = itemView.findViewById(R.id.time)
         }
     }

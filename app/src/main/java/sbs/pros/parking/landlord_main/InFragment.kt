@@ -27,14 +27,9 @@ class InFragment : Fragment(R.layout.fragment_in) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        layoutManager = LinearLayoutManager(context)
+        recycler_view.layoutManager = LinearLayoutManager(context)
 
-        recycler_view.layoutManager = layoutManager
-
-        adapter = RecyclerAdapter()
-        recycler_view.adapter = adapter
-
-
+        recycler_view.adapter = RecyclerAdapter()
 
     }
 }
