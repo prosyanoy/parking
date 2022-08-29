@@ -13,10 +13,6 @@ import sbs.pros.parking.utils.viewLifecycleLazy
 
 class InFragment(var inParkers: ArrayList<Parker>) : Fragment(R.layout.fragment_in) {
 
-    private var layoutManager: RecyclerView.LayoutManager? = null
-    private var adapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>? = null
-
-
     private val binding by viewLifecycleLazy { FragmentInBinding.bind(requireView()) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -24,7 +20,7 @@ class InFragment(var inParkers: ArrayList<Parker>) : Fragment(R.layout.fragment_
 
         recycler_view.layoutManager = LinearLayoutManager(context)
 
-        recycler_view.adapter = RecyclerAdapter(inParkers)
+        recycler_view.adapter = RecyclerAdapterIn(inParkers)
 
     }
 }

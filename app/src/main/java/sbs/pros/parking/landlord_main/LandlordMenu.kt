@@ -14,10 +14,13 @@ class LandlordMenu : Fragment(R.layout.fragment_landlord_menu) {
 
 
     private var inParkers = arrayListOf<Parker>()
+    private var parkedParkers = arrayListOf<Parker>()
+    private var outParkers = arrayListOf<Parker>()
+
 
     private var inFragment:InFragment? = null
-    private val parkedFragment = ParkedFragment()
-    private val outFragment = OutFragment()
+    private var parkedFragment: ParkedFragment? = null
+    private var outFragment: OutFragment? = null
 
 
     private val binding by viewLifecycleLazy { FragmentLandlordMenuBinding.bind( requireView()) }
@@ -26,28 +29,27 @@ class LandlordMenu : Fragment(R.layout.fragment_landlord_menu) {
         super.onViewCreated(view, savedInstanceState)
 
         val parker: Parker = Parker("A 123 BC 45", "12:30", 0)
-        inParkers.add(parker)
-        inParkers.add(parker)
-        inParkers.add(parker)
-        inParkers.add(parker)
-        inParkers.add(parker)
-        inParkers.add(parker)
-        inParkers.add(parker)
-        inParkers.add(parker)
-        inParkers.add(parker)
-        inParkers.add(parker)
-        inParkers.add(parker)
 
+        for (i in 1..15){
+            inParkers.add(parker)
+            parkedParkers.add(parker)
+            outParkers.add(parker)
+        }
 
         inFragment = InFragment(inParkers)
+        parkedFragment = ParkedFragment(parkedParkers)
+        outFragment = OutFragment(outParkers)
+
+
+
 
         replaceFragment(inFragment!!)
 
         bottom_menu.setOnNavigationItemSelectedListener {
             when (it.itemId){
                 R.id.`in` -> replaceFragment(inFragment!!)
-                R.id.out -> replaceFragment(outFragment)
-                R.id.parked -> replaceFragment(parkedFragment)
+                R.id.out -> replaceFragment(outFragment!!)
+                R.id.parked -> replaceFragment(parkedFragment!!)
             }
             true
         }
