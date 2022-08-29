@@ -9,29 +9,24 @@ import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
@@ -52,7 +47,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import sbs.pros.parking.databinding.FragmentMapBinding
-import sbs.pros.parking.menu.BaseMenu
+import sbs.pros.parking.menu.MenuViewModel
 import sbs.pros.parking.model.PinData
 import sbs.pros.parking.utils.*
 import sbs.pros.parking.utils.drawLocationPoint
@@ -60,8 +55,10 @@ import sbs.pros.parking.utils.drawSimpleBitmap
 import sbs.pros.parking.utils.viewLifecycleLazy
 
 @AndroidEntryPoint
-class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTapListener, UserLocationObjectListener, BaseMenu.FragmentListener {
+class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTapListener, UserLocationObjectListener {
 
+
+    private val menuViewModel by activityViewModels<MenuViewModel>()
 
     private val url = "https://pros.sbs/parking/getting.php"
 
@@ -113,6 +110,11 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         clusterizedCollection = mapView!!.map.mapObjects.addClusterizedPlacemarkCollection(this)
 
         getParkings(requireContext(), url, mapObjects, clusterizedCollection!!)
+
+        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
+            menuViewModel.title.collect{ binding.bottomMenu.menuTitle.text = it }
+        }
+
     }
 
     private fun setupMenu(){
@@ -582,8 +584,6 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
     }
 
-    override fun onTitleChanged(title: String) {
-        binding.bottomMenu.menuTitle.text = title
-    }
+
 
 }

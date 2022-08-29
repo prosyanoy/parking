@@ -9,5 +9,5 @@
     <string name="intent_settings_text_view_geo_status">Включите геолокацию на вашем устройстве</string>
     <string name="intent_settings_button">Перейти в настройки</string>
     <string name="ruble">1000&#8198;&#8381;</string>
-    <string name="app_version">Версия %s\nДепартамент транспорта и развития дорожно-транспортной инфрастуктуры города Москвы</string>
+    <string name="app_version">Версия %s</string>
 </resources>
