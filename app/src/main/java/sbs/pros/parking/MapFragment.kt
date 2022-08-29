@@ -52,6 +52,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import sbs.pros.parking.databinding.FragmentMapBinding
+import sbs.pros.parking.menu.BaseMenu
 import sbs.pros.parking.model.PinData
 import sbs.pros.parking.utils.*
 import sbs.pros.parking.utils.drawLocationPoint
@@ -59,7 +60,7 @@ import sbs.pros.parking.utils.drawSimpleBitmap
 import sbs.pros.parking.utils.viewLifecycleLazy
 
 @AndroidEntryPoint
-class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTapListener, UserLocationObjectListener {
+class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTapListener, UserLocationObjectListener, BaseMenu.FragmentListener {
 
 
     private val url = "https://pros.sbs/parking/getting.php"
@@ -82,7 +83,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
 
-    private val binding by viewLifecycleLazy { FragmentMapBinding.bind( requireView()) }
+    val binding by viewLifecycleLazy { FragmentMapBinding.bind( requireView()) }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -579,6 +580,10 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         private val lightGreen = Color.rgb(92, 233, 70)
         private val darkGreen = Color.rgb(30, 141, 13)
 
+    }
+
+    override fun onTitleChanged(title: String) {
+        binding.bottomMenu.menuTitle.text = title
     }
 
 }

@@ -8,9 +8,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import sbs.pros.parking.databinding.FragmentSmsBinding
+import sbs.pros.parking.utils.navigateSafe
 import sbs.pros.parking.utils.viewLifecycleLazy
 
 class SMSFragment : Fragment(R.layout.fragment_sms) {
@@ -21,6 +23,7 @@ class SMSFragment : Fragment(R.layout.fragment_sms) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.toMap.setOnClickListener{
+            findNavController().navigateSafe(R.id.navigateTomapFragment)
         }
 
 

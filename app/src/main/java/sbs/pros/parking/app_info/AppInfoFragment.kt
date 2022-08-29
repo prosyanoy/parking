@@ -5,20 +5,26 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import dagger.hilt.android.AndroidEntryPoint
 import sbs.pros.parking.BuildConfig
 import sbs.pros.parking.Constants
 import sbs.pros.parking.R
 import sbs.pros.parking.databinding.AppInfoFragmentBinding
+import sbs.pros.parking.menu.BaseMenu
 import sbs.pros.parking.utils.setSafeOnClickListener
 import sbs.pros.parking.utils.viewLifecycleLazy
 
-class AppInfoFragment: Fragment(R.layout.app_info_fragment) {
+@AndroidEntryPoint
+class AppInfoFragment: BaseMenu(R.layout.app_info_fragment) {
 
     private val binding by viewLifecycleLazy { AppInfoFragmentBinding.bind(requireView()) }
+    override val fragmentListener: FragmentListener
+        get() = requireActivity() as FragmentListener
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setTitle("О приложении")
 
         with(binding){
 

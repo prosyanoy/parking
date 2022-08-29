@@ -2,15 +2,16 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#2872797E"
+    android:background="#EDEDED"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:background="@color/white"
+        android:layout_height="500dp"
         android:layout_marginTop="20dp"
+        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -71,13 +72,13 @@
             android:id="@+id/messageField"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:background="@color/white"
+            android:gravity="start"
+            android:padding="20dp"
+            android:hint="Введите сообщение..."
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:text="jksjkjw"
-            android:gravity="start"
-            android:padding="20dp"
-            android:background="@color/white"
             app:layout_constraintTop_toBottomOf="@+id/themeBtn" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -85,17 +86,17 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/sendBtn"
+        style="@style/MaterialButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="70dp"
+        android:layout_margin="12dp"
+        android:enabled="false"
+        android:text="Отправить"
+        android:textColor="@color/black_overlay"
         app:cornerRadius="7dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="12dp"
-        app:backgroundTint="#58F893"
-        android:text="Отправить"
-        android:textColor="@color/white"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

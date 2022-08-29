@@ -23,5 +23,13 @@
     <fragment
         android:id="@+id/supportFragment"
         android:name="sbs.pros.parking.support.SupportFragment"
-        android:label="SupportFragment" />
+        android:label="SupportFragment" >
+        <action
+            android:id="@+id/action_supportFragment_to_themeFragment"
+            app:destination="@id/themeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/themeFragment"
+        android:name="sbs.pros.parking.support.ThemeFragment"
+        android:label="ThemeFragment" />
 </navigation>
