@@ -21,7 +21,7 @@ class RecyclerAdapterParked(var parkedParkers: ArrayList<Parker>) : RecyclerView
     override fun onBindViewHolder(holder: RecyclerAdapterParked.ViewHolder, position: Int){
         holder.carNumber.text = parkedParkers[position].carNumber
         holder.time.text = parkedParkers[position].startTime
-        holder.currentPay.text = parkedParkers[position].getPayment("14:10").toString()
+        holder.currentPay.text = parkedParkers[position].getPayment("14:10").toString()  + "₽"
     }
 
 

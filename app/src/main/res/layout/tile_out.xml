@@ -55,7 +55,11 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:numStars="5" />
+            style="?android:attr/ratingBarStyleSmall"
+            android:scaleY="2"
+            android:scaleX="2"
+            android:numStars="5"
+            android:isIndicator="true"/>
 
 
 

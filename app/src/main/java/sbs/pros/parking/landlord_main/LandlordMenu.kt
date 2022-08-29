@@ -28,7 +28,7 @@ class LandlordMenu : Fragment(R.layout.fragment_landlord_menu) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val parker: Parker = Parker("A 123 BC 45", "12:30", 0)
+        val parker: Parker = Parker("A 123 BC 45", "12:30", 3.6F)
 
         for (i in 1..15){
             inParkers.add(parker)
