@@ -59,7 +59,7 @@
             android:scaleY="2"
             android:scaleX="2"
             android:numStars="5"
-            android:isIndicator="true"/>
+            android:isIndicator="false" />
 
 
 
