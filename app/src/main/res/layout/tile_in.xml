@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view"
-    app:cardBackgroundColor="#FFBBBB"
+    app:cardBackgroundColor="#FFFFFF"
     app:cardCornerRadius="20sp"
     android:layout_margin="5sp"
     app:contentPadding="4sp">
@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:text="X 999 XX 99"
             android:textSize="20sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view"
-    app:cardBackgroundColor="#FFBBBB"
+    app:cardBackgroundColor="#FFFFFF"
     app:cardCornerRadius="20sp"
     android:layout_margin="5sp"
     app:contentPadding="4sp">
@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:text="X 999 XX 99"
             android:textSize="20sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/rating"/>
@@ -53,13 +54,36 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@+id/current_pay"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/accept"
             app:layout_constraintEnd_toEndOf="parent"
             style="?android:attr/ratingBarStyleSmall"
             android:scaleY="2"
             android:scaleX="2"
             android:numStars="5"
             android:isIndicator="false" />
+
+        <ImageView
+            android:id="@+id/accept"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_accept"
+            app:layout_constraintStart_toEndOf="@+id/current_pay"
+            app:layout_constraintEnd_toStartOf="@id/decline"
+            app:layout_constraintTop_toBottomOf="@+id/rating"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:tint="#32CD32" />
+
+        <ImageView
+            android:id="@+id/decline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_decline"
+            app:layout_constraintStart_toEndOf="@+id/accept"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rating"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:tint="#FF0000" />
+
 
 
 
