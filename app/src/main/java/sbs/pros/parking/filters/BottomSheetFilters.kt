@@ -13,11 +13,7 @@ class BottomSheetFilters<V : View> : BottomSheetBehavior<V> {
 
     var swipeEnabled = false
 
-    override fun onInterceptTouchEvent(
-        parent: CoordinatorLayout,
-        child: V,
-        event: MotionEvent
-    ): Boolean {
+    override fun onInterceptTouchEvent(parent: CoordinatorLayout, child: V, event: MotionEvent): Boolean {
         return if (swipeEnabled) {
             super.onInterceptTouchEvent(parent, child, event)
         } else {

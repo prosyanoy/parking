@@ -53,6 +53,7 @@ import sbs.pros.parking.utils.*
 import sbs.pros.parking.utils.drawLocationPoint
 import sbs.pros.parking.utils.drawSimpleBitmap
 import sbs.pros.parking.utils.viewLifecycleLazy
+import kotlin.math.roundToInt
 
 @AndroidEntryPoint
 class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTapListener, UserLocationObjectListener {
@@ -124,6 +125,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
         filterBottomSheetBehaviour = BottomSheetBehavior.from(filterBinding)
         filterBottomSheetBehaviour?.state = BottomSheetBehavior.STATE_HIDDEN
+
 
         binding.mapUi.uiMapFilterFAB.setSafeOnClickListener {
             filterBottomSheetBehaviour?.setState(BottomSheetBehavior.STATE_EXPANDED)
