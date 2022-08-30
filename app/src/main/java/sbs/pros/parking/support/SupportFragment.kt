@@ -5,7 +5,7 @@ import android.view.View
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import sbs.pros.parking.R
@@ -26,6 +26,7 @@ class SupportFragment() : Fragment(R.layout.fragment_support) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.setTitle("Обратная связь")
+        setupFragmentListener()
 
         with(binding){
 
@@ -37,5 +38,18 @@ class SupportFragment() : Fragment(R.layout.fragment_support) {
                 it?.length?.let{ charLength -> sendBtn.isEnabled = charLength > 9 }
             }
         }
+    }
+
+
+    private fun setupFragmentListener(){
+        setFragmentResultListener(THEME_REQUEST_KEY){ key, bundle ->
+            val theme = bundle?.getString("theme")
+            theme?.let { binding.themeText.text = it }
+        }
+    }
+
+    companion object {
+        const val THEME_REQUEST_KEY = "THEME"
+
     }
 }
