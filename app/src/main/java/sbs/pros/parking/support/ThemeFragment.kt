@@ -28,27 +28,27 @@ class ThemeFragment: Fragment(R.layout.theme_fragment) {
 
         with(binding){
             mode.setSafeOnClickListener {
-                setFragmentResult(SupportFragment.THEME_REQUEST_KEY, bundleOf(mode.text.toString() to "theme"))
+                setFragmentResult(SupportFragment.THEME_REQUEST_KEY, bundleOf("theme" to mode.text.toString() ))
                 findNavController().navigateUp()
             }
 
             paymentCheck.setSafeOnClickListener {
-                setFragmentResult(SupportFragment.THEME_REQUEST_KEY, bundleOf(paymentCheck.text.toString() to "theme"))
+                setFragmentResult(SupportFragment.THEME_REQUEST_KEY, bundleOf("theme" to paymentCheck.text.toString() ))
                 findNavController().navigateUp()
             }
 
             refund.setSafeOnClickListener {
-                setFragmentResult(SupportFragment.THEME_REQUEST_KEY, bundleOf(refund.text.toString() to "theme"))
+                setFragmentResult(SupportFragment.THEME_REQUEST_KEY, bundleOf("theme" to refund.text.toString()))
                 findNavController().navigateUp()
             }
 
             others.setSafeOnClickListener {
-                setFragmentResult(SupportFragment.THEME_REQUEST_KEY, bundleOf(others.text.toString() to "theme"))
+                setFragmentResult(SupportFragment.THEME_REQUEST_KEY, bundleOf("theme" to others.text.toString()))
                 findNavController().navigateUp()
             }
 
             rating.setSafeOnClickListener {
-                setFragmentResult(SupportFragment.THEME_REQUEST_KEY, bundleOf(rating.text.toString() to "theme"))
+                setFragmentResult(SupportFragment.THEME_REQUEST_KEY, bundleOf("theme" to rating.text.toString()))
                 findNavController().navigateUp()
             }
 

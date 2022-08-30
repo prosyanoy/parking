@@ -37,13 +37,19 @@ class SupportFragment() : Fragment(R.layout.fragment_support) {
             messageField.addTextChangedListener {
                 it?.length?.let{ charLength -> sendBtn.isEnabled = charLength > 9 }
             }
+
+
+
+            sendBtn.setSafeOnClickListener {
+                messageField.text?.clear()
+            }
         }
     }
 
 
     private fun setupFragmentListener(){
         setFragmentResultListener(THEME_REQUEST_KEY){ key, bundle ->
-            val theme = bundle?.getString("theme")
+            val theme = bundle.getString("theme")
             theme?.let { binding.themeText.text = it }
         }
     }
