@@ -2,13 +2,16 @@ package sbs.pros.parking.landlord_main
 
 import android.os.Bundle
 import android.view.View
+import android.widget.RatingBar.OnRatingBarChangeListener
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_in.*
+import kotlinx.android.synthetic.main.tile_out.*
 import sbs.pros.parking.R
 import sbs.pros.parking.databinding.FragmentOutBinding
 import sbs.pros.parking.utils.viewLifecycleLazy
-import java.util.ArrayList
+
 
 class OutFragment(var outParkers: ArrayList<Parker>) : Fragment(R.layout.fragment_out) {
 
@@ -21,6 +24,8 @@ class OutFragment(var outParkers: ArrayList<Parker>) : Fragment(R.layout.fragmen
         recycler_view.layoutManager = LinearLayoutManager(context)
 
         recycler_view.adapter = RecyclerAdapterOut(outParkers)
+
+
 
 
     }

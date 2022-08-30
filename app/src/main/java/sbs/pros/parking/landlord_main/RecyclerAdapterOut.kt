@@ -1,5 +1,7 @@
 package sbs.pros.parking.landlord_main
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +26,11 @@ class RecyclerAdapterOut(var outParkers: ArrayList<Parker>) : RecyclerView.Adapt
         holder.time.text = outParkers[position].startTime
         holder.currentPay.text = outParkers[position].getPayment("20:10").toString() + "₽"
         holder.rating.rating = outParkers[position].rating
+
+        holder.rating.setOnRatingBarChangeListener { ratingBar, rate, b ->
+            outParkers[position].rating = rate
+            Log.d(TAG, "Rating changed to $rate for parker $position")
+        }
     }
 
 

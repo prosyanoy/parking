@@ -57,6 +57,7 @@
             app:layout_constraintBottom_toTopOf="@+id/accept"
             app:layout_constraintEnd_toEndOf="parent"
             style="?android:attr/ratingBarStyleSmall"
+
             android:scaleY="2"
             android:scaleX="2"
             android:numStars="5"
