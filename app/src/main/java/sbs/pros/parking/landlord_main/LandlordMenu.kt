@@ -1,13 +1,11 @@
 package sbs.pros.parking.landlord_main
 
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_landlord_menu.*
 import sbs.pros.parking.R
 import sbs.pros.parking.databinding.FragmentLandlordMenuBinding
-import sbs.pros.parking.databinding.FragmentMapBinding
 import sbs.pros.parking.utils.viewLifecycleLazy
 
 class LandlordMenu : Fragment(R.layout.fragment_landlord_menu) {

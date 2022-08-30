@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_in.*
 import sbs.pros.parking.databinding.FragmentInBinding
 import sbs.pros.parking.utils.viewLifecycleLazy
