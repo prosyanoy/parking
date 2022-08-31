@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Headline" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">22sp</item>
+        <item name="fontWeight">700</item>
+        <item name="android:fontFamily">@font/overpass_medium</item>
+        <item name="android:lineSpacingExtra">3sp</item>
+        <item name="android:translationY">-1.54sp</item>
+    </style>
+
+    <style name="Body" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:fontFamily">@font/overpassmono_regular</item>
+        <item name="android:lineSpacingMultiplier">1.2</item>
+    </style>
+</resources>

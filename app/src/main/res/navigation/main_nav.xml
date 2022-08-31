@@ -14,20 +14,9 @@
     </fragment>
     <fragment
         android:id="@+id/introFragment"
-        android:name="sbs.pros.parking.intro.IntroFragment"
+        android:name="sbs.pros.parking.users_intro.IntroFragment"
         android:label="fragment_intro"
         tools:layout="@layout/fragment_intro" >
-        <action
-            android:id="@+id/action_introFragment_to_SMSFragment"
-            app:destination="@id/SMSFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/SMSFragment"
-        android:name="sbs.pros.parking.SMSFragment"
-        android:label="fragment_sms"
-        tools:layout="@layout/fragment_sms" >
-        <action
-            android:id="@+id/navigateTomapFragment"
-            app:destination="@id/mapFragment" />
-    </fragment>
+
 </navigation>

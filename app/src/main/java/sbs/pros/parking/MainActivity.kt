@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import sbs.pros.parking.databinding.ActivityMainBinding
-import sbs.pros.parking.utils.ConfigHelper
 import sbs.pros.parking.utils.MapKitInitializer
 
 @AndroidEntryPoint
@@ -45,7 +44,7 @@ class MainActivity : AppCompatActivity(){
         val navController = navHostFragment.navController
 
         if (prefs!!.getBoolean("firstrun", true)) {
-            navController.navigate(R.id.navigateToSMSFragment)
+            navController.navigate(R.id.action_mapFragment2_to_introFragment)
         }
     }
 

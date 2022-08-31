@@ -23,6 +23,7 @@
             android:showDividers="middle">
 
             <TextView
+                android:textAppearance="@style/Headline"
                 android:id="@+id/main"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -48,6 +49,7 @@
                     app:tint="@color/purple_200" />
 
                 <TextView
+                    android:textAppearance="@style/Body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
@@ -86,6 +88,7 @@
                     app:tint="@color/purple_200" />
 
                 <TextView
+                    android:textAppearance="@style/Body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
@@ -124,6 +127,7 @@
                     app:tint="@color/purple_200" />
 
                 <TextView
+                    android:textAppearance="@style/Body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
@@ -162,6 +166,7 @@
                     app:tint="@color/purple_200" />
 
                 <TextView
+                    android:textAppearance="@style/Body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
@@ -200,6 +205,7 @@
                     app:tint="@color/purple_200" />
 
                 <TextView
+                    android:textAppearance="@style/Body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
@@ -222,6 +228,8 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
+                android:textAppearance="@style/Headline"
+
                 android:id="@+id/payment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -248,6 +256,7 @@
                     app:tint="@color/purple_200" />
 
                 <TextView
+                    android:textAppearance="@style/Body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
@@ -286,6 +295,7 @@
                     app:tint="@color/purple_200" />
 
                 <TextView
+                    android:textAppearance="@style/Body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
@@ -324,6 +334,7 @@
                     app:tint="@color/purple_200" />
 
                 <TextView
+                    android:textAppearance="@style/Body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
@@ -345,6 +356,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
+                android:textAppearance="@style/Headline"
                 android:id="@+id/others"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -371,6 +383,7 @@
                     app:tint="@color/purple_200" />
 
                 <TextView
+                    android:textAppearance="@style/Body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
@@ -408,6 +421,7 @@
                     app:tint="@color/purple_200" />
 
                 <TextView
+                    android:textAppearance="@style/Body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
@@ -446,6 +460,7 @@
                     app:tint="@color/purple_200" />
 
                 <TextView
+                    android:textAppearance="@style/Body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
@@ -485,6 +500,7 @@
                     app:tint="@color/purple_200" />
 
                 <TextView
+                    android:textAppearance="@style/Body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"

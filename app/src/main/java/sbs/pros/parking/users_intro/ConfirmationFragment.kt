@@ -18,6 +18,7 @@ import sbs.pros.parking.MainActivity
 import sbs.pros.parking.R
 import sbs.pros.parking.databinding.FragmentConfirmationBinding
 import sbs.pros.parking.utils.viewLifecycleLazy
+import java.lang.Exception
 import java.util.*
 
 
@@ -61,8 +62,11 @@ class ConfirmationFragment : Fragment(R.layout.fragment_confirmation) {
     private val timer = object: CountDownTimer(60000, 1000) {
         override fun onTick(millisUntilFinished: Long) {
             val seconds = millisUntilFinished / 1000
-            binding.repeatedRequest.text =
-                getString(R.string.remaining1) + " $seconds " + getString(R.string.remaining2)
+            try {
+                binding.repeatedRequest.text =
+                    getString(R.string.remaining1) + " $seconds " + getString(R.string.remaining2)
+            }catch (e:Exception){}
+
         }
 
         override fun onFinish() {

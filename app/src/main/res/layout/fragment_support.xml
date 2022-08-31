@@ -26,12 +26,12 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
+                android:textAppearance="@style/Headline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"
                 android:text="Тема"
                 android:textColor="@color/black"
-                android:textSize="22sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -46,6 +46,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:textAppearance="@style/Body"
                 android:id="@+id/themeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
