@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -31,6 +32,14 @@ class RecyclerAdapterOut(var outParkers: ArrayList<Parker>) : RecyclerView.Adapt
             outParkers[position].rating = rate
             Log.d(TAG, "Rating changed to $rate for parker $position")
         }
+
+        holder.accept.setOnClickListener{
+            Log.d(TAG, "Accept parker $position")
+        }
+
+        holder.decline.setOnClickListener{
+            Log.d(TAG, "Decline parker $position")
+        }
     }
 
 
@@ -39,12 +48,16 @@ class RecyclerAdapterOut(var outParkers: ArrayList<Parker>) : RecyclerView.Adapt
         var time: TextView
         var currentPay: TextView
         var rating: RatingBar
+        var accept: ImageView
+        var decline: ImageView
 
         init {
             carNumber = itemView.findViewById(R.id.car_number)
             time = itemView.findViewById(R.id.time)
             currentPay = itemView.findViewById(R.id.current_pay)
             rating = itemView.findViewById(R.id.rating)
+            accept = itemView.findViewById(R.id.accept)
+            decline = itemView.findViewById(R.id.decline)
         }
     }
 }
