@@ -28,9 +28,7 @@ class CarRegistrationFragment : Fragment() {
 
         val openMap = view.findViewById<Button>(R.id.buttonSkipReg)
         openMap.setOnClickListener(View.OnClickListener {
-            prefs?.edit()?.putBoolean("firstrun", false)?.commit();
-
-            startActivity(Intent(context, MainActivity::class.java))
+            prefs?.edit()?.putBoolean("firstrun", false)?.apply()
         })
 
         return view

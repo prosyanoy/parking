@@ -24,9 +24,8 @@ class LocationFragment : Fragment() {
 
         val buttonNextFragment : Button = view.findViewById(R.id.buttonSkipAuth)
         buttonNextFragment.setOnClickListener(View.OnClickListener {
-            findNavController().navigate(R.id.action_locationFragment_to_authFragment)
+            findNavController().navigate(R.id.action_locationFragment_to_SMSFragment)
         })
-
         return view
     }
 
@@ -39,7 +38,7 @@ class LocationFragment : Fragment() {
         val PERMISSIONS_REQUEST_FINE_LOCATION = 1
         if (requestCode == PERMISSIONS_REQUEST_FINE_LOCATION) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                findNavController().navigate(R.id.action_locationFragment_to_authFragment)
+                findNavController().navigate(R.id.action_locationFragment_to_SMSFragment)
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)

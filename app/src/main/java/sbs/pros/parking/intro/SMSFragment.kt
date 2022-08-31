@@ -1,10 +1,13 @@
 package sbs.pros.parking
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import sbs.pros.parking.databinding.FragmentSmsBinding
@@ -12,12 +15,24 @@ import sbs.pros.parking.utils.viewLifecycleLazy
 
 class SMSFragment : Fragment(R.layout.fragment_sms) {
 
+    private var prefs: SharedPreferences? = null
+
     private val binding by viewLifecycleLazy { FragmentSmsBinding.bind(requireView()) }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        prefs = activity?.getSharedPreferences("sbs.pros.parking", AppCompatActivity.MODE_PRIVATE)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.toMap.setOnClickListener{
+            prefs?.edit()?.putBoolean("firstrun", false)?.apply()
+            prefs?.edit()?.putString("userType", "autoUser")?.apply()
+
+            findNavController().navigate(R.id.action_SMSFragment_to_mapFragment)
         }
 
 

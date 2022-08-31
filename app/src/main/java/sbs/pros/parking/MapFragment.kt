@@ -135,9 +135,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
             navHost.navController.navigateUp()
         }
 
-        binding.mapUi.uiMapMenuFAB.setSafeOnClickListener {
-            findNavController().navigateSafe(R.id.action_mapFragment_to_landlordAuth)
-        }
+
 
     }
 

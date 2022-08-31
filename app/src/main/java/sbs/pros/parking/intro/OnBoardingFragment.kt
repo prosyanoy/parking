@@ -43,7 +43,7 @@ class OnBoardingFragment : Fragment() {
         nextPage.setOnClickListener(View.OnClickListener {
             if(currentPage == pages.size - 1){
                 if(checkFineLocationGrant()){
-                    findNavController().navigate(R.id.action_onBoardingFragment_to_authFragment)
+                    findNavController().navigate(R.id.action_onBoardingFragment_to_SMSFragment)
                 }else{
                     findNavController().navigate(R.id.action_onBoardingFragment_to_locationFragment)
                 }
@@ -70,7 +70,7 @@ class OnBoardingFragment : Fragment() {
         val buttonScip = view.findViewById<Button>(R.id.buttonSkipOnboard)
         buttonScip.setOnClickListener(View.OnClickListener {
             if(checkFineLocationGrant()){
-                findNavController().navigate(R.id.action_onBoardingFragment_to_authFragment)
+                findNavController().navigate(R.id.action_onBoardingFragment_to_SMSFragment)
             }else{
                 findNavController().navigate(R.id.action_onBoardingFragment_to_locationFragment)
             }

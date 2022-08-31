@@ -34,10 +34,11 @@ class MainActivity : AppCompatActivity(){
         val navController = navHostFragment.navController
 
         if (prefs!!.getBoolean("firstrun", true)) {
-            navController.navigate(R.id.navigateToSMSFragment)
+            navController.navigate(R.id.action_mapFragment_to_chooseFragment)
+        }else if (prefs!!.getString("userType","autoUser") == "parkingOwner") {
+            navController.navigate(R.id.action_mapFragment_to_landlordMenu)
         }
     }
-
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
