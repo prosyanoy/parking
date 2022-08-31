@@ -1,11 +1,9 @@
-package sbs.pros.parking.intro
+package sbs.pros.parking.users_intro
 
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
@@ -13,8 +11,10 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
 import sbs.pros.parking.R
+import sbs.pros.parking.databinding.FragmentOnBoardingBinding
+import sbs.pros.parking.utils.viewLifecycleLazy
 
-class OnBoardingFragment : Fragment() {
+class OnBoardingFragment : Fragment(R.layout.fragment_on_boarding) {
     lateinit var dotLayout : LinearLayout
     
     var pages : Array<ItemPage> = arrayOf(
@@ -29,17 +29,19 @@ class OnBoardingFragment : Fragment() {
 
     var currentPage : Int = 0
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_on_boarding, container, false)
+    private val binding by viewLifecycleLazy { FragmentOnBoardingBinding.bind( requireView()) }
 
-        mPager = view.findViewById(R.id.pager)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        mPager = binding.pager
         val adapter : ViewPagerAdapter = ViewPagerAdapter(view.context, pages)
 
         mPager.adapter = adapter
         dotLayout = view.findViewById(R.id.dotLayout)
         createDots(0, view)
 
-        val nextPage : Button = view.findViewById(R.id.nextPage)
+        val nextPage = binding.nextPage
         nextPage.setOnClickListener(View.OnClickListener {
             if(currentPage == pages.size - 1){
                 if(checkFineLocationGrant()){
@@ -63,44 +65,53 @@ class OnBoardingFragment : Fragment() {
             override fun onPageSelected(position: Int) {
                 currentPage = position
 
+                if (position == pages.size - 1) {
+                    binding.nextPage.text = "Продолжить"
+                }
+
                 createDots(position, view)
             }
         })
 
-        val buttonScip = view.findViewById<Button>(R.id.buttonSkipOnboard)
-        buttonScip.setOnClickListener(View.OnClickListener {
-            if(checkFineLocationGrant()){
-                findNavController().navigate(R.id.action_onBoardingFragment_to_authFragment)
-            }else{
-                findNavController().navigate(R.id.action_onBoardingFragment_to_locationFragment)
-            }
-        })
+        val buttonScip = binding.buttonSkipOnboard
 
-        return view
+        buttonScip.setOnClickListener(View.OnClickListener {
+          if(checkFineLocationGrant()){
+              findNavController().navigate(R.id.action_onBoardingFragment_to_authFragment)
+          }else{
+              findNavController().navigate(R.id.action_onBoardingFragment_to_locationFragment)
+          }
+        })
     }
+    /*fun introClose () {
+        if(checkFineLocationGrant()){
+            findNavController().navigate(R.id.action_onBoardingFragment_to_authFragment)
+        }else{
+            findNavController().navigate(R.id.action_onBoardingFragment_to_locationFragment)
+        }
+    }*/
 
     fun createDots(position: Int, view: View)
     {
         dotLayout.removeAllViews()
         dots = Array(pages.size) { ImageView(view.context) }
 
-        for (i in pages.indices)
-        {
-            dots[i] = ImageView(view.context)
-            if (i == position)
-            {
-                dots[i].setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.active_dots))
-            }
-            else
-            {
-                dots[i].setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.inactive_dots))
-            }
+        val params : LinearLayout.LayoutParams = LinearLayout.LayoutParams(
+            ViewPager.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT)
 
-            var params : LinearLayout.LayoutParams = LinearLayout.LayoutParams(
-                ViewPager.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT)
+        params.setMargins(4,0,4,0)
 
-            params.setMargins(4,0,4,0)
+        for (i in 0 until position) {
+            dots[i].setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.inactive_dots))
+            dotLayout.addView(dots[i], params)
+        }
+
+        dots[position].setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.active_dots))
+        dotLayout.addView(dots[position], params)
+
+        for (i in position+1 until pages.size) {
+            dots[i].setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.inactive_dots))
             dotLayout.addView(dots[i], params)
         }
     }
