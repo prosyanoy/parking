@@ -54,10 +54,10 @@ class ConfirmationFragment : Fragment(R.layout.fragment_confirmation) {
 //                c.clone(context, R.layout.fragment_confirmation)
 //                c.connect(confirmationSecond.id,ConstraintSet.TOP,binding.phoneNumber.id,ConstraintSet.BOTTOM,20)
 //                c.applyTo(view.findViewById(R.id.confirmationLayout))
-            } else {
+            } else if(userInput.length == 4 && userInput == code){
                 //haveCar(phone)
-                findNavController().navigate(R.id.action_confirmationFragment_to_carRegistrationFragment)
 
+                findNavController().navigate(R.id.action_confirmationFragment_to_carRegistrationFragment)
             }
         }
     }
