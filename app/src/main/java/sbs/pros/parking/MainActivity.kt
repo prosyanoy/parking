@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity(){
 
         if (prefs!!.getBoolean("firstrun", true)) {
             navController.navigate(R.id.action_mapFragment_to_chooseFragment)
-        }else if (prefs!!.getString("userType","autoUser") == "parkingOwner") {
+        } else if (prefs!!.getString("userType","autoUser") == "parkingOwner") {
             navController.navigate(R.id.action_mapFragment_to_landlordMenu)
         }
     }
