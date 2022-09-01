@@ -1,7 +1,5 @@
 package sbs.pros.parking
 
-
-
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
@@ -44,10 +42,11 @@ class MainActivity : AppCompatActivity(){
         val navController = navHostFragment.navController
 
         if (prefs!!.getBoolean("firstrun", true)) {
-            navController.navigate(R.id.action_mapFragment2_to_introFragment)
+            navController.navigate(R.id.action_mapFragment_to_chooseFragment)
+        } else if (prefs!!.getString("userType","autoUser") == "parkingOwner") {
+            navController.navigate(R.id.action_mapFragment_to_landlordMenu)
         }
     }
-
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -60,4 +59,5 @@ class MainActivity : AppCompatActivity(){
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
+    //d
 }

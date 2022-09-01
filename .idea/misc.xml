@@ -31,7 +31,12 @@
         <entry key="..\:/parking/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/parking/app/src/main/res/layout/bottom_sheet.xml" value="0.13722826086956522" />
         <entry key="..\:/parking/app/src/main/res/layout/dialog_intent_settings.xml" value="0.2" />
+        <entry key="..\:/parking/app/src/main/res/layout/fragment_change.xml" value="0.25416666666666665" />
+        <entry key="..\:/parking/app/src/main/res/layout/fragment_choose.xml" value="0.176" />
+        <entry key="..\:/parking/app/src/main/res/layout/fragment_landlord_auth.xml" value="0.25416666666666665" />
+        <entry key="..\:/parking/app/src/main/res/layout/fragment_sms.xml" value="0.25416666666666665" />
         <entry key="..\:/parking/app/src/main/res/layout/intent_settings_card.xml" value="0.264" />
+        <entry key="..\:/parking/app/src/main/res/layout/ui_map_layout.xml" value="0.11302083333333333" />
         <entry key="app/src/main/res/drawable/default_pager_dot.xml" value="0.1645" />
         <entry key="app/src/main/res/drawable/selected_pager_dot.xml" value="0.1645" />
         <entry key="app/src/main/res/drawable/tab_pager_selector.xml" value="0.1645" />

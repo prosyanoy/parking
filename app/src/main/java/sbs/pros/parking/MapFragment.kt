@@ -146,6 +146,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         }
 
 
+
     }
 
 

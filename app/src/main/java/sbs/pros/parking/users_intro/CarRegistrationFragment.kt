@@ -25,10 +25,14 @@ class CarRegistrationFragment : Fragment(R.layout.fragment_car_registration) {
 
     private var prefs: SharedPreferences? = null
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         prefs = activity?.getSharedPreferences("sbs.pros.parking", AppCompatActivity.MODE_PRIVATE)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val letters = PredefinedSlots.SINGLE_SLOT
         val slots = UnderscoreDigitSlotsParser().parseSlots("___")
@@ -44,6 +48,7 @@ class CarRegistrationFragment : Fragment(R.layout.fragment_car_registration) {
         val openMap = binding.buttonSkipReg
         openMap.setOnClickListener {
             prefs?.edit()?.putBoolean("firstrun", false)?.apply()
+            prefs?.edit()?.putString("userType", "autoUser")?.apply()
 
             startActivity(Intent(context, MainActivity::class.java))
         }
