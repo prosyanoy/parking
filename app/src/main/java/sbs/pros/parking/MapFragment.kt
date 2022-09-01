@@ -20,8 +20,10 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -45,6 +47,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import sbs.pros.parking.databinding.FragmentMapBinding
+import sbs.pros.parking.menu.MenuViewModel
 import sbs.pros.parking.model.PinData
 import sbs.pros.parking.utils.*
 import sbs.pros.parking.utils.drawLocationPoint
@@ -54,6 +57,8 @@ import sbs.pros.parking.utils.viewLifecycleLazy
 @AndroidEntryPoint
 class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTapListener, UserLocationObjectListener {
 
+
+    private val menuViewModel by activityViewModels<MenuViewModel>()
 
     private val url = "https://pros.sbs/parking/getting.php"
 
@@ -75,7 +80,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
 
-    private val binding by viewLifecycleLazy { FragmentMapBinding.bind( requireView()) }
+    val binding by viewLifecycleLazy { FragmentMapBinding.bind( requireView()) }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -105,6 +110,11 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         clusterizedCollection = mapView!!.map.mapObjects.addClusterizedPlacemarkCollection(this)
 
         getParkings(requireContext(), url, mapObjects, clusterizedCollection!!)
+
+        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
+            menuViewModel.title.collect{ binding.bottomMenu.menuTitle.text = it }
+        }
+
     }
 
     private fun setupMenu(){
@@ -123,9 +133,9 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         menuBottomSheetBehaviour?.state = BottomSheetBehavior.STATE_HIDDEN
 
 
-        //binding.mapUi.uiMapMenuFAB.setSafeOnClickListener {
-           // menuBottomSheetBehaviour?.setState(BottomSheetBehavior.STATE_EXPANDED)
-        //}
+        binding.mapUi.uiMapMenuFAB.setSafeOnClickListener {
+            menuBottomSheetBehaviour?.setState(BottomSheetBehavior.STATE_EXPANDED)
+        }
 
         binding.bottomMenu.close.setSafeOnClickListener {
             menuBottomSheetBehaviour?.setState(BottomSheetBehavior.STATE_HIDDEN)
@@ -574,5 +584,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         private val darkGreen = Color.rgb(30, 141, 13)
 
     }
+
+
 
 }

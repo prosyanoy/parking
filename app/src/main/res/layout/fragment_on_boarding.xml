@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".intro.OnBoardingFragment">
+    tools:context=".users_intro.OnBoardingFragment">
 
     <Button
         android:id="@+id/nextPage"
@@ -15,7 +15,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
         android:backgroundTint="@color/primary"
-        android:text="продолжить"
+        android:text="Далее"
         android:textColor="@color/white"
         android:textSize="15dp"
         app:layout_constraintBottom_toBottomOf="@+id/pager"
@@ -42,7 +42,7 @@
         app:layout_constraintTop_toTopOf="@+id/buttonSkipOnboard" />
 
 
-    <Button
+    <ImageView
         android:id="@+id/buttonSkipOnboard"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
@@ -51,9 +51,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="15dp"
-        android:text="пропустить"
-        android:textColor="@color/primary"
-        android:textSize="15dp"
+        android:src="@drawable/ic_close"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
