@@ -27,7 +27,6 @@ class ConfirmationFragment : Fragment(R.layout.fragment_confirmation) {
 
     private val binding by viewLifecycleLazy { FragmentConfirmationBinding.bind( requireView()) }
 
-    //private var code: String? = null
 
     private val TAG = "ConfirmationFragment"
 
@@ -161,10 +160,12 @@ class ConfirmationFragment : Fragment(R.layout.fragment_confirmation) {
         }
     }
 
-    companion object {
-
+    override fun onDestroy() {
+        super.onDestroy()
+        timer.cancel()
     }
 }
+
 
 class SMSRequest (context : Context, code : String, phone : String) {
     val queue = Volley.newRequestQueue(context)
