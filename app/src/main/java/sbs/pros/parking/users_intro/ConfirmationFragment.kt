@@ -8,6 +8,7 @@ import android.os.CountDownTimer
 import android.view.View
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.android.volley.toolbox.StringRequest
@@ -26,7 +27,6 @@ class ConfirmationFragment : Fragment(R.layout.fragment_confirmation) {
 
     private val binding by viewLifecycleLazy { FragmentConfirmationBinding.bind( requireView()) }
 
-    //private var code: String? = null
 
     private val TAG = "ConfirmationFragment"
 
@@ -42,19 +42,22 @@ class ConfirmationFragment : Fragment(R.layout.fragment_confirmation) {
         confirmationRequest(code)
         Toast.makeText(requireContext(), code, Toast.LENGTH_SHORT).show()
 
-        binding.codeInputView.onCompleteEventDelay = 100
 
-        binding.codeInputView.addOnCompleteListener {
-            findNavController().navigate(R.id.action_confirmationFragment_to_carRegistrationFragment)
-            if (it != code.toString()) {
+        binding.codeInputView.setCompleteListener {
+            val userInput = binding.codeInputView.text
+
+            if (userInput.length == 4 && userInput != code) {
+                binding.codeInputView.setCodeItemErrorLineDrawable()
                 Toast.makeText(requireContext(), "Invalid code", Toast.LENGTH_SHORT).show()
-                val confirmationSecond = binding.confirmationSecond
-                val c = ConstraintSet()
-                c.clone(context, R.layout.fragment_confirmation)
-                c.connect(confirmationSecond.id,ConstraintSet.TOP,binding.phoneNumber.id,ConstraintSet.BOTTOM,20)
-                c.applyTo(view.findViewById(R.id.confirmationLayout))
+//                val confirmationSecond = binding.confirmationSecond
+//                val c = ConstraintSet()
+//                c.clone(context, R.layout.fragment_confirmation)
+//                c.connect(confirmationSecond.id,ConstraintSet.TOP,binding.phoneNumber.id,ConstraintSet.BOTTOM,20)
+//                c.applyTo(view.findViewById(R.id.confirmationLayout))
             } else {
                 //haveCar(phone)
+                findNavController().navigate(R.id.action_confirmationFragment_to_carRegistrationFragment)
+
             }
         }
     }
@@ -63,8 +66,7 @@ class ConfirmationFragment : Fragment(R.layout.fragment_confirmation) {
         override fun onTick(millisUntilFinished: Long) {
             val seconds = millisUntilFinished / 1000
             try {
-                binding.repeatedRequest.text =
-                    getString(R.string.remaining1) + " $seconds " + getString(R.string.remaining2)
+                binding.repeatedRequest.text = getString(R.string.remaining1) + " $seconds " + getString(R.string.remaining2)
             }catch (e:Exception){}
 
         }
@@ -74,6 +76,8 @@ class ConfirmationFragment : Fragment(R.layout.fragment_confirmation) {
             binding.repeatedRequest.setTextColor((activity as MainActivity).blue)
 
             binding.repeatedRequest.setOnClickListener(View.OnClickListener {
+                binding.codeInputView.isVisible = true
+
                 val prefs = context!!.getSharedPreferences("time", Context.MODE_PRIVATE)
                 var attempts = prefs.getInt("attempts", 0)
                 if (attempts == 3) {
@@ -96,8 +100,8 @@ class ConfirmationFragment : Fragment(R.layout.fragment_confirmation) {
                 }
                 attempts = prefs.getInt("attempts", 0)
                 if (attempts < 3) {
-                    binding.codeInputView.code = ""
-                    binding.codeInputView.setEditable(true)
+
+                    binding.codeInputView.resetCodeItemLineDrawable()
 
                     var code = (1000..9999).random().toString()
                     confirmationRequest(code!!)
@@ -156,10 +160,12 @@ class ConfirmationFragment : Fragment(R.layout.fragment_confirmation) {
         }
     }
 
-    companion object {
-
+    override fun onDestroy() {
+        super.onDestroy()
+        timer.cancel()
     }
 }
+
 
 class SMSRequest (context : Context, code : String, phone : String) {
     val queue = Volley.newRequestQueue(context)
