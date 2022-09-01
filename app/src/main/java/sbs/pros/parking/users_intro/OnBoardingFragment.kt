@@ -45,7 +45,7 @@ class OnBoardingFragment : Fragment(R.layout.fragment_on_boarding) {
         nextPage.setOnClickListener(View.OnClickListener {
             if(currentPage == pages.size - 1){
                 if(checkFineLocationGrant()){
-                    findNavController().navigate(R.id.action_onBoardingFragment_to_SMSFragment)
+                    findNavController().navigate(R.id.action_onBoardingFragment_to_authFragment)
                 }else{
                     findNavController().navigate(R.id.action_onBoardingFragment_to_locationFragment)
                 }
