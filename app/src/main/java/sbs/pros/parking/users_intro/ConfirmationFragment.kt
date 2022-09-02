@@ -57,6 +57,7 @@ class ConfirmationFragment : Fragment(R.layout.fragment_confirmation) {
             } else if(userInput.length == 4 && userInput == code){
                 //haveCar(phone)
 
+                timer.cancel()
                 findNavController().navigate(R.id.action_confirmationFragment_to_carRegistrationFragment)
             }
         }
@@ -160,10 +161,7 @@ class ConfirmationFragment : Fragment(R.layout.fragment_confirmation) {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        timer.cancel()
-    }
+
 }
 
 
