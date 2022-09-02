@@ -88,7 +88,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
         mapView = binding.mapview
 
-        bottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.bottom_sheet))
+        bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheetMain.root)
 
         //location
         mapKit = MapKitFactory.getInstance()
