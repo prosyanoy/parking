@@ -274,7 +274,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                     is PolygonMapObject -> setSelectedPolygon(parkingData.parking)
                 }
 
-                binding.bottomSheetMain.addressText.text = parkingData.address
+                binding.bottomSheetMain.address.text = parkingData.address
 
                 if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED

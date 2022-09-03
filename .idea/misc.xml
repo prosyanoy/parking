@@ -24,10 +24,27 @@
         <entry key="..\:/Projects/AndroidPROJECTS/parking/app/src/main/res/layout/menu_bottom_sheet_layout.xml" value="0.2" />
         <entry key="..\:/Projects/AndroidPROJECTS/parking/app/src/main/res/layout/menu_fragment.xml" value="0.2864583333333333" />
         <entry key="..\:/Projects/AndroidPROJECTS/parking/app/src/main/res/layout/theme_fragment.xml" value="0.28541666666666665" />
-        <entry key="..\:/Users/user/StudioProjects/parking/app/src/main/res/layout/custom_tab.xml" value="0.38697916666666665" />
-        <entry key="..\:/Users/user/StudioProjects/parking/app/src/main/res/layout/fragment_auth.xml" value="0.38697916666666665" />
-        <entry key="..\:/Users/user/StudioProjects/parking/app/src/main/res/layout/fragment_map.xml" value="0.18819655521783182" />
-        <entry key="..\:/Users/user/StudioProjects/parking/app/src/main/res/layout/menu_bottom_sheet_layout.xml" value="0.14583333333333334" />
+        <entry key="..\:/Users/kr1pt0/StudioProjects/parking/app/src/main/res/drawable/ic_battery_with_charger_svgrepo_com.xml" value="0.2425" />
+        <entry key="..\:/Users/kr1pt0/StudioProjects/parking/app/src/main/res/drawable/ic_charge.xml" value="0.2425" />
+        <entry key="..\:/Users/kr1pt0/StudioProjects/parking/app/src/main/res/drawable/ic_safe.xml" value="0.2425" />
+        <entry key="..\:/Users/kr1pt0/StudioProjects/parking/app/src/main/res/layout/app_info_fragment.xml" value="0.259375" />
+        <entry key="..\:/Users/kr1pt0/StudioProjects/parking/app/src/main/res/layout/bottom_sheet_layout.xml" value="0.4" />
+        <entry key="..\:/Users/kr1pt0/StudioProjects/parking/app/src/main/res/layout/button_layout.xml" value="0.259375" />
+        <entry key="..\:/Users/kr1pt0/StudioProjects/parking/app/src/main/res/layout/custom_tab.xml" value="0.259375" />
+        <entry key="..\:/Users/kr1pt0/StudioProjects/parking/app/src/main/res/layout/dialog_intent_settings.xml" value="0.259375" />
+        <entry key="..\:/Users/kr1pt0/StudioProjects/parking/app/src/main/res/layout/fragment_auth.xml" value="0.259375" />
+        <entry key="..\:/Users/kr1pt0/StudioProjects/parking/app/src/main/res/layout/fragment_car_registration.xml" value="0.259375" />
+        <entry key="..\:/Users/kr1pt0/StudioProjects/parking/app/src/main/res/layout/fragment_choose.xml" value="0.259375" />
+        <entry key="..\:/Users/kr1pt0/StudioProjects/parking/app/src/main/res/layout/fragment_confirmation.xml" value="0.259375" />
+        <entry key="..\:/Users/kr1pt0/StudioProjects/parking/app/src/main/res/layout/fragment_location.xml" value="0.259375" />
+        <entry key="..\:/Users/kr1pt0/StudioProjects/parking/app/src/main/res/layout/fragment_map.xml" value="0.259375" />
+        <entry key="..\:/Users/kr1pt0/StudioProjects/parking/app/src/main/res/layout/fragment_on_boarding.xml" value="0.12613981762917933" />
+        <entry key="..\:/Users/kr1pt0/StudioProjects/parking/app/src/main/res/layout/fragment_support.xml" value="0.259375" />
+        <entry key="..\:/Users/kr1pt0/StudioProjects/parking/app/src/main/res/layout/item_page.xml" value="0.259375" />
+        <entry key="..\:/Users/kr1pt0/StudioProjects/parking/app/src/main/res/layout/menu_bottom_sheet_layout.xml" value="0.12613981762917933" />
+        <entry key="..\:/Users/kr1pt0/StudioProjects/parking/app/src/main/res/layout/menu_fragment.xml" value="0.259375" />
+        <entry key="..\:/Users/kr1pt0/StudioProjects/parking/app/src/main/res/layout/theme_fragment.xml" value="0.259375" />
+        <entry key="..\:/Users/kr1pt0/StudioProjects/parking/app/src/main/res/layout/ui_map_layout.xml" value="0.259375" />
         <entry key="..\:/parking/app/src/main/res/drawable/round_corner.xml" value="0.123" />
         <entry key="..\:/parking/app/src/main/res/layout-v26/activity_main.xml" value="0.13722826086956522" />
         <entry key="..\:/parking/app/src/main/res/layout-v26/dialog_intent_settings.xml" value="0.13722826086956522" />
@@ -35,7 +52,12 @@
         <entry key="..\:/parking/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/parking/app/src/main/res/layout/bottom_sheet.xml" value="0.13722826086956522" />
         <entry key="..\:/parking/app/src/main/res/layout/dialog_intent_settings.xml" value="0.2" />
+        <entry key="..\:/parking/app/src/main/res/layout/fragment_change.xml" value="0.25416666666666665" />
+        <entry key="..\:/parking/app/src/main/res/layout/fragment_choose.xml" value="0.176" />
+        <entry key="..\:/parking/app/src/main/res/layout/fragment_landlord_auth.xml" value="0.25416666666666665" />
+        <entry key="..\:/parking/app/src/main/res/layout/fragment_sms.xml" value="0.25416666666666665" />
         <entry key="..\:/parking/app/src/main/res/layout/intent_settings_card.xml" value="0.264" />
+        <entry key="..\:/parking/app/src/main/res/layout/ui_map_layout.xml" value="0.11302083333333333" />
         <entry key="app/src/main/res/drawable/default_pager_dot.xml" value="0.1645" />
         <entry key="app/src/main/res/drawable/selected_pager_dot.xml" value="0.1645" />
         <entry key="app/src/main/res/drawable/tab_pager_selector.xml" value="0.1645" />

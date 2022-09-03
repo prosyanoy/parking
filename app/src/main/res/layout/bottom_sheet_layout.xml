@@ -35,17 +35,78 @@
             />
 
         <TextView
-            android:id="@+id/addressText"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:gravity="center"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/address"
+            app:layout_constraintTop_toBottomOf="@+id/view"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view" android:text="адрес"/>
+            app:layout_constraintEnd_toStartOf="@id/payment"
+            android:text="Виноградная, 122А"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/payment"
+            app:layout_constraintStart_toEndOf="@id/address"
+            app:layout_constraintTop_toBottomOf="@+id/view"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="100 Р / час"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/distance_to"
+            app:layout_constraintTop_toBottomOf="@+id/address"
+            app:layout_constraintStart_toStartOf="parent"
+            android:lines="2"
+            android:text="560 м -/n 2 минуты"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/parking_lots"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/distance_to"
+            android:lines="2"
+            android:text="17 метс -/n 4 свободных"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/safe"
+            app:layout_constraintTop_toBottomOf="@id/parking_lots"
+            app:layout_constraintStart_toStartOf="parent"
+            android:src="@drawable/ic_safe"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:id="@+id/all_day"
+            app:layout_constraintTop_toBottomOf="@id/parking_lots"
+            app:layout_constraintStart_toEndOf="@id/safe"
+            android:text="24/7"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:gravity="center"/>
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/charge"
+            app:layout_constraintTop_toBottomOf="@id/parking_lots"
+            app:layout_constraintStart_toEndOf="@id/all_day"
+            android:src="@drawable/ic_charge"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/disability"
+            app:layout_constraintTop_toBottomOf="@id/parking_lots"
+            app:layout_constraintStart_toEndOf="@id/charge"
+            android:src="@drawable/ic_disability"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -62,18 +123,22 @@
 
 
     <Button
-        android:id="@+id/button1"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:text="Оплата парковки"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/reserve"
+        app:layout_constraintTop_toBottomOf="@+id/middle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/middle" />
+        app:layout_constraintEnd_toStartOf="@+id/go_now"
+        android:text="Зарезервировать"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/go_now"
+        app:layout_constraintTop_toBottomOf="@id/middle"
+        app:layout_constraintStart_toEndOf="@id/reserve"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Заехать сейчас"/>
 
 
 
