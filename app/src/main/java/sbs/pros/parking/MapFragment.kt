@@ -266,7 +266,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
             if (mapObject is PlacemarkMapObject) {
                 val parkingData = mapObject.userData as PinData
 
-                var lastState = "STATE_HALF_EXPANDED"
+                var lastState = "STATE_EXPANDED"
 
                 setSelectedPlacemark(mapObject)
                 when(parkingData.parking){
@@ -277,7 +277,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                 binding.bottomSheetMain.address.text = parkingData.address
 
                 if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
-                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                     binding.mapUi.uiMapParkingFAB.visibility = View.GONE
                 }
 
@@ -319,7 +319,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                                         Animation(Animation.Type.SMOOTH, 0.5F),
                                         null)
                                 }
-                                lastState = "STATE_HALF_EXPANDED"
+                                lastState = "STATE_EXPANDED"
                             }
                         }
                     }
