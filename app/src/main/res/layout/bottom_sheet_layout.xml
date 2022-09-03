@@ -53,10 +53,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/icon_distance_to"
-            app:layout_constraintTop_toBottomOf="@+id/address"
+            app:layout_constraintTop_toTopOf="@+id/distance_to"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/distance_to"
-            app:layout_constraintBottom_toTopOf="@id/icon_parking_lots"
+            app:layout_constraintBottom_toBottomOf="@id/distance_to"
             android:src="@drawable/ic_car"/>
 
 
@@ -77,11 +77,12 @@
             android:layout_height="wrap_content"
             android:id="@+id/icon_parking_lots"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/distance_to"
+            app:layout_constraintTop_toTopOf="@+id/parking_lots"
+            app:layout_constraintBottom_toBottomOf="@+id/parking_lots"
             android:text="P"
             android:textStyle="bold"
             android:textColor="#000000"
-            android:textSize="32dp"
+            android:textSize="24dp"
             android:gravity="center"/>
 
 
@@ -95,7 +96,7 @@
             android:text="17 мест \n 4 свободных"/>
 
 
-        <!-- -->
+        <!--for inactive feature: app:tint="#AAAAAA" or android:textColor="#AAAAAA"-->
 
         <ImageView
             android:layout_width="wrap_content"
@@ -103,7 +104,7 @@
             android:id="@+id/safe"
             app:layout_constraintTop_toBottomOf="@id/parking_lots"
             app:layout_constraintStart_toStartOf="parent"
-            android:src="@drawable/ic_safe"/>
+            android:src="@drawable/ic_safe" />
 
         <TextView
             android:layout_width="wrap_content"

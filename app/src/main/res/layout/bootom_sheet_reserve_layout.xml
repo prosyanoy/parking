@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/root"
+    android:background="@drawable/bottom_sheet_background"
+    android:clickable="true"
+    app:behavior_hideable="false"
+    app:behavior_peekHeight="0dp"
+    app:behavior_fitToContents="false"
+    app:behavior_expandedOffset = "0dp"
+    app:behavior_halfExpandedRatio = "0.55"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="50dp"
+        android:layout_height="7dp"
+        android:layout_marginTop="7dp"
+        android:background="@drawable/rounded_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/address"
+        app:layout_constraintTop_toBottomOf="@+id/view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/photo"
+        android:text="Виноградная, 122А"
+        android:textStyle="bold"/>
+
+    <ImageView
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:id="@+id/photo"
+        app:layout_constraintStart_toEndOf="@id/address"
+        app:layout_constraintTop_toBottomOf="@id/view"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
+
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/icon_distance_to"
+        app:layout_constraintTop_toTopOf="@+id/distance_to"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/distance_to"
+        app:layout_constraintBottom_toBottomOf="@id/distance_to"
+        android:src="@drawable/ic_car"/>
+
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/distance_to"
+        app:layout_constraintTop_toBottomOf="@+id/address"
+        app:layout_constraintStart_toEndOf="@id/icon_distance_to"
+        android:lines="2"
+        android:text="560 м \n 2 минуты"/>
+
+
+    <TextView
+        android:layout_width="32dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/icon_parking_lots"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/parking_lots"
+        app:layout_constraintBottom_toBottomOf="@+id/parking_lots"
+        android:text="P"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:textSize="24dp"
+        android:gravity="center"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/parking_lots"
+        app:layout_constraintStart_toEndOf="@id/icon_parking_lots"
+        app:layout_constraintTop_toBottomOf="@+id/distance_to"
+        android:lines="2"
+        android:text="17 мест \n 4 свободных"/>
+
+
+    <!--for inactive feature: app:tint="#AAAAAA" or android:textColor="#AAAAAA"-->
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/safe"
+        app:layout_constraintTop_toBottomOf="@id/parking_lots"
+        app:layout_constraintStart_toStartOf="parent"
+        android:src="@drawable/ic_safe"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:id="@+id/all_day"
+        app:layout_constraintTop_toBottomOf="@id/parking_lots"
+        app:layout_constraintStart_toEndOf="@id/safe"
+        android:text="24/7"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:gravity="center"/>
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/charge"
+        app:layout_constraintTop_toBottomOf="@id/parking_lots"
+        app:layout_constraintStart_toEndOf="@id/all_day"
+        android:src="@drawable/ic_charge"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/disability"
+        app:layout_constraintTop_toBottomOf="@id/parking_lots"
+        app:layout_constraintStart_toEndOf="@id/charge"
+        android:src="@drawable/ic_disability"/>
+
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
