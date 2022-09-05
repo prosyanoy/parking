@@ -158,6 +158,53 @@
         android:textColor="@color/black"
         style="?android:spinnerStyle"/>
 
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:id="@+id/mir"
+        app:layout_constraintTop_toBottomOf="@id/date_picker"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/sbp"
+        android:src="@drawable/ic_mir"/>
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:id="@+id/sbp"
+        app:layout_constraintTop_toBottomOf="@id/date_picker"
+        app:layout_constraintStart_toEndOf="@id/mir"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/ic_sbp"/>
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:id="@+id/tinkoff"
+        app:layout_constraintTop_toBottomOf="@id/mir"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/yandex"
+        android:src="@drawable/ic_tinkoff"/>
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:id="@+id/yandex"
+        app:layout_constraintTop_toBottomOf="@id/mir"
+        app:layout_constraintStart_toEndOf="@id/tinkoff"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/ic_yandex"/>
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/pay"
+        app:layout_constraintTop_toBottomOf="@id/tinkoff"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Заплатить"/>
+
+
 
 
 
