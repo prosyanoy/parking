@@ -1,5 +1,7 @@
 package sbs.pros.parking
 
+import android.content.ContentValues
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
@@ -9,6 +11,7 @@ import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
@@ -27,6 +30,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
@@ -42,6 +46,8 @@ import com.yandex.mapkit.user_location.UserLocationObjectListener
 import com.yandex.mapkit.user_location.UserLocationView
 import com.yandex.runtime.image.ImageProvider
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.bottom_sheet_layout.*
+import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -115,6 +121,15 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
             menuViewModel.title.collect{ binding.bottomMenu.menuTitle.text = it }
         }
 
+        reserve.setOnClickListener{
+            Log.d(TAG, "reserved")
+            CustomBottomSheetDialogFragment().apply {
+                show(parentFragmentManager, CustomBottomSheetDialogFragment.TAG)
+            }
+        }
+
+
+
     }
 
     private fun setupMenu(){
@@ -144,6 +159,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         binding.bottomMenu.back.setSafeOnClickListener {
             navHost.navController.navigateUp()
         }
+
 
 
 

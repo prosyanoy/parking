@@ -8,7 +8,7 @@
     android:id="@+id/root"
     android:background="@drawable/bottom_sheet_background"
     android:clickable="true"
-    app:behavior_hideable="false"
+    app:behavior_hideable="true"
     app:behavior_peekHeight="0dp"
     app:behavior_fitToContents="false"
     app:behavior_expandedOffset = "0dp"
