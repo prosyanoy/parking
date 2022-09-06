@@ -86,6 +86,8 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
 
+    private lateinit var bottomSheetReserveBehavior: BottomSheetBehavior<ConstraintLayout>
+
     val binding by viewLifecycleLazy { FragmentMapBinding.bind( requireView()) }
 
 
@@ -121,16 +123,38 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
             menuViewModel.title.collect{ binding.bottomMenu.menuTitle.text = it }
         }
 
-        reserve.setOnClickListener{
-            Log.d(TAG, "reserved")
-            CustomBottomSheetDialogFragment().apply {
-                show(parentFragmentManager, CustomBottomSheetDialogFragment.TAG)
+        bottomSheetReserveBehavior = BottomSheetBehavior.from(binding.bottomSheetReserve.root)
+
+        bottomSheetReserveBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                // handle onSlide
             }
+
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when (newState) {
+                    BottomSheetBehavior.STATE_COLLAPSED -> {}
+                    BottomSheetBehavior.STATE_EXPANDED -> {}
+                    BottomSheetBehavior.STATE_DRAGGING -> {}
+                    BottomSheetBehavior.STATE_SETTLING ->  {}
+                    BottomSheetBehavior.STATE_HIDDEN -> {}
+
+                }
+            }
+        })
+
+        reserve.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            bottomSheetReserveBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
 
 
 
     }
+
+
+
 
     private fun setupMenu(){
         val menuBinding = binding.bottomMenu.bottomSheet
@@ -159,9 +183,6 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         binding.bottomMenu.back.setSafeOnClickListener {
             navHost.navController.navigateUp()
         }
-
-
-
 
     }
 
@@ -291,6 +312,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                 }
 
                 binding.bottomSheetMain.address.text = parkingData.address
+                binding.bottomSheetMain.payment.text = parkingData.hour_cost.toString() + "р / час"
 
                 if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
