@@ -1,17 +1,18 @@
 package sbs.pros.parking
 
-import android.content.ContentValues
-import android.content.ContentValues.TAG
+import android.app.AlertDialog.THEME_HOLO_LIGHT
+import android.app.DatePickerDialog
+import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Context
 import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.*
+import android.graphics.Color
+import android.graphics.PointF
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
@@ -24,13 +25,11 @@ import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
@@ -47,7 +46,7 @@ import com.yandex.mapkit.user_location.UserLocationView
 import com.yandex.runtime.image.ImageProvider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.bottom_sheet_layout.*
-import kotlinx.android.synthetic.main.fragment_map.*
+import kotlinx.android.synthetic.main.bottom_sheet_reserve_layout.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -55,10 +54,13 @@ import kotlinx.coroutines.launch
 import sbs.pros.parking.databinding.FragmentMapBinding
 import sbs.pros.parking.menu.MenuViewModel
 import sbs.pros.parking.model.PinData
-import sbs.pros.parking.utils.*
 import sbs.pros.parking.utils.drawLocationPoint
 import sbs.pros.parking.utils.drawSimpleBitmap
+import sbs.pros.parking.utils.setSafeOnClickListener
 import sbs.pros.parking.utils.viewLifecycleLazy
+import java.util.*
+import kotlin.collections.ArrayList
+
 
 @AndroidEntryPoint
 class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTapListener, UserLocationObjectListener {
@@ -87,6 +89,9 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
 
     private lateinit var bottomSheetReserveBehavior: BottomSheetBehavior<ConstraintLayout>
+
+    private var datePickerDialog: DatePickerDialog? = null
+
 
     val binding by viewLifecycleLazy { FragmentMapBinding.bind( requireView()) }
 
@@ -151,6 +156,41 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
 
 
+        initDatePicker()    ;
+        date_picker.text = getTodaysDate()
+
+
+    }
+
+
+    private fun getTodaysDate(): String? {
+        val cal: Calendar = Calendar.getInstance()
+        val year: Int = cal.get(Calendar.YEAR)
+        var month: Int = cal.get(Calendar.MONTH)
+        month = month + 1
+        val day: Int = cal.get(Calendar.DAY_OF_MONTH)
+        return "$day $month $year"
+    }
+
+    private fun initDatePicker() {
+        val dateSetListener =
+            OnDateSetListener { datePicker, year, month, day ->
+                var month = month
+                month = month + 1
+                val date = "$day $month $year"
+                date_picker.text = date
+            }
+        val cal: Calendar = Calendar.getInstance()
+        val year: Int = cal.get(Calendar.YEAR)
+        val month: Int = cal.get(Calendar.MONTH)
+        val day: Int = cal.get(Calendar.DAY_OF_MONTH)
+        datePickerDialog = DatePickerDialog(requireContext(), dateSetListener, year, month, day)
+        //datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+    }
+
+
+    fun openDatePicker(view: View?) {
+        datePickerDialog!!.show()
     }
 
 
