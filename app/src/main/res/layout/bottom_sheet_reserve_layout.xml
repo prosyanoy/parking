@@ -136,33 +136,66 @@
 
 
 
-    <Button
-        android:layout_width="150sp"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/date_picker"
+        android:id="@+id/text"
         app:layout_constraintTop_toBottomOf="@id/photo"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Детали заезда"/>
+
+
+    <Button
+        android:layout_width="130sp"
+        android:layout_height="wrap_content"
+        android:id="@+id/date_picker"
+        app:layout_constraintTop_toBottomOf="@id/text"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/time_picker"
-        android:text="Янв 01 2022"
-        android:textColor="@color/black"
-        style="?android:spinnerStyle"/>
+        android:text="12/09/2022"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/time_picker"
-        app:layout_constraintTop_toBottomOf="@id/photo"
+        app:layout_constraintTop_toBottomOf="@id/text"
         app:layout_constraintStart_toEndOf="@id/date_picker"
+        app:layout_constraintEnd_toStartOf="@id/duration_picker"
+        android:text="12:30"/>
+
+
+
+    <EditText
+        android:layout_width="130sp"
+        android:layout_height="wrap_content"
+        android:id="@+id/duration_picker"
+        app:layout_constraintTop_toBottomOf="@+id/text"
+        app:layout_constraintStart_toEndOf="@id/time_picker"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="12:30"
-        android:textColor="@color/black"
-        style="?android:spinnerStyle"/>
+        android:hint="Период (час)"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/text2"
+        app:layout_constraintTop_toBottomOf="@id/date_picker"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Способы оплаты"/>
+
+
+
+
+
+
 
     <ImageView
         android:layout_width="100dp"
         android:layout_height="50dp"
         android:id="@+id/mir"
-        app:layout_constraintTop_toBottomOf="@id/date_picker"
+        app:layout_constraintTop_toBottomOf="@id/text2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/sbp"
         android:src="@drawable/ic_mir"/>
@@ -171,7 +204,7 @@
         android:layout_width="100dp"
         android:layout_height="50dp"
         android:id="@+id/sbp"
-        app:layout_constraintTop_toBottomOf="@id/date_picker"
+        app:layout_constraintTop_toBottomOf="@id/text2"
         app:layout_constraintStart_toEndOf="@id/mir"
         app:layout_constraintEnd_toEndOf="parent"
         android:src="@drawable/ic_sbp"/>

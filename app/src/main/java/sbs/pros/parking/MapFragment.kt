@@ -3,6 +3,7 @@ package sbs.pros.parking
 import android.app.AlertDialog.THEME_HOLO_LIGHT
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
+import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
@@ -14,9 +15,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
@@ -63,7 +62,7 @@ import kotlin.collections.ArrayList
 
 
 @AndroidEntryPoint
-class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTapListener, UserLocationObjectListener {
+class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTapListener, UserLocationObjectListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
 
     private val menuViewModel by activityViewModels<MenuViewModel>()
@@ -91,6 +90,20 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
     private lateinit var bottomSheetReserveBehavior: BottomSheetBehavior<ConstraintLayout>
 
     private var datePickerDialog: DatePickerDialog? = null
+
+
+    private var day = 0
+    private var month = 0
+    private var year = 0
+    private var hour = 0
+    private var minute = 0
+    private var savedDay = 0
+    private var savedMonth = 0
+    private var savedYear = 0
+    private var savedHour = 0
+    private var savedMinute = 0
+
+
 
 
     val binding by viewLifecycleLazy { FragmentMapBinding.bind( requireView()) }
@@ -128,6 +141,17 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
             menuViewModel.title.collect{ binding.bottomMenu.menuTitle.text = it }
         }
 
+
+
+
+
+
+
+        
+        
+        
+        
+
         bottomSheetReserveBehavior = BottomSheetBehavior.from(binding.bottomSheetReserve.root)
 
         bottomSheetReserveBehavior.addBottomSheetCallback(object :
@@ -152,46 +176,39 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         reserve.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             bottomSheetReserveBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            
+            getTimeDateCalendar()
+            date_picker.text = "$day/$month/$year"
+            time_picker.text = "$hour:$minute"
+        }
+
+
+        date_picker.setOnClickListener {
+            getTimeDateCalendar()
+            DatePickerDialog(requireContext(), this, year, month, day).show()
+        }
+
+        time_picker.setOnClickListener {
+            getTimeDateCalendar()
+            TimePickerDialog(requireContext(), this, hour, minute, true).show()
         }
 
 
 
-        initDatePicker()    ;
-        date_picker.text = getTodaysDate()
+
 
 
     }
 
-
-    private fun getTodaysDate(): String? {
-        val cal: Calendar = Calendar.getInstance()
-        val year: Int = cal.get(Calendar.YEAR)
-        var month: Int = cal.get(Calendar.MONTH)
-        month = month + 1
-        val day: Int = cal.get(Calendar.DAY_OF_MONTH)
-        return "$day $month $year"
+    private fun getTimeDateCalendar(){
+        val cal = Calendar.getInstance()
+        day = cal.get(Calendar.DAY_OF_MONTH)
+        month = cal.get(Calendar.MONTH)
+        year = cal.get(Calendar.YEAR)
+        hour = cal.get(Calendar.HOUR)
+        minute = cal.get(Calendar.MINUTE)
     }
 
-    private fun initDatePicker() {
-        val dateSetListener =
-            OnDateSetListener { datePicker, year, month, day ->
-                var month = month
-                month = month + 1
-                val date = "$day $month $year"
-                date_picker.text = date
-            }
-        val cal: Calendar = Calendar.getInstance()
-        val year: Int = cal.get(Calendar.YEAR)
-        val month: Int = cal.get(Calendar.MONTH)
-        val day: Int = cal.get(Calendar.DAY_OF_MONTH)
-        datePickerDialog = DatePickerDialog(requireContext(), dateSetListener, year, month, day)
-        //datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
-    }
-
-
-    fun openDatePicker(view: View?) {
-        datePickerDialog!!.show()
-    }
 
 
 
@@ -663,6 +680,20 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
     }
 
+    override fun onDateSet(p0: DatePicker?, year: Int, month: Int, day: Int) {
+        savedDay = day
+        savedMonth = month
+        savedYear = year
+
+        date_picker.text = "$savedDay/$savedMonth/$savedYear"
+    }
+
+    override fun onTimeSet(p0: TimePicker?, hour: Int, minute: Int) {
+        savedHour = hour
+        savedMinute = minute
+
+        time_picker.text = "$savedHour:$savedMinute"
+    }
 
 
 }
