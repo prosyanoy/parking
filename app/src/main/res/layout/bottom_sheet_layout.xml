@@ -96,26 +96,22 @@
             android:text="17 мест \n 4 свободных"/>
 
 
-        <!--for inactive feature: app:tint="#AAAAAA" or android:textColor="#AAAAAA"-->
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/safe"
+            android:id="@+id/secure"
             app:layout_constraintTop_toBottomOf="@id/parking_lots"
             app:layout_constraintStart_toStartOf="parent"
-            android:src="@drawable/ic_safe" />
+            android:src="@drawable/ic_secure_active" />
 
-        <TextView
+        <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="32dp"
+            android:layout_height="wrap_content"
             android:id="@+id/all_day"
             app:layout_constraintTop_toBottomOf="@id/parking_lots"
-            app:layout_constraintStart_toEndOf="@id/safe"
-            android:text="24/7"
-            android:textStyle="bold"
-            android:textColor="#000000"
-            android:gravity="center"/>
+            app:layout_constraintStart_toEndOf="@id/secure"
+            android:src="@drawable/ic_247_active"/>
 
 
         <ImageView
@@ -124,7 +120,7 @@
             android:id="@+id/charge"
             app:layout_constraintTop_toBottomOf="@id/parking_lots"
             app:layout_constraintStart_toEndOf="@id/all_day"
-            android:src="@drawable/ic_charge"/>
+            android:src="@drawable/ic_charge_active"/>
 
         <ImageView
             android:layout_width="wrap_content"
@@ -132,7 +128,7 @@
             android:id="@+id/disability"
             app:layout_constraintTop_toBottomOf="@id/parking_lots"
             app:layout_constraintStart_toEndOf="@id/charge"
-            android:src="@drawable/ic_disability"/>
+            android:src="@drawable/ic_disability_active"/>
 
 
 
@@ -141,7 +137,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/reserve"
-            app:layout_constraintTop_toBottomOf="@+id/safe"
+            app:layout_constraintTop_toBottomOf="@+id/secure"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/go_now"
             android:text="Зарезервировать"/>
@@ -150,7 +146,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/go_now"
-            app:layout_constraintTop_toBottomOf="@id/safe"
+            app:layout_constraintTop_toBottomOf="@id/secure"
             app:layout_constraintStart_toEndOf="@id/reserve"
             app:layout_constraintEnd_toEndOf="parent"
             android:text="Заехать сейчас"/>

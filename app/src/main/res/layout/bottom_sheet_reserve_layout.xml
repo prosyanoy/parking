@@ -96,26 +96,21 @@
         android:text="17 мест \n 4 свободных"/>
 
 
-    <!--for inactive feature: app:tint="#AAAAAA" or android:textColor="#AAAAAA"-->
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/secure"
+        app:layout_constraintTop_toBottomOf="@id/parking_lots"
+        app:layout_constraintStart_toStartOf="parent"
+        android:src="@drawable/ic_secure_active" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/safe"
-        app:layout_constraintTop_toBottomOf="@id/parking_lots"
-        app:layout_constraintStart_toStartOf="parent"
-        android:src="@drawable/ic_safe" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="32dp"
         android:id="@+id/all_day"
         app:layout_constraintTop_toBottomOf="@id/parking_lots"
-        app:layout_constraintStart_toEndOf="@id/safe"
-        android:text="24/7"
-        android:textStyle="bold"
-        android:textColor="#000000"
-        android:gravity="center"/>
+        app:layout_constraintStart_toEndOf="@id/secure"
+        android:src="@drawable/ic_247_active"/>
 
 
     <ImageView
@@ -124,7 +119,7 @@
         android:id="@+id/charge"
         app:layout_constraintTop_toBottomOf="@id/parking_lots"
         app:layout_constraintStart_toEndOf="@id/all_day"
-        android:src="@drawable/ic_charge"/>
+        android:src="@drawable/ic_charge_active"/>
 
     <ImageView
         android:layout_width="wrap_content"
@@ -132,7 +127,7 @@
         android:id="@+id/disability"
         app:layout_constraintTop_toBottomOf="@id/parking_lots"
         app:layout_constraintStart_toEndOf="@id/charge"
-        android:src="@drawable/ic_disability"/>
+        android:src="@drawable/ic_disability_active"/>
 
 
 

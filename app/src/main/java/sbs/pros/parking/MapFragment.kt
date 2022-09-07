@@ -414,6 +414,11 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                     .transform(RoundedCorners(radius))
                     .into(photo)
 
+                binding.bottomSheetReserve.address.text = parkingData.address
+
+
+
+
                 if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                     binding.mapUi.uiMapParkingFAB.visibility = View.GONE
