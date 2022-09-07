@@ -1,8 +1,6 @@
 package sbs.pros.parking
 
-import android.app.AlertDialog.THEME_HOLO_LIGHT
 import android.app.DatePickerDialog
-import android.app.DatePickerDialog.OnDateSetListener
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Context.LOCATION_SERVICE
@@ -28,6 +26,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKit
@@ -192,22 +192,9 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
             getTimeDateCalendar()
             TimePickerDialog(requireContext(), this, hour, minute, true).show()
         }
-
-
-
-
-
-
     }
 
-    private fun getTimeDateCalendar(){
-        val cal = Calendar.getInstance()
-        day = cal.get(Calendar.DAY_OF_MONTH)
-        month = cal.get(Calendar.MONTH)
-        year = cal.get(Calendar.YEAR)
-        hour = cal.get(Calendar.HOUR)
-        minute = cal.get(Calendar.MINUTE)
-    }
+
 
 
 
@@ -371,6 +358,14 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                 binding.bottomSheetMain.address.text = parkingData.address
                 binding.bottomSheetMain.payment.text = parkingData.hour_cost.toString() + "р / час"
 
+                val radius = 10 // corner radius, higher value = more rounded
+                Glide.with(this)
+                    .load("https://pros.sbs/parking/photo/${parkingData.id}.jpeg")
+                    .override(300, 300)
+                    .centerCrop() // scale image to fill the entire ImageView
+                    .transform(RoundedCorners(radius))
+                    .into(photo)
+
                 if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                     binding.mapUi.uiMapParkingFAB.visibility = View.GONE
@@ -444,7 +439,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         icon.addTapListener(parkingMapObjectTapListener)
         icon.setScaleFunction(listOf(PointF(1F, 0.5F)))
         icon.zIndex = 100.0f
-        icon.userData = PinData(polyline, hour_cost, address, point)
+        icon.userData = PinData(polyline, hour_cost, address, point, id)
 
         clusterizedCollection.clusterPlacemarks(60.0, 15)
     }
@@ -471,7 +466,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         icon.addTapListener(parkingMapObjectTapListener)
         icon.setScaleFunction(listOf(PointF(1F, 0.5F)))
         icon.zIndex = 100.0f
-        icon.userData = PinData(polygon, hour_cost, address, point)
+        icon.userData = PinData(polygon, hour_cost, address, point, id)
 
         clusterizedCollection.clusterPlacemarks(60.0, 15)
     }
@@ -679,6 +674,17 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         private val darkGreen = Color.rgb(30, 141, 13)
 
     }
+
+
+    private fun getTimeDateCalendar(){
+        val cal = Calendar.getInstance()
+        day = cal.get(Calendar.DAY_OF_MONTH)
+        month = cal.get(Calendar.MONTH)
+        year = cal.get(Calendar.YEAR)
+        hour = cal.get(Calendar.HOUR)
+        minute = cal.get(Calendar.MINUTE)
+    }
+
 
     override fun onDateSet(p0: DatePicker?, year: Int, month: Int, day: Int) {
         savedDay = day

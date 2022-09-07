@@ -3,10 +3,11 @@ package sbs.pros.parking.model
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.MapObject
 
-class PinData (
+class PinData(
     val parking: MapObject,
     val hour_cost: Int,
     val address: String,
     val point: Point,
+    val id: Int,
     var isSelected: Boolean = false
 )
