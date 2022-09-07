@@ -15,6 +15,7 @@ import ru.tinkoff.decoro.slots.PredefinedSlots
 import sbs.pros.parking.MainActivity
 import sbs.pros.parking.R
 import sbs.pros.parking.databinding.FragmentCarRegistrationBinding
+import sbs.pros.parking.utils.setSafeOnClickListener
 import sbs.pros.parking.utils.viewLifecycleLazy
 
 
@@ -41,6 +42,7 @@ class CarRegistrationFragment : Fragment(R.layout.fragment_car_registration) {
 
 
 
+        setupCheckBoxes()
 
         binding.editTextCarNumber.addTextChangedListener {
 
@@ -66,6 +68,40 @@ class CarRegistrationFragment : Fragment(R.layout.fragment_car_registration) {
             prefs?.edit()?.putString("userType", "autoUser")?.apply()
 
             startActivity(Intent(context, MainActivity::class.java))
+        }
+    }
+
+
+    private fun setupCheckBoxes(){
+
+        with(binding){
+            bike.setSafeOnClickListener {
+                checkBoxBike.isChecked = true
+                checkBoxCar.isChecked = false
+                checkBoxTruck.isChecked = false
+                checkBoxBus.isChecked = false
+            }
+
+            car.setSafeOnClickListener {
+                checkBoxBike.isChecked = false
+                checkBoxCar.isChecked = true
+                checkBoxTruck.isChecked = false
+                checkBoxBus.isChecked = false
+            }
+
+            bus.setSafeOnClickListener {
+                checkBoxBike.isChecked = false
+                checkBoxCar.isChecked = false
+                checkBoxTruck.isChecked = false
+                checkBoxBus.isChecked = true
+            }
+
+            truck.setSafeOnClickListener {
+                checkBoxBike.isChecked = false
+                checkBoxCar.isChecked = false
+                checkBoxTruck.isChecked = true
+                checkBoxBus.isChecked = false
+            }
         }
     }
 }
