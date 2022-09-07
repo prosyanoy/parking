@@ -58,7 +58,6 @@ import sbs.pros.parking.utils.drawSimpleBitmap
 import sbs.pros.parking.utils.setSafeOnClickListener
 import sbs.pros.parking.utils.viewLifecycleLazy
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 @AndroidEntryPoint
@@ -178,8 +177,38 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
             bottomSheetReserveBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             
             getTimeDateCalendar()
+
+            if (day < 10) {
+                if (month < 10) {
+                    date_picker.text = "0$day/0$month/$year"
+                } else {
+                    date_picker.text = "0$day/$month/$year"
+                }
+            } else {
+                if (month < 10) {
+                    date_picker.text = "$day/0$month/$year"
+                } else {
+                    date_picker.text = "$day/$month/$year"
+                }
+            }
+
+
+
             date_picker.text = "$day/$month/$year"
-            time_picker.text = "$hour:$minute"
+
+            if (hour < 10){
+                if (minute < 10){
+                    time_picker.text = "0$hour:0$minute"
+                } else {
+                    time_picker.text = "0$hour:$minute"
+                }
+            } else {
+                if (minute < 10){
+                    time_picker.text = "$hour:0$minute"
+                } else {
+                    time_picker.text = "$hour:$minute"
+                }
+            }
         }
 
 
@@ -191,6 +220,25 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         time_picker.setOnClickListener {
             getTimeDateCalendar()
             TimePickerDialog(requireContext(), this, hour, minute, true).show()
+        }
+
+
+
+
+        //an array of possible durations for parking
+        val parkingDurations = arrayOf("30 минут", "1 час", "3 часа", "1 день")
+
+
+
+        duration_picker.setOnClickListener {
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setTitle("Выбрать период")
+            builder.setItems(parkingDurations) { dialog, position ->
+                duration_picker.text = parkingDurations[position]
+            }
+            builder.show()
+
+
         }
     }
 
@@ -679,7 +727,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
     private fun getTimeDateCalendar(){
         val cal = Calendar.getInstance()
         day = cal.get(Calendar.DAY_OF_MONTH)
-        month = cal.get(Calendar.MONTH)
+        month = cal.get(Calendar.MONTH) + 1
         year = cal.get(Calendar.YEAR)
         hour = cal.get(Calendar.HOUR)
         minute = cal.get(Calendar.MINUTE)
@@ -688,17 +736,42 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
     override fun onDateSet(p0: DatePicker?, year: Int, month: Int, day: Int) {
         savedDay = day
-        savedMonth = month
+        savedMonth = month + 1
         savedYear = year
 
-        date_picker.text = "$savedDay/$savedMonth/$savedYear"
+
+        if (savedDay < 10) {
+            if (savedMonth < 10) {
+                date_picker.text = "0$savedDay/0$savedMonth/$savedYear"
+            } else {
+                date_picker.text = "0$savedDay/$savedMonth/$savedYear"
+            }
+        } else {
+            if (savedMonth < 10) {
+                date_picker.text = "$savedDay/0$savedMonth/$savedYear"
+            } else {
+                date_picker.text = "$savedDay/$savedMonth/$savedYear"
+            }
+        }
     }
 
     override fun onTimeSet(p0: TimePicker?, hour: Int, minute: Int) {
         savedHour = hour
         savedMinute = minute
 
-        time_picker.text = "$savedHour:$savedMinute"
+        if (savedHour < 10){
+            if (savedMinute < 10){
+                time_picker.text = "0$savedHour:0$savedMinute"
+            } else {
+                time_picker.text = "0$savedHour:$savedMinute"
+            }
+        } else {
+            if (savedMinute < 10){
+                time_picker.text = "$savedHour:0$savedMinute"
+            } else {
+                time_picker.text = "$savedHour:$savedMinute"
+            }
+        }
     }
 
 

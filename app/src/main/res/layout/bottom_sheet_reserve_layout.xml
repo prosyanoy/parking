@@ -166,14 +166,14 @@
 
 
 
-    <EditText
+    <Button
         android:layout_width="130sp"
         android:layout_height="wrap_content"
         android:id="@+id/duration_picker"
         app:layout_constraintTop_toBottomOf="@+id/text"
         app:layout_constraintStart_toEndOf="@id/time_picker"
         app:layout_constraintEnd_toEndOf="parent"
-        android:hint="Период (час)"/>
+        android:text="Период"/>
 
 
     <TextView
