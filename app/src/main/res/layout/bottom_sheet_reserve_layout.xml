@@ -49,51 +49,90 @@
 
 
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/icon_distance_to"
-        app:layout_constraintTop_toTopOf="@+id/distance_to"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/distance_to"
-        app:layout_constraintBottom_toBottomOf="@id/distance_to"
-        android:src="@drawable/ic_car"/>
-
-
-
-
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/distance_to"
         app:layout_constraintTop_toBottomOf="@+id/address"
-        app:layout_constraintStart_toEndOf="@id/icon_distance_to"
-        android:lines="2"
-        android:text="560 м \n 2 минуты"/>
-
-
-    <TextView
-        android:layout_width="32dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/icon_parking_lots"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/parking_lots"
-        app:layout_constraintBottom_toBottomOf="@+id/parking_lots"
-        android:text="P"
-        android:textStyle="bold"
-        android:textColor="#000000"
-        android:textSize="24dp"
-        android:gravity="center"/>
+        app:layout_constraintEnd_toStartOf="@id/photo"
+        app:layout_constraintBottom_toTopOf="@id/parking_lots"
+        android:layout_marginTop="10sp">
 
 
-    <TextView
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/icon_distance_to"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/text_distance_to"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:src="@drawable/ic_car"
+            android:layout_marginRight="10sp"/>
+
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/text_distance_to"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/icon_distance_to"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:lines="2"
+            android:text="560 м \n 2 минуты"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/parking_lots"
-        app:layout_constraintStart_toEndOf="@id/icon_parking_lots"
         app:layout_constraintTop_toBottomOf="@+id/distance_to"
-        android:lines="2"
-        android:text="17 мест \n 4 свободных"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/photo"
+        app:layout_constraintBottom_toTopOf="@id/secure"
+        android:layout_marginTop="5sp">
+
+
+        <TextView
+            android:layout_width="32dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/icon_parking_lots"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/text_parking_lots"
+            android:layout_marginRight="10sp"
+            android:text="P"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:textSize="24dp"
+            android:gravity="center"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/text_parking_lots"
+            app:layout_constraintStart_toEndOf="@id/icon_parking_lots"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:lines="2"
+            android:text="17 мест \n 4 свободных"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
 
 
     <ImageView
@@ -102,6 +141,8 @@
         android:id="@+id/secure"
         app:layout_constraintTop_toBottomOf="@id/parking_lots"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/all_day"
+        android:layout_marginTop="5sp"
         android:src="@drawable/ic_secure_active" />
 
     <ImageView
@@ -110,6 +151,8 @@
         android:id="@+id/all_day"
         app:layout_constraintTop_toBottomOf="@id/parking_lots"
         app:layout_constraintStart_toEndOf="@id/secure"
+        app:layout_constraintEnd_toStartOf="@id/charge"
+        android:layout_marginTop="5sp"
         android:src="@drawable/ic_247_active"/>
 
 
@@ -119,6 +162,8 @@
         android:id="@+id/charge"
         app:layout_constraintTop_toBottomOf="@id/parking_lots"
         app:layout_constraintStart_toEndOf="@id/all_day"
+        app:layout_constraintEnd_toStartOf="@id/disability"
+        android:layout_marginTop="5sp"
         android:src="@drawable/ic_charge_active"/>
 
     <ImageView
@@ -127,6 +172,8 @@
         android:id="@+id/disability"
         app:layout_constraintTop_toBottomOf="@id/parking_lots"
         app:layout_constraintStart_toEndOf="@id/charge"
+        app:layout_constraintEnd_toStartOf="@id/photo"
+        android:layout_marginTop="5sp"
         android:src="@drawable/ic_disability_active"/>
 
 
@@ -138,6 +185,7 @@
         app:layout_constraintTop_toBottomOf="@id/photo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10sp"
         android:text="Детали заезда"/>
 
 
@@ -148,6 +196,7 @@
         app:layout_constraintTop_toBottomOf="@id/text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/time_picker"
+        android:layout_marginTop="5sp"
         android:text="12/09/2022"/>
 
     <Button
@@ -157,6 +206,7 @@
         app:layout_constraintTop_toBottomOf="@id/text"
         app:layout_constraintStart_toEndOf="@id/date_picker"
         app:layout_constraintEnd_toStartOf="@id/duration_picker"
+        android:layout_marginTop="5sp"
         android:text="12:30"/>
 
 
@@ -167,6 +217,7 @@
         android:id="@+id/duration_picker"
         app:layout_constraintTop_toBottomOf="@+id/text"
         app:layout_constraintStart_toEndOf="@id/time_picker"
+        android:layout_marginTop="5sp"
         app:layout_constraintEnd_toEndOf="parent"
         android:text="Период"/>
 
@@ -178,6 +229,7 @@
         app:layout_constraintTop_toBottomOf="@id/date_picker"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10sp"
         android:text="Способы оплаты"/>
 
 
@@ -193,6 +245,7 @@
         app:layout_constraintTop_toBottomOf="@id/text2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/sbp"
+        android:layout_marginTop="5sp"
         android:src="@drawable/ic_mir"/>
 
     <ImageView
@@ -202,6 +255,7 @@
         app:layout_constraintTop_toBottomOf="@id/text2"
         app:layout_constraintStart_toEndOf="@id/mir"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="5sp"
         android:src="@drawable/ic_sbp"/>
 
     <ImageView
@@ -233,6 +287,7 @@
         app:layout_constraintTop_toBottomOf="@id/tinkoff"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="5sp"
         android:text="Заплатить"/>
 
 

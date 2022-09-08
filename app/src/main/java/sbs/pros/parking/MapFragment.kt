@@ -406,7 +406,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                 binding.bottomSheetMain.address.text = parkingData.address
                 binding.bottomSheetMain.payment.text = parkingData.hour_cost.toString() + "р / час"
 
-                val radius = 10 // corner radius, higher value = more rounded
+                val radius = 20 // corner radius, higher value = more rounded
                 Glide.with(this)
                     .load("https://pros.sbs/parking/photo/${parkingData.id}.jpeg")
                     .override(300, 300)
