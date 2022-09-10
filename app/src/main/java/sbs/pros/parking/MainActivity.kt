@@ -1,16 +1,14 @@
 package sbs.pros.parking
 
-
-
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import sbs.pros.parking.databinding.ActivityMainBinding
-import sbs.pros.parking.utils.ConfigHelper
 import sbs.pros.parking.utils.MapKitInitializer
 
 @AndroidEntryPoint
@@ -19,6 +17,16 @@ class MainActivity : AppCompatActivity(){
     private lateinit var binding: ActivityMainBinding
 
     private var prefs: SharedPreferences? = null
+
+    var phone: String? = null
+    var select: Boolean? = false
+
+    val blue = Color.rgb(13, 174, 252)
+    val lightBlue = Color.rgb(91, 200, 252)
+    val darkBlue = Color.rgb(9, 133, 192)
+    val green = Color.rgb(57, 180, 36)
+    val lightGreen = Color.rgb(92, 233, 70)
+    val darkGreen = Color.rgb(30, 141, 13)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,10 +42,11 @@ class MainActivity : AppCompatActivity(){
         val navController = navHostFragment.navController
 
         if (prefs!!.getBoolean("firstrun", true)) {
-            navController.navigate(R.id.navigateToSMSFragment)
+            navController.navigate(R.id.action_mapFragment_to_chooseFragment)
+        } else if (prefs!!.getString("userType","autoUser") == "parkingOwner") {
+            navController.navigate(R.id.action_mapFragment_to_landlordMenu)
         }
     }
-
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -50,4 +59,5 @@ class MainActivity : AppCompatActivity(){
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
+    //d
 }

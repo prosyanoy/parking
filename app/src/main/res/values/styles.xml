@@ -1,6 +1,5 @@
 <resources>
-
-    <style name="Widget.Theme.Parking.ButtonBar.Fullscreen" parent="">
+    <style name="Theme.Parking.ButtonBar.Fullscreen" parent="">
         <item name="android:background">@color/black_overlay</item>
         <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
     </style>

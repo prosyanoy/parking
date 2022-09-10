@@ -6,4 +6,5 @@ object Constants {
     const val YANDEX_URL = "https://yandex.ru/legal/maps_termsofuse/"
     const val APP_POLICY = "http://parking.pros.sbs/policy"
     const val PERSONAL_DATA = "http://parking.pros.sbs/pdata"
+    const val EMAIL_ADDRESS = "support@pros.sbs"
 }
