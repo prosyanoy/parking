@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.view.View
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -21,7 +22,6 @@ import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import com.android.volley.toolbox.StringRequest
@@ -53,6 +53,7 @@ import sbs.pros.parking.utils.*
 import sbs.pros.parking.utils.drawLocationPoint
 import sbs.pros.parking.utils.drawSimpleBitmap
 import sbs.pros.parking.utils.viewLifecycleLazy
+import kotlin.math.roundToInt
 
 @AndroidEntryPoint
 class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTapListener, UserLocationObjectListener {
@@ -80,6 +81,8 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
 
+    private var filterBottomSheetBehaviour: BottomSheetBehavior<LinearLayout>? = null
+
     val binding by viewLifecycleLazy { FragmentMapBinding.bind( requireView()) }
 
 
@@ -98,8 +101,8 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         setUserLocationLayer()
         checkUserLocation()
         setupMenu()
+        setupFilters()
         setClickListeners()
-
 
         mapView!!.map.move(
             CameraPosition(TARGET_LOCATION, 13.0f, 0.0f, 0.0f),
@@ -115,6 +118,22 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
             menuViewModel.title.collect{ binding.bottomMenu.menuTitle.text = it }
         }
 
+    }
+
+    private fun setupFilters(){
+        val filterBinding = binding.bottomFilter.bottomSheetFilters
+
+        filterBottomSheetBehaviour = BottomSheetBehavior.from(filterBinding)
+        filterBottomSheetBehaviour?.state = BottomSheetBehavior.STATE_HIDDEN
+
+
+        binding.mapUi.uiMapFilterFAB.setSafeOnClickListener {
+            filterBottomSheetBehaviour?.setState(BottomSheetBehavior.STATE_EXPANDED)
+        }
+
+        binding.bottomFilter.buttonCloseFilters.setSafeOnClickListener {
+            filterBottomSheetBehaviour?.setState(BottomSheetBehavior.STATE_HIDDEN)
+        }
     }
 
     private fun setupMenu(){
@@ -189,18 +208,6 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                 } else {
                     geoStatusDialog()
                 }
-            }
-        }
-        val uiMapInfoFAB = binding.mapUi.uiMapInfoFAB
-
-        val uiMapAccessibleFAB = binding.mapUi.uiMapAccessibleFAB
-        uiMapAccessibleFAB.setOnClickListener {
-            if (uiMapInfoFAB.visibility == View.GONE) {
-                uiMapAccessibleFAB.setIconTintResource(R.color.primary)
-                uiMapInfoFAB.visibility = View.VISIBLE
-            }else {
-                uiMapAccessibleFAB.setIconTintResource(R.color.black)
-                uiMapInfoFAB.visibility = View.GONE
             }
         }
     }
