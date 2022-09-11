@@ -114,6 +114,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         mapView = binding.mapview
 
         bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheetMain.root)
+        bottomSheetReserveBehavior = BottomSheetBehavior.from(binding.bottomSheetReserve.root)
 
         //location
         mapKit = MapKitFactory.getInstance()
@@ -140,106 +141,6 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
             menuViewModel.title.collect{ binding.bottomMenu.menuTitle.text = it }
         }
 
-
-
-
-
-
-
-        
-        
-        
-        
-
-        bottomSheetReserveBehavior = BottomSheetBehavior.from(binding.bottomSheetReserve.root)
-
-        bottomSheetReserveBehavior.addBottomSheetCallback(object :
-            BottomSheetBehavior.BottomSheetCallback() {
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                // handle onSlide
-            }
-
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                when (newState) {
-                    BottomSheetBehavior.STATE_COLLAPSED -> {}
-                    BottomSheetBehavior.STATE_EXPANDED -> {}
-                    BottomSheetBehavior.STATE_DRAGGING -> {}
-                    BottomSheetBehavior.STATE_SETTLING ->  {}
-                    BottomSheetBehavior.STATE_HIDDEN -> {}
-
-                }
-            }
-        })
-
-        reserve.setOnClickListener {
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-            bottomSheetReserveBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-            
-            getTimeDateCalendar()
-
-            if (day < 10) {
-                if (month < 10) {
-                    date_picker.text = "0$day/0$month/$year"
-                } else {
-                    date_picker.text = "0$day/$month/$year"
-                }
-            } else {
-                if (month < 10) {
-                    date_picker.text = "$day/0$month/$year"
-                } else {
-                    date_picker.text = "$day/$month/$year"
-                }
-            }
-
-
-
-            date_picker.text = "$day/$month/$year"
-
-            if (hour < 10){
-                if (minute < 10){
-                    time_picker.text = "0$hour:0$minute"
-                } else {
-                    time_picker.text = "0$hour:$minute"
-                }
-            } else {
-                if (minute < 10){
-                    time_picker.text = "$hour:0$minute"
-                } else {
-                    time_picker.text = "$hour:$minute"
-                }
-            }
-        }
-
-
-        date_picker.setOnClickListener {
-            getTimeDateCalendar()
-            DatePickerDialog(requireContext(), this, year, month, day).show()
-        }
-
-        time_picker.setOnClickListener {
-            getTimeDateCalendar()
-            TimePickerDialog(requireContext(), this, hour, minute, true).show()
-        }
-
-
-
-
-        //an array of possible durations for parking
-        val parkingDurations = arrayOf("30 минут", "1 час", "3 часа", "1 день")
-
-
-
-        duration_picker.setOnClickListener {
-            val builder = AlertDialog.Builder(requireContext())
-            builder.setTitle("Выбрать период")
-            builder.setItems(parkingDurations) { dialog, position ->
-                duration_picker.text = parkingDurations[position]
-            }
-            builder.show()
-
-
-        }
     }
 
 
@@ -369,11 +270,19 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                     val address = jsonArray.getJSONObject(i).getString("address")
                     val hour_cost = jsonArray.getJSONObject(i).getInt("hour_cost")
                     val id = jsonArray.getJSONObject(i).getInt("id")
+                    val secure = jsonArray.getJSONObject(i).getInt("secure")
+                    val around_the_clock = jsonArray.getJSONObject(i).getInt("around_the_clock")
+                    val ev = jsonArray.getJSONObject(i).getInt("ev")
+                    val disabled = jsonArray.getJSONObject(i).getInt("disabled")
+                    val places = jsonArray.getJSONObject(i).getInt("places")
+                    val free_places = jsonArray.getJSONObject(i).getInt("free_places")
+
+
 
                     if (type == "l") {
-                        parking(context, mapObjects, clusterizedCollection, point, myList, address, hour_cost, id)
+                        parking(context, mapObjects, clusterizedCollection, point, myList, address, hour_cost, id, secure, around_the_clock, ev, disabled, places, free_places)
                     } else if (type == "g") {
-                        parkingG(context, mapObjects, clusterizedCollection, point, myList, address, hour_cost, id)
+                        parkingG(context, mapObjects, clusterizedCollection, point, myList, address, hour_cost, id, secure, around_the_clock, ev, disabled, places, free_places)
                     }
                 }
             },
@@ -403,10 +312,9 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                     is PolygonMapObject -> setSelectedPolygon(parkingData.parking)
                 }
 
-                binding.bottomSheetMain.address.text = parkingData.address
-                binding.bottomSheetMain.payment.text = parkingData.hour_cost.toString() + "р / час"
 
-                val radius = 20 // corner radius, higher value = more rounded
+//receiving info about the parking and setting up all the relevant variables
+                val radius = 100 // corner radius, higher value = more rounded
                 Glide.with(this)
                     .load("https://pros.sbs/parking/photo/${parkingData.id}.jpeg")
                     .override(300, 300)
@@ -415,6 +323,131 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                     .into(photo)
 
                 binding.bottomSheetReserve.address.text = parkingData.address
+                binding.bottomSheetMain.address.text = parkingData.address
+                binding.bottomSheetMain.payment.text = parkingData.hour_cost.toString() + "р / час"
+                binding.bottomSheetMain.textParkingLots.text = "${parkingData.places} мест \n ${parkingData.free_places} свободных"
+                binding.bottomSheetReserve.textParkingLots.text = "${parkingData.places} мест \n ${parkingData.free_places} свободных"
+
+
+                if (parkingData.secure == 1) {
+                    binding.bottomSheetMain.secure.setImageResource(R.drawable.ic_secure_active)
+                    binding.bottomSheetReserve.secure.setImageResource(R.drawable.ic_secure_active)
+
+                } else {
+                    binding.bottomSheetMain.secure.setImageResource(R.drawable.ic_secure_inactive)
+                    binding.bottomSheetReserve.secure.setImageResource(R.drawable.ic_secure_inactive)
+                }
+
+                if (parkingData.around_the_clock == 1) {
+                    binding.bottomSheetMain.allDay.setImageResource(R.drawable.ic_247_active)
+                    binding.bottomSheetReserve.allDay.setImageResource(R.drawable.ic_247_active)
+
+                } else {
+                    binding.bottomSheetMain.allDay.setImageResource(R.drawable.ic_247_inactive)
+                    binding.bottomSheetReserve.allDay.setImageResource(R.drawable.ic_247_inactive)
+                }
+
+                if (parkingData.ev == 1) {
+                    binding.bottomSheetMain.charge.setImageResource(R.drawable.ic_charge_active)
+                    binding.bottomSheetReserve.charge.setImageResource(R.drawable.ic_charge_active)
+
+                } else {
+                    binding.bottomSheetMain.charge.setImageResource(R.drawable.ic_charge_inactive)
+                    binding.bottomSheetReserve.charge.setImageResource(R.drawable.ic_charge_inactive)
+                }
+
+                if (parkingData.disabled == 1) {
+                    binding.bottomSheetMain.disability.setImageResource(R.drawable.ic_disability_active)
+                    binding.bottomSheetReserve.disability.setImageResource(R.drawable.ic_disability_active)
+
+                } else {
+                    binding.bottomSheetMain.disability.setImageResource(R.drawable.ic_disability_inactive)
+                    binding.bottomSheetReserve.disability.setImageResource(R.drawable.ic_disability_inactive)
+                }
+
+
+//date, time, duration pickers setup + reserve call
+                reserve.setOnClickListener {
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                    bottomSheetReserveBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+
+                    getTimeDateCalendar()
+
+                    if (day < 10) {
+                        if (month < 10) {
+                            date_picker.text = "0$day/0$month/$year"
+                        } else {
+                            date_picker.text = "0$day/$month/$year"
+                        }
+                    } else {
+                        if (month < 10) {
+                            date_picker.text = "$day/0$month/$year"
+                        } else {
+                            date_picker.text = "$day/$month/$year"
+                        }
+                    }
+
+                    if (hour < 10){
+                        if (minute < 10){
+                            time_picker.text = "0$hour:0$minute"
+                        } else {
+                            time_picker.text = "0$hour:$minute"
+                        }
+                    } else {
+                        if (minute < 10){
+                            time_picker.text = "$hour:0$minute"
+                        } else {
+                            time_picker.text = "$hour:$minute"
+                        }
+                    }
+                }
+
+
+                date_picker.setOnClickListener {
+                    getTimeDateCalendar()
+                    DatePickerDialog(requireContext(), this, year, month, day).show()
+                }
+
+                time_picker.setOnClickListener {
+                    getTimeDateCalendar()
+                    TimePickerDialog(requireContext(), this, hour, minute, true).show()
+                }
+
+
+                //an array of possible durations for parking
+                val parkingDurations = arrayOf("30 минут", "1 час", "3 часа", "1 день")
+
+                duration_picker.setOnClickListener {
+                    val builder = AlertDialog.Builder(requireContext())
+                    builder.setTitle("Выбрать период")
+                    builder.setItems(parkingDurations) { dialog, position ->
+                        duration_picker.text = parkingDurations[position]
+                    }
+                    builder.show()
+                }
+
+
+
+//setting up bottomsheets
+                bottomSheetReserveBehavior.addBottomSheetCallback(object :
+                    BottomSheetBehavior.BottomSheetCallback() {
+
+                    override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                        // handle onSlide
+                    }
+
+                    override fun onStateChanged(bottomSheet: View, newState: Int) {
+                        when (newState) {
+                            BottomSheetBehavior.STATE_COLLAPSED -> {}
+                            BottomSheetBehavior.STATE_EXPANDED -> {}
+                            BottomSheetBehavior.STATE_DRAGGING -> {}
+                            BottomSheetBehavior.STATE_SETTLING ->  {}
+                            BottomSheetBehavior.STATE_HIDDEN -> {}
+
+                        }
+                    }
+                })
+
 
 
 
@@ -422,6 +455,9 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                 if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                     binding.mapUi.uiMapParkingFAB.visibility = View.GONE
+                    if (bottomSheetReserveBehavior.state != BottomSheetBehavior.STATE_COLLAPSED) {
+                        bottomSheetReserveBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                    }
                 }
 
                 mapView!!.map.move(
@@ -474,7 +510,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
             true
         }
 
-    private fun parking(context: Context, mapObjects: MapObjectCollection, clusterizedCollection: ClusterizedPlacemarkCollection, point : Point, list : List<Point>, address : String, hour_cost : Int, id : Int) {
+    private fun parking(context: Context, mapObjects: MapObjectCollection, clusterizedCollection: ClusterizedPlacemarkCollection, point : Point, list : List<Point>, address : String, hour_cost : Int, id : Int, secure: Int, around_the_clock: Int, ev: Int, disabled: Int, places: Int, free_places: Int) {
         val polyline = mapObjects
             .addPolyline(Polyline(list))
             .apply { setStrokeColor(Color.rgb(13, 174, 252)) }
@@ -492,12 +528,27 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         icon.addTapListener(parkingMapObjectTapListener)
         icon.setScaleFunction(listOf(PointF(1F, 0.5F)))
         icon.zIndex = 100.0f
-        icon.userData = PinData(polyline, hour_cost, address, point, id)
+        icon.userData = PinData(polyline, hour_cost, address, point, id, secure, around_the_clock, ev, disabled, places, free_places)
 
         clusterizedCollection.clusterPlacemarks(60.0, 15)
     }
 
-    private fun parkingG(context: Context, mapObjects: MapObjectCollection, clusterizedCollection: ClusterizedPlacemarkCollection, point : Point, list : List<Point>, address : String, hour_cost : Int, id : Int) {
+    private fun parkingG(
+        context: Context,
+        mapObjects: MapObjectCollection,
+        clusterizedCollection: ClusterizedPlacemarkCollection,
+        point: Point,
+        list: List<Point>,
+        address: String,
+        hour_cost: Int,
+        id: Int,
+        secure: Int,
+        around_the_clock: Int,
+        ev: Int,
+        disabled: Int,
+        places: Int,
+        free_places: Int
+    ) {
         val polygon = mapObjects.addPolygon(
             Polygon(LinearRing(list), ArrayList())
         )
@@ -519,7 +570,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         icon.addTapListener(parkingMapObjectTapListener)
         icon.setScaleFunction(listOf(PointF(1F, 0.5F)))
         icon.zIndex = 100.0f
-        icon.userData = PinData(polygon, hour_cost, address, point, id)
+        icon.userData = PinData(polygon, hour_cost, address, point, id, secure, around_the_clock, ev, disabled, places, free_places)
 
         clusterizedCollection.clusterPlacemarks(60.0, 15)
     }

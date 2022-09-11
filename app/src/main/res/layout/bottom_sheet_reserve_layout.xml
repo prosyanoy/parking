@@ -35,6 +35,7 @@
         app:layout_constraintTop_toBottomOf="@+id/view"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/photo"
+        android:layout_marginTop="5sp"
         android:text="Виноградная, 122А"
         android:textStyle="bold"/>
 
@@ -45,7 +46,8 @@
         android:id="@+id/photo"
         app:layout_constraintStart_toEndOf="@id/address"
         app:layout_constraintTop_toBottomOf="@id/view"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="5sp"/>
 
 
 

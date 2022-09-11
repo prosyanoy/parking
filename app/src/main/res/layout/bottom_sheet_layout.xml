@@ -36,6 +36,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/payment"
             app:layout_constraintBottom_toTopOf="@id/distance_to"
+            android:layout_marginTop="5sp"
             android:text="Виноградная, 122А"
             android:textStyle="bold"/>
 
