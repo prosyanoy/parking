@@ -367,6 +367,33 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
 
 //date, time, duration pickers setup + reserve call
+                date_picker.setOnClickListener {
+                    getTimeDateCalendar()
+                    DatePickerDialog(requireContext(), this, year, month, day).show()
+                }
+
+                time_picker.setOnClickListener {
+                    getTimeDateCalendar()
+                    TimePickerDialog(requireContext(), this, hour, minute, true).show()
+                }
+
+
+                //an array of possible durations for parking
+                val parkingDurations = arrayOf("30 минут", "1 час", "3 часа", "1 день")
+
+                duration_picker.setOnClickListener {
+                    val builder = AlertDialog.Builder(requireContext())
+                    builder.setTitle("Выбрать период")
+                    builder.setItems(parkingDurations) { dialog, position ->
+                        duration_picker.text = parkingDurations[position]
+                    }
+                    builder.show()
+                }
+
+
+
+
+//setting up bottomsheets
                 reserve.setOnClickListener {
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                     bottomSheetReserveBehavior.state = BottomSheetBehavior.STATE_EXPANDED
@@ -402,33 +429,6 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                     }
                 }
 
-
-                date_picker.setOnClickListener {
-                    getTimeDateCalendar()
-                    DatePickerDialog(requireContext(), this, year, month, day).show()
-                }
-
-                time_picker.setOnClickListener {
-                    getTimeDateCalendar()
-                    TimePickerDialog(requireContext(), this, hour, minute, true).show()
-                }
-
-
-                //an array of possible durations for parking
-                val parkingDurations = arrayOf("30 минут", "1 час", "3 часа", "1 день")
-
-                duration_picker.setOnClickListener {
-                    val builder = AlertDialog.Builder(requireContext())
-                    builder.setTitle("Выбрать период")
-                    builder.setItems(parkingDurations) { dialog, position ->
-                        duration_picker.text = parkingDurations[position]
-                    }
-                    builder.show()
-                }
-
-
-
-//setting up bottomsheets
                 bottomSheetReserveBehavior.addBottomSheetCallback(object :
                     BottomSheetBehavior.BottomSheetCallback() {
 
@@ -438,11 +438,37 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
                     override fun onStateChanged(bottomSheet: View, newState: Int) {
                         when (newState) {
-                            BottomSheetBehavior.STATE_COLLAPSED -> {}
-                            BottomSheetBehavior.STATE_EXPANDED -> {}
-                            BottomSheetBehavior.STATE_DRAGGING -> {}
-                            BottomSheetBehavior.STATE_SETTLING ->  {}
                             BottomSheetBehavior.STATE_HIDDEN -> {}
+
+                            BottomSheetBehavior.STATE_EXPANDED -> {
+                                lastState = "STATE_EXPANDED"
+                                mapView!!.map.move(
+                                    CameraPosition(Point(point.latitude - 0.0002,point.longitude), 16f, 0.0f, 0.0f),
+                                    Animation(Animation.Type.SMOOTH, 0.5F),
+                                    null)
+                            }
+
+                            BottomSheetBehavior.STATE_COLLAPSED ->{
+                                mapView!!.map.move(
+                                    CameraPosition(Point(mapView!!.map.cameraPosition.target.latitude + 0.0002, mapView!!.map.cameraPosition.target.longitude ), 16f, 0.0f, 0.0f),
+                                    Animation(Animation.Type.SMOOTH, 0.5F),
+                                    null)
+                                clearSelection()
+                                binding.mapUi.uiMapParkingFAB.visibility = View.VISIBLE
+                            }
+
+                            BottomSheetBehavior.STATE_DRAGGING -> {}
+                            BottomSheetBehavior.STATE_SETTLING -> {}
+                            BottomSheetBehavior.STATE_HALF_EXPANDED ->{
+
+                                if (lastState == "STATE_EXPANDED"){
+                                    mapView!!.map.move(
+                                        CameraPosition(Point(point.latitude - 0.0001,point.longitude), 16f, 0.0f, 0.0f),
+                                        Animation(Animation.Type.SMOOTH, 0.5F),
+                                        null)
+                                }
+                                lastState = "STATE_EXPANDED"
+                            }
 
                         }
                     }
