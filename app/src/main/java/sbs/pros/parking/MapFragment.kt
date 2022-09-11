@@ -324,7 +324,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
                 binding.bottomSheetReserve.address.text = parkingData.address
                 binding.bottomSheetMain.address.text = parkingData.address
-                binding.bottomSheetMain.payment.text = parkingData.hour_cost.toString() + "р / час"
+                binding.bottomSheetMain.payment.text = parkingData.hour_cost.toString() + " р / час"
                 binding.bottomSheetMain.textParkingLots.text = "${parkingData.places} мест \n ${parkingData.free_places} свободных"
                 binding.bottomSheetReserve.textParkingLots.text = "${parkingData.places} мест \n ${parkingData.free_places} свободных"
 
@@ -397,6 +397,12 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                 reserve.setOnClickListener {
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                     bottomSheetReserveBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                    binding.mapUi.uiMapParkingFAB.visibility = View.GONE
+
+                    mapView!!.map.move(
+                        CameraPosition(Point(point.latitude - 0.0001,point.longitude), 16f, 0.0f, 0.0f),
+                        Animation(Animation.Type.SMOOTH, 0.5F),
+                        null)
 
                     getTimeDateCalendar()
 
