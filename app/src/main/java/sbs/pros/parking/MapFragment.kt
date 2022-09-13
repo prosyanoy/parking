@@ -32,6 +32,9 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
+import com.yandex.mapkit.RequestPoint
+import com.yandex.mapkit.directions.driving.DrivingOptions
+import com.yandex.mapkit.directions.driving.DrivingRouter
 import com.yandex.mapkit.geometry.LinearRing
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.geometry.Polygon
@@ -88,6 +91,8 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
     private lateinit var bottomSheetReserveBehavior: BottomSheetBehavior<ConstraintLayout>
 
+    private lateinit var bottomSheetParkedBehavior: BottomSheetBehavior<ConstraintLayout>
+
     private var datePickerDialog: DatePickerDialog? = null
 
 
@@ -115,6 +120,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
         bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheetMain.root)
         bottomSheetReserveBehavior = BottomSheetBehavior.from(binding.bottomSheetReserve.root)
+
 
         //location
         mapKit = MapKitFactory.getInstance()
@@ -296,8 +302,10 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         queue.add(stringRequest)
     }
 
+
+
     private val parkingMapObjectTapListener =
-        MapObjectTapListener { mapObject, point ->
+            MapObjectTapListener { mapObject, point ->
 
             clearSelection()
 
@@ -313,6 +321,8 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                 }
 
 
+
+
 //receiving info about the parking and setting up all the relevant variables
                 val radius = 100 // corner radius, higher value = more rounded
                 Glide.with(this)
@@ -324,7 +334,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
                 binding.bottomSheetReserve.address.text = parkingData.address
                 binding.bottomSheetMain.address.text = parkingData.address
-                binding.bottomSheetMain.payment.text = parkingData.hour_cost.toString() + " р / час"
+                binding.bottomSheetMain.payment.text = parkingData.hour_cost.toString() + " ₽ / час"
                 binding.bottomSheetMain.textParkingLots.text = "${parkingData.places} мест \n ${parkingData.free_places} свободных"
                 binding.bottomSheetReserve.textParkingLots.text = "${parkingData.places} мест \n ${parkingData.free_places} свободных"
 
@@ -399,10 +409,6 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                     bottomSheetReserveBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                     binding.mapUi.uiMapParkingFAB.visibility = View.GONE
 
-                    mapView!!.map.move(
-                        CameraPosition(Point(point.latitude - 0.0001,point.longitude), 16f, 0.0f, 0.0f),
-                        Animation(Animation.Type.SMOOTH, 0.5F),
-                        null)
 
                     getTimeDateCalendar()
 
@@ -435,49 +441,23 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                     }
                 }
 
-                bottomSheetReserveBehavior.addBottomSheetCallback(object :
-                    BottomSheetBehavior.BottomSheetCallback() {
+                bottomSheetReserveBehavior.addBottomSheetCallback(object: BottomSheetBehavior.BottomSheetCallback(){
+                    override fun onStateChanged(bottomSheet: View, state: Int) {
+                        when (state) {
 
-                    override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                        // handle onSlide
-                    }
-
-                    override fun onStateChanged(bottomSheet: View, newState: Int) {
-                        when (newState) {
                             BottomSheetBehavior.STATE_HIDDEN -> {}
 
-                            BottomSheetBehavior.STATE_EXPANDED -> {
-                                lastState = "STATE_EXPANDED"
-                                mapView!!.map.move(
-                                    CameraPosition(Point(point.latitude - 0.0002,point.longitude), 16f, 0.0f, 0.0f),
-                                    Animation(Animation.Type.SMOOTH, 0.5F),
-                                    null)
-                            }
+                            BottomSheetBehavior.STATE_EXPANDED -> {}
 
-                            BottomSheetBehavior.STATE_COLLAPSED ->{
-                                mapView!!.map.move(
-                                    CameraPosition(Point(mapView!!.map.cameraPosition.target.latitude + 0.0002, mapView!!.map.cameraPosition.target.longitude ), 16f, 0.0f, 0.0f),
-                                    Animation(Animation.Type.SMOOTH, 0.5F),
-                                    null)
-                                clearSelection()
-                                binding.mapUi.uiMapParkingFAB.visibility = View.VISIBLE
-                            }
+                            BottomSheetBehavior.STATE_COLLAPSED ->{}
 
                             BottomSheetBehavior.STATE_DRAGGING -> {}
                             BottomSheetBehavior.STATE_SETTLING -> {}
-                            BottomSheetBehavior.STATE_HALF_EXPANDED ->{
-
-                                if (lastState == "STATE_EXPANDED"){
-                                    mapView!!.map.move(
-                                        CameraPosition(Point(point.latitude - 0.0001,point.longitude), 16f, 0.0f, 0.0f),
-                                        Animation(Animation.Type.SMOOTH, 0.5F),
-                                        null)
-                                }
-                                lastState = "STATE_EXPANDED"
-                            }
-
+                            BottomSheetBehavior.STATE_HALF_EXPANDED ->{}
                         }
                     }
+
+                    override fun onSlide(bottomSheet: View, slideOffset: Float) { }
                 })
 
 

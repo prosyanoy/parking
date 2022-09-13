@@ -48,7 +48,7 @@
             app:layout_constraintTop_toBottomOf="@+id/view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@id/reserve"
-            android:text="100 Р / час"
+            android:text="100 ₽ / час"
             android:textStyle="bold"
             android:textSize="25sp"/>
 
