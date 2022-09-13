@@ -19,8 +19,11 @@
     <include android:id="@+id/bottom_menu"
         layout="@layout/menu_bottom_sheet_layout"/>
 
-    <include android:id="@+id/bottom_sheet_reserve"
-        layout="@layout/bottom_sheet_reserve_layout"/>
+
+
+
+
+
 
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -31,6 +34,34 @@
 
         <include android:id="@+id/bottom_sheet_main"
             layout="@layout/bottom_sheet_layout" />
+
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_anchor="@id/map_ui"
+        app:layout_anchorGravity="bottom">
+
+        <include android:id="@+id/bottom_sheet_reserve"
+            layout="@layout/bottom_sheet_reserve_layout"/>
+
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_anchor="@id/map_ui"
+        app:layout_anchorGravity="bottom">
+
+        <include android:id="@+id/bottom_sheet_Parked"
+            layout="@layout/bottom_sheet_parked_layout"/>
+
+
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

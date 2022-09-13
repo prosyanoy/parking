@@ -2,9 +2,11 @@ package sbs.pros.parking
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.PointF
@@ -48,6 +50,7 @@ import com.yandex.mapkit.user_location.UserLocationView
 import com.yandex.runtime.image.ImageProvider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.bottom_sheet_layout.*
+import kotlinx.android.synthetic.main.bottom_sheet_parked_layout.*
 import kotlinx.android.synthetic.main.bottom_sheet_reserve_layout.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -61,6 +64,7 @@ import sbs.pros.parking.utils.drawSimpleBitmap
 import sbs.pros.parking.utils.setSafeOnClickListener
 import sbs.pros.parking.utils.viewLifecycleLazy
 import java.util.*
+import kotlin.math.roundToInt
 
 
 @AndroidEntryPoint
@@ -107,6 +111,10 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
     private var savedHour = 0
     private var savedMinute = 0
 
+    private var timerStarted = false
+    private lateinit var serviceIntent: Intent
+    private var time = 0.0
+
 
 
 
@@ -120,6 +128,8 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
         bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheetMain.root)
         bottomSheetReserveBehavior = BottomSheetBehavior.from(binding.bottomSheetReserve.root)
+        bottomSheetParkedBehavior = BottomSheetBehavior.from(binding.bottomSheetParked.root)
+
 
 
         //location
@@ -146,6 +156,14 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         viewLifecycleOwner.lifecycleScope.launchWhenResumed {
             menuViewModel.title.collect{ binding.bottomMenu.menuTitle.text = it }
         }
+
+
+
+        serviceIntent = Intent(requireContext(), TimerService::class.java)
+
+
+
+        registerReceiver(updateTime, IntentFilter(TimerService.TIMER_UPDATED))
 
     }
 
@@ -334,7 +352,9 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
                 binding.bottomSheetReserve.address.text = parkingData.address
                 binding.bottomSheetMain.address.text = parkingData.address
+                binding.bottomSheetParked.address.text = parkingData.address
                 binding.bottomSheetMain.payment.text = parkingData.hour_cost.toString() + " ₽ / час"
+                binding.bottomSheetParked.payment.text = parkingData.hour_cost.toString() + " ₽ / час"
                 binding.bottomSheetMain.textParkingLots.text = "${parkingData.places} мест \n ${parkingData.free_places} свободных"
                 binding.bottomSheetReserve.textParkingLots.text = "${parkingData.places} мест \n ${parkingData.free_places} свободных"
 
@@ -406,6 +426,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 //setting up bottomsheets
                 reserve.setOnClickListener {
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                    bottomSheetParkedBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                     bottomSheetReserveBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                     binding.mapUi.uiMapParkingFAB.visibility = View.GONE
 
@@ -462,6 +483,36 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
 
 
+                go_now.setOnClickListener {
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                    bottomSheetReserveBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                    bottomSheetParkedBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                    binding.mapUi.uiMapParkingFAB.visibility = View.GONE
+                    startTimer()
+
+                }
+
+                bottomSheetParkedBehavior.addBottomSheetCallback(object: BottomSheetBehavior.BottomSheetCallback(){
+                    override fun onStateChanged(bottomSheet: View, state: Int) {
+                        when (state) {
+
+                            BottomSheetBehavior.STATE_HIDDEN -> {}
+
+                            BottomSheetBehavior.STATE_EXPANDED -> {}
+
+                            BottomSheetBehavior.STATE_COLLAPSED ->{}
+
+                            BottomSheetBehavior.STATE_DRAGGING -> {}
+                            BottomSheetBehavior.STATE_SETTLING -> {}
+                            BottomSheetBehavior.STATE_HALF_EXPANDED ->{}
+                        }
+                    }
+
+                    override fun onSlide(bottomSheet: View, slideOffset: Float) { }
+                })
+
+
+
 
 
                 if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
@@ -469,6 +520,10 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                     binding.mapUi.uiMapParkingFAB.visibility = View.GONE
                     if (bottomSheetReserveBehavior.state != BottomSheetBehavior.STATE_COLLAPSED) {
                         bottomSheetReserveBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                    }
+
+                    if (bottomSheetParkedBehavior.state != BottomSheetBehavior.STATE_COLLAPSED) {
+                        bottomSheetParkedBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                     }
                 }
 
@@ -841,6 +896,45 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
             }
         }
     }
+
+
+
+
+
+    private fun startTimer()
+    {
+        serviceIntent.putExtra(TimerService.TIME_EXTRA, time)
+
+        startService(serviceIntent)
+        timerStarted = true
+    }
+
+    private fun stopTimer()
+    {
+        stopService(serviceIntent)
+        timerStarted = false
+    }
+
+    private val updateTime: BroadcastReceiver = object : BroadcastReceiver()
+    {
+        override fun onReceive(context: Context, intent: Intent)
+        {
+            time = intent.getDoubleExtra(TimerService.TIME_EXTRA, 0.0)
+            stopwatch.text = getTimeStringFromDouble(time)
+        }
+    }
+
+    private fun getTimeStringFromDouble(time: Double): String
+    {
+        val resultInt = time.roundToInt()
+        val hours = resultInt % 86400 / 3600
+        val minutes = resultInt % 86400 % 3600 / 60
+        val seconds = resultInt % 86400 % 3600 % 60
+
+        return makeTimeString(hours, minutes, seconds)
+    }
+
+    private fun makeTimeString(hour: Int, min: Int, sec: Int): String = String.format("%02d:%02d:%02d", hour, min, sec)
 
 
 }
