@@ -13,6 +13,7 @@ import android.graphics.PointF
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.provider.Settings
 import android.view.View
 import android.widget.*
@@ -34,9 +35,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
-import com.yandex.mapkit.RequestPoint
-import com.yandex.mapkit.directions.driving.DrivingOptions
-import com.yandex.mapkit.directions.driving.DrivingRouter
 import com.yandex.mapkit.geometry.LinearRing
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.geometry.Polygon
@@ -97,8 +95,6 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
     private lateinit var bottomSheetParkedBehavior: BottomSheetBehavior<ConstraintLayout>
 
-    private var datePickerDialog: DatePickerDialog? = null
-
 
     private var day = 0
     private var month = 0
@@ -111,9 +107,10 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
     private var savedHour = 0
     private var savedMinute = 0
 
-    private var timerStarted = false
-    private lateinit var serviceIntent: Intent
-    private var time = 0.0
+
+    private var seconds = 0
+    private var running = false
+    private var wasRunning = false
 
 
 
@@ -159,11 +156,19 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
 
 
-        serviceIntent = Intent(requireContext(), TimerService::class.java)
+        if (savedInstanceState != null) {
 
-
-
-        registerReceiver(updateTime, IntentFilter(TimerService.TIMER_UPDATED))
+            // Get the previous state of the stopwatch
+            // if the activity has been
+            // destroyed and recreated.
+            seconds = savedInstanceState
+                .getInt("seconds")
+            running = savedInstanceState
+                .getBoolean("running")
+            wasRunning = savedInstanceState
+                .getBoolean("wasRunning")
+        }
+        runTimer()
 
     }
 
@@ -488,8 +493,13 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                     bottomSheetReserveBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                     bottomSheetParkedBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                     binding.mapUi.uiMapParkingFAB.visibility = View.GONE
-                    startTimer()
+                    seconds = 0
+                    running = true
+                }
 
+
+                stop.setOnClickListener {
+                    running = false
                 }
 
                 bottomSheetParkedBehavior.addBottomSheetCallback(object: BottomSheetBehavior.BottomSheetCallback(){
@@ -901,40 +911,66 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
 
 
-    private fun startTimer()
-    {
-        serviceIntent.putExtra(TimerService.TIME_EXTRA, time)
-
-        startService(serviceIntent)
-        timerStarted = true
+    // Save the state of the stopwatch
+    // if it's about to be destroyed.
+    override fun onSaveInstanceState(
+        savedInstanceState: Bundle
+    ) {
+        savedInstanceState
+            .putInt("seconds", seconds)
+        savedInstanceState
+            .putBoolean("running", running)
+        savedInstanceState
+            .putBoolean("wasRunning", wasRunning)
     }
 
-    private fun stopTimer()
-    {
-        stopService(serviceIntent)
-        timerStarted = false
+    // Sets the NUmber of seconds on the timer.
+    // The runTimer() method uses a Handler
+    // to increment the seconds and
+    // update the text view.
+    private fun runTimer() {
+
+
+
+        // Creates a new Handler
+        val handler = Handler()
+
+        // Call the post() method,
+        // passing in a new Runnable.
+        // The post() method processes
+        // code without a delay,
+        // so the code in the Runnable
+        // will run almost immediately.
+        handler.post(object : Runnable {
+            override fun run() {
+                val hours = seconds / 3600
+                val minutes = seconds % 3600 / 60
+                val secs = seconds % 60
+
+                // Format the seconds into hours, minutes,
+                // and seconds.
+                val time = java.lang.String
+                    .format(
+                        Locale.getDefault(),
+                        "%d:%02d:%02d", hours,
+                        minutes, secs
+                    )
+
+                // Set the text view text.
+                stopwatch.text = time
+
+                // If running is true, increment the
+                // seconds variable.
+                if (running) {
+                    seconds++
+                }
+
+                // Post the code again
+                // with a delay of 1 second.
+                handler.postDelayed(this, 1000)
+            }
+        })
     }
-
-    private val updateTime: BroadcastReceiver = object : BroadcastReceiver()
-    {
-        override fun onReceive(context: Context, intent: Intent)
-        {
-            time = intent.getDoubleExtra(TimerService.TIME_EXTRA, 0.0)
-            stopwatch.text = getTimeStringFromDouble(time)
-        }
-    }
-
-    private fun getTimeStringFromDouble(time: Double): String
-    {
-        val resultInt = time.roundToInt()
-        val hours = resultInt % 86400 / 3600
-        val minutes = resultInt % 86400 % 3600 / 60
-        val seconds = resultInt % 86400 % 3600 % 60
-
-        return makeTimeString(hours, minutes, seconds)
-    }
-
-    private fun makeTimeString(hour: Int, min: Int, sec: Int): String = String.format("%02d:%02d:%02d", hour, min, sec)
 
 
 }
