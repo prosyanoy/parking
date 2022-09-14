@@ -35,6 +35,7 @@
         android:id="@+id/address"
         app:layout_constraintTop_toBottomOf="@+id/view"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="5sp"
         android:text="Виноградная, 122А"
         android:textStyle="bold"/>
@@ -45,7 +46,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/payment"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/address"
+        android:layout_marginTop="5sp"
         android:text="100 ₽ / час"/>
 
     <TextView
@@ -55,6 +58,7 @@
         app:layout_constraintTop_toBottomOf="@id/payment"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10sp"
         android:text="00:00:00"
         android:textStyle="bold"
         android:textSize="32sp"
@@ -67,6 +71,7 @@
         app:layout_constraintTop_toBottomOf="@id/stopwatch"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10sp"
         android:text="Завершить"/>
 
 

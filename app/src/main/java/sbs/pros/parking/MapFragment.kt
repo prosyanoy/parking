@@ -2,11 +2,9 @@ package sbs.pros.parking
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.PointF
@@ -62,7 +60,6 @@ import sbs.pros.parking.utils.drawSimpleBitmap
 import sbs.pros.parking.utils.setSafeOnClickListener
 import sbs.pros.parking.utils.viewLifecycleLazy
 import java.util.*
-import kotlin.math.roundToInt
 
 
 @AndroidEntryPoint
@@ -140,8 +137,10 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         setClickListeners()
 
 
+
+
         mapView!!.map.move(
-            CameraPosition(TARGET_LOCATION, 13.0f, 0.0f, 0.0f),
+            CameraPosition(TARGET_LOCATION, 11.0f, 0.0f, 0.0f),
             Animation(Animation.Type.SMOOTH, 0F),
             null
         )
