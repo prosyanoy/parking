@@ -380,6 +380,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                     null)
 
 //create a route
+                mapObjects!!.clear()
                 createRoute(userLocation!!, point)
 
 
