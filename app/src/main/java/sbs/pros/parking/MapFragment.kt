@@ -27,7 +27,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
+import com.android.volley.Request
 import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
@@ -41,10 +43,6 @@ import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.geometry.Polygon
 import com.yandex.mapkit.geometry.Polyline
 import com.yandex.mapkit.layers.ObjectEvent
-import com.yandex.mapkit.location.FilteringMode
-import com.yandex.mapkit.location.Location
-import com.yandex.mapkit.location.LocationListener
-import com.yandex.mapkit.location.LocationStatus
 import com.yandex.mapkit.map.*
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.mapkit.user_location.UserLocationLayer
@@ -61,6 +59,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.json.JSONArray
+import org.json.JSONException
 import org.json.JSONObject
 import org.json.JSONTokener
 import sbs.pros.parking.databinding.FragmentMapBinding
@@ -71,6 +70,10 @@ import sbs.pros.parking.utils.drawSimpleBitmap
 import sbs.pros.parking.utils.setSafeOnClickListener
 import sbs.pros.parking.utils.viewLifecycleLazy
 import java.util.*
+import com.android.volley.RequestQueue
+
+
+
 
 
 @AndroidEntryPoint
@@ -127,7 +130,10 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
     private var userLocation = Point(43.6028, 39.7342)
 
+    private var distance = 0.0
+    private var duration = 0.0
 
+    private var mRequestQueue: RequestQueue? = null
 
 
     val binding by viewLifecycleLazy { FragmentMapBinding.bind( requireView()) }
@@ -166,6 +172,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         clusterizedCollection = mapView!!.map.mapObjects.addClusterizedPlacemarkCollection(this)
 
         getParkings(requireContext(), url, mapObjects!!, clusterizedCollection!!)
+        mRequestQueue = Volley.newRequestQueue(context);
 
         viewLifecycleOwner.lifecycleScope.launchWhenResumed {
             menuViewModel.title.collect{ binding.bottomMenu.menuTitle.text = it }
@@ -382,6 +389,11 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 //create a route
                 mapObjects!!.clear()
                 createRoute(userLocation!!, point)
+                val url = "https://router.project-osrm.org/route/v1/driving/${userLocation.longitude},${userLocation.latitude};${point.longitude},${point.latitude}"
+                Log.d(TAG, "Url is: $url")
+                getRouteInfo(url)
+                binding.bottomSheetMain.textDistanceTo.text="$distance метров \n $duration секунд"
+                binding.bottomSheetReserve.textDistanceTo.text="$distance метров \n $duration секунд"
 
 
 
@@ -1054,4 +1066,22 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
     }
 
 
+    private fun getRouteInfo(url: String) {
+        val request = JsonObjectRequest(
+            Request.Method.GET,  //GET - API-запрос для получение данных
+            url, null, { response ->
+                try {
+                    Log.d(TAG, "Url: $url")
+                    Log.d(TAG, "response: $response")
+                    distance = response.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0).getDouble("distance")
+                    duration = response.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0).getDouble("duration")
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+            }) { error ->
+            // в случае возникновеня ошибки
+            error.printStackTrace()
+        }
+        mRequestQueue!!.add(request) // добавляем запрос в очередь
+    }
 }
