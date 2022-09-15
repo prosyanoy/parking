@@ -27,6 +27,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
+import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
@@ -59,6 +60,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.json.JSONArray
+import org.json.JSONObject
+import org.json.JSONTokener
 import sbs.pros.parking.databinding.FragmentMapBinding
 import sbs.pros.parking.menu.MenuViewModel
 import sbs.pros.parking.model.PinData
@@ -296,26 +300,26 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         val stringRequest = object : StringRequest(
             Method.GET, "$url?apicall=get_parkings",
 
-            com.android.volley.Response.Listener { response ->
+            Response.Listener { response ->
 
-                val jsonArray = org.json.JSONTokener(response).nextValue() as org.json.JSONArray
+                val jsonArray = JSONTokener(response).nextValue() as JSONArray
                 for (i in 0 until jsonArray.length()) {
                     val coordinatesObject = jsonArray.getJSONObject(i).getString("coordinates")
-                    val coordinates = org.json.JSONTokener(coordinatesObject).nextValue() as org.json.JSONObject
+                    val coordinates = JSONTokener(coordinatesObject).nextValue() as JSONObject
 
                     val point1 = coordinates.getString("point")
-                    val point2 = org.json.JSONTokener(point1).nextValue() as org.json.JSONArray
+                    val point2 = JSONTokener(point1).nextValue() as JSONArray
 
                     val lat = point2.getDouble(0)
                     val lon = point2.getDouble(1)
                     val point = Point(lat, lon)
 
-                    val list = org.json.JSONTokener(coordinates.getString("list")).nextValue() as org.json.JSONArray
+                    val list = JSONTokener(coordinates.getString("list")).nextValue() as JSONArray
 
                     var myList = mutableListOf<Point>()
                     for (i in 0 until list.length()) {
                         val coord1 = list.getJSONArray(i).toString()
-                        val coord2 = org.json.JSONTokener(coord1).nextValue() as org.json.JSONArray
+                        val coord2 = JSONTokener(coord1).nextValue() as JSONArray
                         val latitude = coord2.getDouble(0)
                         val longitude = coord2.getDouble(1)
                         myList += Point(latitude, longitude)
@@ -342,7 +346,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                     }
                 }
             },
-            com.android.volley.Response.ErrorListener {
+            Response.ErrorListener {
                 Toast.makeText(
                     context,
                     R.string.server_error,
@@ -646,7 +650,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         val icon = clusterizedCollection.addPlacemark(
             point,
             ImageProvider.fromBitmap(
-                sbs.pros.parking.utils.drawSimpleBitmap(
+                drawSimpleBitmap(
                     "$hour_cost\u2006₽",
                     context
                 )
@@ -688,7 +692,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         val icon = clusterizedCollection.addPlacemark(
             point,
             ImageProvider.fromBitmap(
-                sbs.pros.parking.utils.drawSimpleBitmap(
+                drawSimpleBitmap(
                     "$hour_cost₽",
                     context
                 )
@@ -1020,9 +1024,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
     }
 
     override fun onDrivingRoutes(routes: MutableList<DrivingRoute>) {
-        for (route in routes) {
-            mapObjects!!.addPolyline(route.geometry)
-        }
+        mapObjects!!.addPolyline(routes[0].geometry)
     }
 
     override fun onDrivingRoutesError(p0: Error) {
