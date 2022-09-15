@@ -2,6 +2,7 @@ package sbs.pros.parking
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
@@ -13,6 +14,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -30,19 +32,24 @@ import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.yandex.mapkit.Animation
-import com.yandex.mapkit.MapKit
-import com.yandex.mapkit.MapKitFactory
+import com.yandex.mapkit.*
+import com.yandex.mapkit.directions.DirectionsFactory
+import com.yandex.mapkit.directions.driving.*
 import com.yandex.mapkit.geometry.LinearRing
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.geometry.Polygon
 import com.yandex.mapkit.geometry.Polyline
 import com.yandex.mapkit.layers.ObjectEvent
+import com.yandex.mapkit.location.FilteringMode
+import com.yandex.mapkit.location.Location
+import com.yandex.mapkit.location.LocationListener
+import com.yandex.mapkit.location.LocationStatus
 import com.yandex.mapkit.map.*
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.mapkit.user_location.UserLocationLayer
 import com.yandex.mapkit.user_location.UserLocationObjectListener
 import com.yandex.mapkit.user_location.UserLocationView
+import com.yandex.runtime.Error
 import com.yandex.runtime.image.ImageProvider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.bottom_sheet_layout.*
@@ -63,7 +70,7 @@ import java.util.*
 
 
 @AndroidEntryPoint
-class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTapListener, UserLocationObjectListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTapListener, UserLocationObjectListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, DrivingSession.DrivingRouteListener  {
 
 
     private val menuViewModel by activityViewModels<MenuViewModel>()
@@ -75,6 +82,8 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
     private var mapView: MapView? = null
 
     private var mapKit: MapKit? = null
+
+    private var mapObjects: MapObjectCollection? = null
 
     private var selectedObject: MapObject? = null
 
@@ -108,6 +117,11 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
     private var seconds = 0
     private var running = false
     private var wasRunning = false
+
+    private var drivingRouter: DrivingRouter? = null
+    private var drivingSession: DrivingSession? = null
+
+    private var userLocation = Point(43.6028, 39.7342)
 
 
 
@@ -144,19 +158,33 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
             Animation(Animation.Type.SMOOTH, 0F),
             null
         )
-        val mapObjects = mapView!!.map.mapObjects.addCollection()
+        mapObjects = mapView!!.map.mapObjects.addCollection()
         clusterizedCollection = mapView!!.map.mapObjects.addClusterizedPlacemarkCollection(this)
 
-        getParkings(requireContext(), url, mapObjects, clusterizedCollection!!)
+        getParkings(requireContext(), url, mapObjects!!, clusterizedCollection!!)
 
         viewLifecycleOwner.lifecycleScope.launchWhenResumed {
             menuViewModel.title.collect{ binding.bottomMenu.menuTitle.text = it }
         }
 
 
+        drivingRouter = DirectionsFactory.getInstance().createDrivingRouter()
+        mapObjects = mapView!!.map.mapObjects.addCollection()
+
+        /*
+        mapKit!!.createLocationManager().subscribeForLocationUpdates(0.0, 0, 0.0, true, FilteringMode.ON,
+            object : LocationListener {
+                override fun onLocationUpdated( location: Location) {
+                    userLocation = Point(location.position.latitude, location.position.longitude)
+                    Log.d(TAG, "User location: $userLocation")
+                }
+
+                override fun onLocationStatusUpdated( locationStatus: LocationStatus) {}
+            })
+*/
+
 
         if (savedInstanceState != null) {
-
             // Get the previous state of the stopwatch
             // if the activity has been
             // destroyed and recreated.
@@ -342,6 +370,13 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                     is PolygonMapObject -> setSelectedPolygon(parkingData.parking)
                 }
 
+                mapView!!.map.move(
+                    CameraPosition(Point(point.latitude - 0.0001,point.longitude), 16f, 0.0f, 0.0f),
+                    Animation(Animation.Type.SMOOTH, 0.5F),
+                    null)
+
+//create a route
+                createRoute(userLocation!!, point)
 
 
 
@@ -400,7 +435,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                 }
 
 
-//date, time, duration pickers setup + reserve call
+//date, time, duration pickers setup
                 date_picker.setOnClickListener {
                     getTimeDateCalendar()
                     DatePickerDialog(requireContext(), this, year, month, day).show()
@@ -472,9 +507,19 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
                             BottomSheetBehavior.STATE_HIDDEN -> {}
 
-                            BottomSheetBehavior.STATE_EXPANDED -> {}
+                            BottomSheetBehavior.STATE_EXPANDED -> {
+                                mapView!!.map.move(
+                                    CameraPosition(Point(point.latitude - 0.0025,point.longitude), 16f, 0.0f, 0.0f),
+                                    Animation(Animation.Type.SMOOTH, 0.5F),
+                                    null)
+                            }
 
-                            BottomSheetBehavior.STATE_COLLAPSED ->{}
+                            BottomSheetBehavior.STATE_COLLAPSED ->{
+                                mapView!!.map.move(
+                                    CameraPosition(Point(point.latitude - 0.0001,point.longitude), 16f, 0.0f, 0.0f),
+                                    Animation(Animation.Type.SMOOTH, 0.5F),
+                                    null)
+                            }
 
                             BottomSheetBehavior.STATE_DRAGGING -> {}
                             BottomSheetBehavior.STATE_SETTLING -> {}
@@ -507,9 +552,19 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
                             BottomSheetBehavior.STATE_HIDDEN -> {}
 
-                            BottomSheetBehavior.STATE_EXPANDED -> {}
+                            BottomSheetBehavior.STATE_EXPANDED -> {
+                                mapView!!.map.move(
+                                    CameraPosition(Point(point.latitude - 0.0002,point.longitude), 16f, 0.0f, 0.0f),
+                                    Animation(Animation.Type.SMOOTH, 0.5F),
+                                    null)
+                            }
 
-                            BottomSheetBehavior.STATE_COLLAPSED ->{}
+                            BottomSheetBehavior.STATE_COLLAPSED ->{
+                                mapView!!.map.move(
+                                    CameraPosition(Point(point.latitude - 0.0001,point.longitude), 16f, 0.0f, 0.0f),
+                                    Animation(Animation.Type.SMOOTH, 0.5F),
+                                    null)
+                            }
 
                             BottomSheetBehavior.STATE_DRAGGING -> {}
                             BottomSheetBehavior.STATE_SETTLING -> {}
@@ -524,7 +579,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
 
 
-                if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
+                if (bottomSheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                     binding.mapUi.uiMapParkingFAB.visibility = View.GONE
                     if (bottomSheetReserveBehavior.state != BottomSheetBehavior.STATE_COLLAPSED) {
@@ -536,10 +591,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                     }
                 }
 
-                mapView!!.map.move(
-                    CameraPosition(Point(point.latitude - 0.0001,point.longitude), 16f, 0.0f, 0.0f),
-                    Animation(Animation.Type.SMOOTH, 0.5F),
-                    null)
+
 
                 bottomSheetBehavior.addBottomSheetCallback(object: BottomSheetBehavior.BottomSheetCallback(){
                     override fun onStateChanged(bottomSheet: View, state: Int) {
@@ -550,7 +602,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                             BottomSheetBehavior.STATE_EXPANDED -> {
                                 lastState = "STATE_EXPANDED"
                                 mapView!!.map.move(
-                                    CameraPosition(Point(point.latitude - 0.0002,point.longitude), 16f, 0.0f, 0.0f),
+                                    CameraPosition(Point(point.latitude - 0.0003,point.longitude), 16f, 0.0f, 0.0f),
                                     Animation(Animation.Type.SMOOTH, 0.5F),
                                     null)
                             }
@@ -928,12 +980,8 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
     // to increment the seconds and
     // update the text view.
     private fun runTimer() {
-
-
-
         // Creates a new Handler
         val handler = Handler()
-
         // Call the post() method,
         // passing in a new Runnable.
         // The post() method processes
@@ -969,6 +1017,37 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                 handler.postDelayed(this, 1000)
             }
         })
+    }
+
+    override fun onDrivingRoutes(routes: MutableList<DrivingRoute>) {
+        for (route in routes) {
+            mapObjects!!.addPolyline(route.geometry)
+        }
+    }
+
+    override fun onDrivingRoutesError(p0: Error) {
+        Toast.makeText(context, "Не получилось построить маршрут", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun createRoute(startPoint: Point, endPoint: Point) {
+        val drivingOptions = DrivingOptions()
+        val vehicleOptions = VehicleOptions()
+        val requestPoints = ArrayList<RequestPoint>()
+        requestPoints.add(
+            RequestPoint(
+                startPoint,
+                RequestPointType.WAYPOINT,
+                null
+            )
+        )
+        requestPoints.add(
+            RequestPoint(
+                endPoint,
+                RequestPointType.WAYPOINT,
+                null
+            )
+        )
+        drivingSession = drivingRouter?.requestRoutes(requestPoints, drivingOptions, vehicleOptions, this)
     }
 
 
