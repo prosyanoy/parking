@@ -341,13 +341,14 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                     val disabled = jsonArray.getJSONObject(i).getInt("disabled")
                     val places = jsonArray.getJSONObject(i).getInt("places")
                     val free_places = jsonArray.getJSONObject(i).getInt("free_places")
+                    val open_hours = jsonArray.getJSONObject(i).getJSONArray("time")
 
 
 
                     if (type == "l") {
-                        parking(context, mapObjects, clusterizedCollection, point, myList, address, hour_cost, id, secure, around_the_clock, ev, disabled, places, free_places)
+                        parking(context, mapObjects, clusterizedCollection, point, myList, address, hour_cost, id, secure, around_the_clock, ev, disabled, places, free_places, open_hours)
                     } else if (type == "g") {
-                        parkingG(context, mapObjects, clusterizedCollection, point, myList, address, hour_cost, id, secure, around_the_clock, ev, disabled, places, free_places)
+                        parkingG(context, mapObjects, clusterizedCollection, point, myList, address, hour_cost, id, secure, around_the_clock, ev, disabled, places, free_places, open_hours)
                     }
                 }
             },
@@ -364,7 +365,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
 
     private val parkingMapObjectTapListener =
-            MapObjectTapListener { mapObject, point ->
+        MapObjectTapListener { mapObject, point ->
 
             clearSelection()
 
@@ -400,7 +401,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
 
 
-//receiving info about the parking and setting up all the relevant variables
+//receiving info about the parking and setting up relevant variables
                 val radius = 100 // corner radius, higher value = more rounded
                 Glide.with(this)
                     .load("https://pros.sbs/parking/photo/${parkingData.id}.jpeg")
@@ -451,6 +452,28 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                     binding.bottomSheetMain.disability.setImageResource(R.drawable.ic_disability_inactive)
                     binding.bottomSheetReserve.disability.setImageResource(R.drawable.ic_disability_inactive)
                 }
+
+
+                var priceListText = ""
+
+
+                for (i in 0..parkingData.open_hours.length()){
+                    val elem = parkingData.open_hours.getJSONObject(i)
+                    val day = dayOfTheWeek(elem.getInt("days"))
+                    val open = elem.getInt("open")
+                    val close = elem.getInt("close")
+                    val isWorking = elem.getInt("isWorking")
+
+                    if (isWorking == 1){
+                        if (i == 0){
+                            priceListText += "$day: с $open до $close"
+                        } else{
+                            priceListText += "\n$day: с $open до $close"
+                        }
+                    }
+                }
+
+                binding.bottomSheetReserve.priceList.text = priceListText
 
 
 //date, time, duration pickers setup
@@ -715,7 +738,28 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
             true
         }
 
-    private fun parking(context: Context, mapObjects: MapObjectCollection, clusterizedCollection: ClusterizedPlacemarkCollection, point : Point, list : List<Point>, address : String, hour_cost : Int, id : Int, secure: Int, around_the_clock: Int, ev: Int, disabled: Int, places: Int, free_places: Int) {
+    private fun dayOfTheWeek(day: Int): String {
+        if (day == 1){
+            return "Понедельник"
+        } else if (day == 2){
+            return "Вторник"
+        } else if (day == 3){
+            return "Среда"
+        }else if (day == 4){
+            return "Четверг"
+        }else if (day == 5){
+            return "Пятница"
+        }else if (day == 6){
+            return "Суббота"
+        }else if (day == 0){
+            return "Воскресенье"
+        } else {
+            return "Ошибка определения дня недели"
+        }
+
+    }
+
+    private fun parking(context: Context, mapObjects: MapObjectCollection, clusterizedCollection: ClusterizedPlacemarkCollection, point : Point, list : List<Point>, address : String, hour_cost : Int, id : Int, secure: Int, around_the_clock: Int, ev: Int, disabled: Int, places: Int, free_places: Int, open_hours: JSONArray) {
         val polyline = mapObjects
             .addPolyline(Polyline(list))
             .apply { setStrokeColor(Color.rgb(13, 174, 252)) }
@@ -733,7 +777,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         icon.addTapListener(parkingMapObjectTapListener)
         icon.setScaleFunction(listOf(PointF(1F, 0.5F)))
         icon.zIndex = 100.0f
-        icon.userData = PinData(polyline, hour_cost, address, point, id, secure, around_the_clock, ev, disabled, places, free_places)
+        icon.userData = PinData(polyline, hour_cost, address, point, id, secure, around_the_clock, ev, disabled, places, free_places, open_hours)
 
         clusterizedCollection.clusterPlacemarks(60.0, 15)
     }
@@ -752,7 +796,8 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         ev: Int,
         disabled: Int,
         places: Int,
-        free_places: Int
+        free_places: Int,
+        open_hours: JSONArray
     ) {
         val polygon = mapObjects.addPolygon(
             Polygon(LinearRing(list), ArrayList())
@@ -775,7 +820,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         icon.addTapListener(parkingMapObjectTapListener)
         icon.setScaleFunction(listOf(PointF(1F, 0.5F)))
         icon.zIndex = 100.0f
-        icon.userData = PinData(polygon, hour_cost, address, point, id, secure, around_the_clock, ev, disabled, places, free_places)
+        icon.userData = PinData(polygon, hour_cost, address, point, id, secure, around_the_clock, ev, disabled, places, free_places, open_hours)
 
         clusterizedCollection.clusterPlacemarks(60.0, 15)
     }

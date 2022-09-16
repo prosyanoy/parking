@@ -2,6 +2,7 @@ package sbs.pros.parking.model
 
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.MapObject
+import org.json.JSONArray
 
 class PinData(
     val parking: MapObject,
@@ -15,5 +16,6 @@ class PinData(
     val disabled: Int,
     val places: Int,
     val free_places: Int,
+    val open_hours: JSONArray,
     var isSelected: Boolean = false
 )

@@ -32,4 +32,8 @@
     <string name="remaining2">секунд(ы)</string>
     <string name="repeated_request">Запросить код</string>
     <string name="limit">Количество запросов исчерпано. Повторите позже</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="app_version">Версия %s</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
