@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/root"
+    android:background="@drawable/bottom_sheet_background"
+    android:clickable="true"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="0dp"
+    app:behavior_fitToContents="false"
+    app:behavior_expandedOffset = "0dp"
+    app:behavior_halfExpandedRatio = "0.55"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+
+
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="50dp"
+        android:layout_height="7dp"
+        android:layout_marginTop="7dp"
+        android:background="@drawable/rounded_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/address"
+        app:layout_constraintTop_toBottomOf="@+id/view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="5sp"
+        android:text="Виноградная, 122А"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/car_number"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/address"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="5sp"
+        android:text="A 123 BC 45"
+        android:textStyle="bold"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/payment"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/car_number"
+        android:layout_marginTop="5sp"
+        android:text="К оплате 0 Р"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/timer"
+        app:layout_constraintTop_toBottomOf="@id/payment"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10sp"
+        android:text="00:00:00"
+        android:textStyle="bold"
+        android:textSize="32sp"
+        android:textColor="@color/black"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/pay"
+        app:layout_constraintTop_toBottomOf="@id/timer"
+        app:layout_constraintStart_toEndOf="@id/cancel"
+        app:layout_constraintEnd_toStartOf="@id/extend"
+        android:layout_marginTop="10sp"
+        android:text="Оплатить"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cancel"
+        app:layout_constraintTop_toBottomOf="@id/timer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/pay"
+        android:layout_marginTop="10sp"
+        android:text="Отменить"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/extend"
+        app:layout_constraintTop_toBottomOf="@id/timer"
+        app:layout_constraintStart_toEndOf="@id/pay"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10sp"
+        android:text="Продлить"/>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
