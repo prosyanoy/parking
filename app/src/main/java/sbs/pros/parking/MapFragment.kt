@@ -12,6 +12,7 @@ import android.graphics.PointF
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.Handler
 import android.provider.Settings
 import android.util.Log
@@ -71,6 +72,7 @@ import sbs.pros.parking.utils.setSafeOnClickListener
 import sbs.pros.parking.utils.viewLifecycleLazy
 import java.util.*
 import com.android.volley.RequestQueue
+import kotlinx.android.synthetic.main.bottom_sheet_waiting_layout.*
 import kotlin.collections.ArrayList
 
 
@@ -106,6 +108,8 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
     private lateinit var bottomSheetParkedBehavior: BottomSheetBehavior<ConstraintLayout>
 
+    private lateinit var bottomSheetWaitingBehavior: BottomSheetBehavior<ConstraintLayout>
+
 
     private var day = 0
     private var month = 0
@@ -122,6 +126,8 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
     private var seconds = 0
     private var running = false
     private var wasRunning = false
+
+    private lateinit var countDownTimer: CountDownTimer
 
     private var drivingRouter: DrivingRouter? = null
     private var drivingSession: DrivingSession? = null
@@ -148,6 +154,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheetMain.root)
         bottomSheetReserveBehavior = BottomSheetBehavior.from(binding.bottomSheetReserve.root)
         bottomSheetParkedBehavior = BottomSheetBehavior.from(binding.bottomSheetParked.root)
+        bottomSheetWaitingBehavior = BottomSheetBehavior.from(binding.bottomSheetWaiting.root)
 
 
 
@@ -183,17 +190,6 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         drivingRouter = DirectionsFactory.getInstance().createDrivingRouter()
         mapObjects = mapView!!.map.mapObjects.addCollection()
 
-        /*
-        mapKit!!.createLocationManager().subscribeForLocationUpdates(0.0, 0, 0.0, true, FilteringMode.ON,
-            object : LocationListener {
-                override fun onLocationUpdated( location: Location) {
-                    userLocation = Point(location.position.latitude, location.position.longitude)
-                    Log.d(TAG, "User location: $userLocation")
-                }
-
-                override fun onLocationStatusUpdated( locationStatus: LocationStatus) {}
-            })
-*/
 
 
         if (savedInstanceState != null) {
@@ -275,6 +271,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         )
         return true
     }
+
     private fun setClickListeners() {
 
         val uiMapLocationFAB = binding.mapUi.uiMapLocationFAB
@@ -415,6 +412,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                 binding.bottomSheetReserve.address.text = parkingData.address
                 binding.bottomSheetMain.address.text = parkingData.address
                 binding.bottomSheetParked.address.text = parkingData.address
+                binding.bottomSheetWaiting.address.text = parkingData.address
                 binding.bottomSheetMain.payment.text = parkingData.hour_cost.toString() + " ₽ / час"
                 binding.bottomSheetParked.payment.text = parkingData.hour_cost.toString() + " ₽ / час"
                 binding.bottomSheetMain.textParkingLots.text = "${parkingData.places} мест \n ${parkingData.free_places} свободных"
@@ -429,7 +427,6 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                     binding.bottomSheetMain.secure.setImageResource(R.drawable.ic_secure_inactive)
                     binding.bottomSheetReserve.secure.setImageResource(R.drawable.ic_secure_inactive)
                 }
-
                 if (parkingData.around_the_clock == 1) {
                     binding.bottomSheetMain.allDay.setImageResource(R.drawable.ic_247_active)
                     binding.bottomSheetReserve.allDay.setImageResource(R.drawable.ic_247_active)
@@ -438,7 +435,6 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                     binding.bottomSheetMain.allDay.setImageResource(R.drawable.ic_247_inactive)
                     binding.bottomSheetReserve.allDay.setImageResource(R.drawable.ic_247_inactive)
                 }
-
                 if (parkingData.ev == 1) {
                     binding.bottomSheetMain.charge.setImageResource(R.drawable.ic_charge_active)
                     binding.bottomSheetReserve.charge.setImageResource(R.drawable.ic_charge_active)
@@ -447,7 +443,6 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                     binding.bottomSheetMain.charge.setImageResource(R.drawable.ic_charge_inactive)
                     binding.bottomSheetReserve.charge.setImageResource(R.drawable.ic_charge_inactive)
                 }
-
                 if (parkingData.disabled == 1) {
                     binding.bottomSheetMain.disability.setImageResource(R.drawable.ic_disability_active)
                     binding.bottomSheetReserve.disability.setImageResource(R.drawable.ic_disability_active)
@@ -491,6 +486,18 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                     builder.show()
                 }
 
+//timer setup
+                countDownTimer = object: CountDownTimer(5_000, 1_000){
+                    override fun onTick(remaining: Long) {
+                        timer.text = remaining.toString()
+                    }
+
+                    override fun onFinish() {
+
+                    }
+
+                }
+
 
 
 
@@ -505,7 +512,6 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
 
                     getTimeDateCalendar()
-
                     if (day < 10) {
                         if (month < 10) {
                             date_picker.text = "0$day-0$month/-year"
@@ -611,7 +617,44 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
 
 
+                binding.bottomSheetReserve.reserve.setOnClickListener {
+                    bottomSheetReserveBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                    bottomSheetWaitingBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                    binding.mapUi.uiMapParkingFAB.visibility = View.GONE
 
+                    countDownTimer.start()
+                }
+
+
+
+                bottomSheetWaitingBehavior.addBottomSheetCallback(object: BottomSheetBehavior.BottomSheetCallback(){
+                    override fun onStateChanged(bottomSheet: View, state: Int) {
+                        when (state) {
+
+                            BottomSheetBehavior.STATE_HIDDEN -> {}
+
+                            BottomSheetBehavior.STATE_EXPANDED -> {
+                                mapView!!.map.move(
+                                    CameraPosition(Point(point.latitude - 0.0002,point.longitude), 16f, 0.0f, 0.0f),
+                                    Animation(Animation.Type.SMOOTH, 0.5F),
+                                    null)
+                            }
+
+                            BottomSheetBehavior.STATE_COLLAPSED ->{
+                                mapView!!.map.move(
+                                    CameraPosition(Point(point.latitude - 0.0001,point.longitude), 16f, 0.0f, 0.0f),
+                                    Animation(Animation.Type.SMOOTH, 0.5F),
+                                    null)
+                            }
+
+                            BottomSheetBehavior.STATE_DRAGGING -> {}
+                            BottomSheetBehavior.STATE_SETTLING -> {}
+                            BottomSheetBehavior.STATE_HALF_EXPANDED ->{}
+                        }
+                    }
+
+                    override fun onSlide(bottomSheet: View, slideOffset: Float) { }
+                })
 
                 if (bottomSheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED

@@ -33,6 +33,7 @@
         <entry key="..\:/Users/kr1pt0/StudioProjects/parking/app/src/main/res/drawable/ic_charge_inactive.xml" value="0.2645" />
         <entry key="..\:/Users/kr1pt0/StudioProjects/parking/app/src/main/res/drawable/ic_safe.xml" value="0.2425" />
         <entry key="..\:/Users/kr1pt0/StudioProjects/parking/app/src/main/res/drawable/ic_secure_active.xml" value="0.2645" />
+        <entry key="..\:/Users/kr1pt0/StudioProjects/parking/app/src/main/res/layout-v24/bottom_sheet_waiting.xml" value="0.259375" />
         <entry key="..\:/Users/kr1pt0/StudioProjects/parking/app/src/main/res/layout/app_info_fragment.xml" value="0.259375" />
         <entry key="..\:/Users/kr1pt0/StudioProjects/parking/app/src/main/res/layout/bootom_sheet_reserve_layout.xml" value="0.259375" />
         <entry key="..\:/Users/kr1pt0/StudioProjects/parking/app/src/main/res/layout/bottom_sheet_layout.xml" value="0.264" />
@@ -47,7 +48,7 @@
         <entry key="..\:/Users/kr1pt0/StudioProjects/parking/app/src/main/res/layout/fragment_choose.xml" value="0.259375" />
         <entry key="..\:/Users/kr1pt0/StudioProjects/parking/app/src/main/res/layout/fragment_confirmation.xml" value="0.259375" />
         <entry key="..\:/Users/kr1pt0/StudioProjects/parking/app/src/main/res/layout/fragment_location.xml" value="0.259375" />
-        <entry key="..\:/Users/kr1pt0/StudioProjects/parking/app/src/main/res/layout/fragment_map.xml" value="0.259375" />
+        <entry key="..\:/Users/kr1pt0/StudioProjects/parking/app/src/main/res/layout/fragment_map.xml" value="0.2" />
         <entry key="..\:/Users/kr1pt0/StudioProjects/parking/app/src/main/res/layout/fragment_on_boarding.xml" value="0.12613981762917933" />
         <entry key="..\:/Users/kr1pt0/StudioProjects/parking/app/src/main/res/layout/fragment_support.xml" value="0.259375" />
         <entry key="..\:/Users/kr1pt0/StudioProjects/parking/app/src/main/res/layout/item_page.xml" value="0.259375" />

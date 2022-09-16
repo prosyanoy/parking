@@ -63,6 +63,24 @@
         android:text="К оплате 0 Р"
         android:textSize="16sp"/>
 
+    <!--
+    <Chronometer
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/timer"
+        app:layout_constraintTop_toBottomOf="@id/payment"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10sp"
+        android:textStyle="bold"
+        android:textSize="32sp"
+        android:textColor="@color/black"
+        android:countDown="true"
+        tools:targetApi="n"/>
+
+        -->
+
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -75,6 +93,9 @@
         android:textStyle="bold"
         android:textSize="32sp"
         android:textColor="@color/black"/>
+
+
+
 
     <Button
         android:layout_width="wrap_content"
