@@ -82,7 +82,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
     private val menuViewModel by activityViewModels<MenuViewModel>()
 
-    private val url = "https://pros.sbs/parking/getting.php"
+    private val urlGetParkings = "https://pros.sbs/parking/getting.php"
 
     private val TARGET_LOCATION = Point(43.590097, 39.721887)
 
@@ -174,7 +174,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         mapObjects = mapView!!.map.mapObjects.addCollection()
         clusterizedCollection = mapView!!.map.mapObjects.addClusterizedPlacemarkCollection(this)
 
-        getParkings(requireContext(), url, mapObjects!!, clusterizedCollection!!)
+        getParkings(requireContext(), urlGetParkings, mapObjects!!, clusterizedCollection!!)
         mRequestQueue = Volley.newRequestQueue(context);
 
         viewLifecycleOwner.lifecycleScope.launchWhenResumed {
@@ -305,10 +305,10 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         }
     }
 
-    private fun getParkings(context : Context, url : String, mapObjects : MapObjectCollection, clusterizedCollection: ClusterizedPlacemarkCollection) {
+    private fun getParkings(context : Context, urlGetParkings : String, mapObjects : MapObjectCollection, clusterizedCollection: ClusterizedPlacemarkCollection) {
         val queue = Volley.newRequestQueue(context)
         val stringRequest = object : StringRequest(
-            Method.GET, "$url?apicall=get_parkings",
+            Method.GET, "$urlGetParkings?apicall=get_parkings",
 
             Response.Listener { response ->
 
@@ -392,9 +392,8 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 //create a route
                 mapObjects!!.clear()
                 createRoute(userLocation!!, point)
-                val url = "https://router.project-osrm.org/route/v1/driving/${userLocation.longitude},${userLocation.latitude};${point.longitude},${point.latitude}"
-                Log.d(TAG, "Url is: $url")
-                getRouteInfo(url)
+                val urlRoute = "https://router.project-osrm.org/route/v1/driving/${userLocation.longitude},${userLocation.latitude};${point.longitude},${point.latitude}"
+                getRouteInfo(urlRoute)
                 duration = duration.div(60)
                 if (duration < 60){
                     binding.bottomSheetMain.textDistanceTo.text="$distance метров \n $duration минут"
@@ -1085,13 +1084,11 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
     }
 
 
-    private fun getRouteInfo(url: String) {
+    private fun getRouteInfo(urlRoute: String) {
         val request = JsonObjectRequest(
             Request.Method.GET,  //GET - API-запрос для получение данных
-            url, null, { response ->
+            urlRoute, null, { response ->
                 try {
-                    Log.d(TAG, "Url: $url")
-                    Log.d(TAG, "response: $response")
                     distance =
                         response.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0).getDouble("distance")
                             .toInt()
