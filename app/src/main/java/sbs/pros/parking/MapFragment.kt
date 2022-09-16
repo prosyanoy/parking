@@ -71,9 +71,7 @@ import sbs.pros.parking.utils.setSafeOnClickListener
 import sbs.pros.parking.utils.viewLifecycleLazy
 import java.util.*
 import com.android.volley.RequestQueue
-
-
-
+import kotlin.collections.ArrayList
 
 
 @AndroidEntryPoint
@@ -135,7 +133,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
     private var mRequestQueue: RequestQueue? = null
 
-    private var priceList = arrayOf(arrayOf(0))
+    private var priceList = emptyArray<JSONObject>()
 
 
 
@@ -472,20 +470,21 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                 }
 
 
-
                 duration_picker.setOnClickListener {
                     val builder = AlertDialog.Builder(requireContext())
                     builder.setTitle("Выбрать период")
+
                     val urlPriceList = "https://pros.sbs/parking/order.php?apicall=period_prompts&id=${parkingData.id}&start=$savedYear-$savedMonth-$savedDay ${time_picker.text}"
                     getPriceList(urlPriceList)
-                    var arrayOfPeriods = arrayOf("")
-                    Log.d(TAG, "priceList: ${priceList.toString()}")
+
+                    var arrayOfPeriods: Array<String> = emptyArray()
+                    arrayOfPeriods.drop(arrayOfPeriods.size)
+
                     for (elem in priceList){
-                        Log.d(TAG, "elem: ${elem.toString()}")
-                        arrayOfPeriods += elem[0].toString()
+                        arrayOfPeriods += elem.getString("period")
                     }
 
-                    Log.d(TAG, "arrayOfPeriods: ${arrayOfPeriods.toString()}")
+
                     builder.setItems(arrayOfPeriods) { dialog, position ->
                         duration_picker.text = "${arrayOfPeriods[position]} минут"
                     }
@@ -1117,7 +1116,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                     val prompts = response.getJSONArray("prompts")
                     for (i in 0..prompts.length()){
                         val elem = prompts.getJSONObject(0)
-                        priceList += arrayOf(elem.getInt("period"), elem.getInt("cost"), elem.getInt("close"))
+                        priceList += elem
                     }
 
                 } catch (e: JSONException) {
