@@ -40,6 +40,17 @@
         android:text="Виноградная, 122А"
         android:textStyle="bold"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/car_number"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/address"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="5sp"
+        android:text="A 123 BC 45"
+        android:textStyle="bold"/>
+
 
     <TextView
         android:layout_width="wrap_content"
@@ -47,7 +58,7 @@
         android:id="@+id/payment"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/address"
+        app:layout_constraintTop_toBottomOf="@+id/car_number"
         android:layout_marginTop="5sp"
         android:text="100 ₽ / час"/>
 

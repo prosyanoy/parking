@@ -130,10 +130,13 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
     private var userLocation = Point(43.6028, 39.7342)
 
-    private var distance = 0.0
-    private var duration = 0.0
+    private var distance = 0
+    private var duration = 0
 
     private var mRequestQueue: RequestQueue? = null
+
+    private var priceList = arrayOf(arrayOf(0))
+
 
 
     val binding by viewLifecycleLazy { FragmentMapBinding.bind( requireView()) }
@@ -392,8 +395,14 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                 val url = "https://router.project-osrm.org/route/v1/driving/${userLocation.longitude},${userLocation.latitude};${point.longitude},${point.latitude}"
                 Log.d(TAG, "Url is: $url")
                 getRouteInfo(url)
-                binding.bottomSheetMain.textDistanceTo.text="$distance метров \n $duration секунд"
-                binding.bottomSheetReserve.textDistanceTo.text="$distance метров \n $duration секунд"
+                duration = duration.div(60)
+                if (duration < 60){
+                    binding.bottomSheetMain.textDistanceTo.text="$distance метров \n $duration минут"
+                    binding.bottomSheetReserve.textDistanceTo.text="$distance метров \n $duration минут"
+                } else {
+                    binding.bottomSheetMain.textDistanceTo.text="$distance метров \n ${duration.div(60)} часов ${duration.mod(60)} "
+                    binding.bottomSheetReserve.textDistanceTo.text="$distance метров \n ${duration.div(60)} часов ${duration.mod(60)} минут"
+                }
 
 
 
@@ -464,14 +473,22 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                 }
 
 
-                //an array of possible durations for parking
-                val parkingDurations = arrayOf("30 минут", "1 час", "3 часа", "1 день")
 
                 duration_picker.setOnClickListener {
                     val builder = AlertDialog.Builder(requireContext())
                     builder.setTitle("Выбрать период")
-                    builder.setItems(parkingDurations) { dialog, position ->
-                        duration_picker.text = parkingDurations[position]
+                    val urlPriceList = "https://pros.sbs/parking/order.php?apicall=period_prompts&id=${parkingData.id}&start=$savedYear-$savedMonth-$savedDay ${time_picker.text}"
+                    getPriceList(urlPriceList)
+                    var arrayOfPeriods = arrayOf("")
+                    Log.d(TAG, "priceList: ${priceList.toString()}")
+                    for (elem in priceList){
+                        Log.d(TAG, "elem: ${elem.toString()}")
+                        arrayOfPeriods += elem[0].toString()
+                    }
+
+                    Log.d(TAG, "arrayOfPeriods: ${arrayOfPeriods.toString()}")
+                    builder.setItems(arrayOfPeriods) { dialog, position ->
+                        duration_picker.text = "${arrayOfPeriods[position]} минут"
                     }
                     builder.show()
                 }
@@ -479,8 +496,10 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
 
 
+
+
 //setting up bottomsheets
-                reserve.setOnClickListener {
+                binding.bottomSheetMain.reserve.setOnClickListener {
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                     bottomSheetParkedBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                     bottomSheetReserveBehavior.state = BottomSheetBehavior.STATE_EXPANDED
@@ -491,15 +510,15 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
                     if (day < 10) {
                         if (month < 10) {
-                            date_picker.text = "0$day/0$month/$year"
+                            date_picker.text = "0$day-0$month/-year"
                         } else {
-                            date_picker.text = "0$day/$month/$year"
+                            date_picker.text = "0$day-$month-$year"
                         }
                     } else {
                         if (month < 10) {
-                            date_picker.text = "$day/0$month/$year"
+                            date_picker.text = "$day-0$month-$year"
                         } else {
-                            date_picker.text = "$day/$month/$year"
+                            date_picker.text = "$day-$month-$year"
                         }
                     }
 
@@ -943,15 +962,15 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
         if (savedDay < 10) {
             if (savedMonth < 10) {
-                date_picker.text = "0$savedDay/0$savedMonth/$savedYear"
+                date_picker.text = "0$savedDay-0$savedMonth-$savedYear"
             } else {
-                date_picker.text = "0$savedDay/$savedMonth/$savedYear"
+                date_picker.text = "0$savedDay-$savedMonth-$savedYear"
             }
         } else {
             if (savedMonth < 10) {
-                date_picker.text = "$savedDay/0$savedMonth/$savedYear"
+                date_picker.text = "$savedDay-0$savedMonth-$savedYear"
             } else {
-                date_picker.text = "$savedDay/$savedMonth/$savedYear"
+                date_picker.text = "$savedDay-$savedMonth-$savedYear"
             }
         }
     }
@@ -1073,8 +1092,37 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                 try {
                     Log.d(TAG, "Url: $url")
                     Log.d(TAG, "response: $response")
-                    distance = response.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0).getDouble("distance")
-                    duration = response.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0).getDouble("duration")
+                    distance =
+                        response.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0).getDouble("distance")
+                            .toInt()
+                    duration =
+                        response.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0).getDouble("duration")
+                            .toInt()
+
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+            }) { error ->
+            // в случае возникновеня ошибки
+            error.printStackTrace()
+        }
+        mRequestQueue!!.add(request) // добавляем запрос в очередь
+    }
+
+
+    private fun getPriceList(urlPriceList: String){
+        val request = JsonObjectRequest(
+            Request.Method.GET,  //GET - API-запрос для получение данных
+            urlPriceList, null, { response ->
+                try {
+                    Log.d(TAG, "Url price list: $urlPriceList")
+                    Log.d(TAG, "response price list: $response")
+                    val prompts = response.getJSONArray("prompts")
+                    for (i in 0..prompts.length()){
+                        val elem = prompts.getJSONObject(0)
+                        priceList += arrayOf(elem.getInt("period"), elem.getInt("cost"), elem.getInt("close"))
+                    }
+
                 } catch (e: JSONException) {
                     e.printStackTrace()
                 }
