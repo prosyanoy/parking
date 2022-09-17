@@ -458,7 +458,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
 
                 for (i in 0..parkingData.open_hours.length()){
-                    val elem = parkingData.open_hours.getJSONObject(i)
+                    val elem = parkingData.open_hours.getJSONArray(0).getJSONObject(i)
                     val day = dayOfTheWeek(elem.getInt("days"))
                     val open = elem.getInt("open")
                     val close = elem.getInt("close")
