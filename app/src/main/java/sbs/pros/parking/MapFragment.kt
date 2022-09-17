@@ -203,7 +203,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
             wasRunning = savedInstanceState
                 .getBoolean("wasRunning")
         }
-        runTimer()
+        runStopwatch()
 
     }
 
@@ -509,17 +509,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                     builder.show()
                 }
 
-//timer setup
-                countDownTimer = object: CountDownTimer(5_000, 1_000){
-                    override fun onTick(remaining: Long) {
-                        timer.text = remaining.toString()
-                    }
 
-                    override fun onFinish() {
-
-                    }
-
-                }
 
 
 
@@ -537,7 +527,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                     getTimeDateCalendar()
                     if (day < 10) {
                         if (month < 10) {
-                            date_picker.text = "0$day-0$month/-year"
+                            date_picker.text = "0$day-0$month-$year"
                         } else {
                             date_picker.text = "0$day-$month-$year"
                         }
@@ -644,6 +634,32 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                     bottomSheetReserveBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                     bottomSheetWaitingBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                     binding.mapUi.uiMapParkingFAB.visibility = View.GONE
+
+                    getTimeDateCalendar()
+                    val startDate = Date(year, month, day)
+                    val endDate = Date(date_picker.text.substring(6,10).toInt(), date_picker.text.substring(3,5).toInt(), date_picker.text.substring(0,2).toInt())
+
+                    var remainingTime = 0 //in seconds
+                    remainingTime = (endDate.time - startDate.time).toInt() / 1000 + time_picker.text.substring(0,2).toInt() * 3600 +
+                            time_picker.text.substring(3,5).toInt() * 60 - hour * 3600 - minute * 60
+
+                    //timer setup
+                    countDownTimer = object: CountDownTimer((remainingTime * 1000).toLong(), 250){
+                        override fun onTick(remaining: Long) {
+                            val remainingSecondsTotal = remaining.div(1000)
+                            val remainingHours = remainingSecondsTotal.div(3600)
+                            val remainingMinutes = remainingSecondsTotal.mod(3600).div(60)
+                            val remainingSeconds = remainingSecondsTotal.mod(60)
+
+
+                            timer.text = "$remainingHours:$remainingMinutes:$remainingSeconds"
+                        }
+
+                        override fun onFinish() {
+
+                        }
+
+                    }
 
                     countDownTimer.start()
                 }
@@ -1084,8 +1100,6 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
 
 
-    // Save the state of the stopwatch
-    // if it's about to be destroyed.
     override fun onSaveInstanceState(
         savedInstanceState: Bundle
     ) {
@@ -1097,27 +1111,15 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
             .putBoolean("wasRunning", wasRunning)
     }
 
-    // Sets the NUmber of seconds on the timer.
-    // The runTimer() method uses a Handler
-    // to increment the seconds and
-    // update the text view.
-    private fun runTimer() {
-        // Creates a new Handler
+
+    private fun runStopwatch() {
         val handler = Handler()
-        // Call the post() method,
-        // passing in a new Runnable.
-        // The post() method processes
-        // code without a delay,
-        // so the code in the Runnable
-        // will run almost immediately.
         handler.post(object : Runnable {
             override fun run() {
                 val hours = seconds / 3600
                 val minutes = seconds % 3600 / 60
                 val secs = seconds % 60
 
-                // Format the seconds into hours, minutes,
-                // and seconds.
                 val time = java.lang.String
                     .format(
                         Locale.getDefault(),
@@ -1125,17 +1127,12 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                         minutes, secs
                     )
 
-                // Set the text view text.
                 stopwatch.text = time
 
-                // If running is true, increment the
-                // seconds variable.
                 if (running) {
                     seconds++
                 }
 
-                // Post the code again
-                // with a delay of 1 second.
                 handler.postDelayed(this, 1000)
             }
         })
