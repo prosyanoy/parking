@@ -73,7 +73,12 @@ import sbs.pros.parking.utils.viewLifecycleLazy
 import java.util.*
 import com.android.volley.RequestQueue
 import kotlinx.android.synthetic.main.bottom_sheet_waiting_layout.*
+import java.lang.Math.abs
+import java.time.Duration
+import java.time.format.DateTimeFormatter
+import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
+import kotlin.time.Duration.Companion.seconds
 
 
 @AndroidEntryPoint
@@ -454,6 +459,8 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                 }
 
 
+
+//price list setup
                 var priceListText = ""
 
 
@@ -505,12 +512,12 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                     arrayOfPeriods.drop(arrayOfPeriods.size)
 
                     for (elem in priceList){
-                        arrayOfPeriods += elem.getString("period")
+                        arrayOfPeriods += "${elem.getString("period")} минут"
                     }
 
 
                     builder.setItems(arrayOfPeriods) { dialog, position ->
-                        duration_picker.text = "${arrayOfPeriods[position]} минут"
+                        duration_picker.text = arrayOfPeriods[position]
                     }
                     builder.show()
                 }
@@ -644,13 +651,27 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                     getTimeDateCalendar()
                     val startDate = Date(year, month, day)
                     val endDate = Date(date_picker.text.substring(6,10).toInt(), date_picker.text.substring(3,5).toInt(), date_picker.text.substring(0,2).toInt())
+                    val dateDiff: Long = endDate.time - startDate.time
 
-                    var remainingTime = 0 //in seconds
-                    remainingTime = (endDate.time - startDate.time).toInt() / 1000 + time_picker.text.substring(0,2).toInt() * 3600 +
-                            time_picker.text.substring(3,5).toInt() * 60 - hour * 3600 - minute * 60
 
+
+                    val remainingTime = dateDiff + ((time_picker.text.substring(0,2).toInt() * 3600 + time_picker.text.substring(3,5).toInt() * 60 - hour * 3600 - minute * 60) * 1000).toLong()
+                    //in seconds
+                    Log.d(TAG, "date times: ${startDate.time} -> ${endDate.time}")
+                    Log.d(TAG, "date diff: ${dateDiff}")
+                    Log.d(TAG, "time: : ${time_picker.text.substring(0,2).toInt()}:${time_picker.text.substring(3,5).toInt()} -> ${hour}:${minute}")
+                    Log.d(TAG, "timer: $remainingTime")
                     //timer setup
-                    countDownTimer = object: CountDownTimer((remainingTime * 1000).toLong(), 250){
+
+
+
+                    try {
+                        countDownTimer.cancel()
+                    } catch (error: UninitializedPropertyAccessException){
+                        error.printStackTrace()
+                    }
+
+                    countDownTimer = object: CountDownTimer(remainingTime, 250){
                         override fun onTick(remaining: Long) {
                             val remainingSecondsTotal = remaining.div(1000)
                             val remainingHours = remainingSecondsTotal.div(3600)
@@ -664,7 +685,6 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                         override fun onFinish() {
 
                         }
-
                     }
 
                     countDownTimer.start()
@@ -710,6 +730,10 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
                     if (bottomSheetParkedBehavior.state != BottomSheetBehavior.STATE_COLLAPSED) {
                         bottomSheetParkedBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                    }
+
+                    if (bottomSheetWaitingBehavior.state != BottomSheetBehavior.STATE_COLLAPSED) {
+                        bottomSheetWaitingBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                     }
                 }
 
