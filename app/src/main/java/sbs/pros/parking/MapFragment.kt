@@ -457,7 +457,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                 var priceListText = ""
 
 
-                for (i in 0..parkingData.open_hours.length()){
+                for (i in 0 until parkingData.open_hours.getJSONArray(0).length()){
                     val elem = parkingData.open_hours.getJSONArray(0).getJSONObject(i)
                     val day = dayOfTheWeek(elem.getInt("days"))
                     val open = elem.getInt("open")
@@ -469,6 +469,12 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                             priceListText += "$day: с $open до $close"
                         } else{
                             priceListText += "\n$day: с $open до $close"
+                        }
+                    } else {
+                        if (i == 0){
+                            priceListText += "$day: закрыто"
+                        } else{
+                            priceListText += "\n$day: закрыто"
                         }
                     }
                 }
