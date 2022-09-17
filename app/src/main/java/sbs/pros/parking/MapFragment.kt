@@ -144,7 +144,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
     private var mRequestQueue: RequestQueue? = null
 
-    private var priceList = emptyArray<JSONObject>()
+    private var durations = emptyArray<JSONObject>()
 
 
 
@@ -505,13 +505,13 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                     val builder = AlertDialog.Builder(requireContext())
                     builder.setTitle("Выбрать период")
 
-                    val urlPriceList = "https://pros.sbs/parking/order.php?apicall=period_prompts&id=${parkingData.id}&start=$savedYear-$savedMonth-$savedDay ${time_picker.text}"
-                    getPriceList(urlPriceList)
+                    val urlDurations = "https://pros.sbs/parking/order.php?apicall=period_prompts&id=${parkingData.id}&start=$savedYear-$savedMonth-$savedDay ${time_picker.text}"
+                    getDurations(urlDurations)
 
                     var arrayOfPeriods: Array<String> = emptyArray()
                     arrayOfPeriods.drop(arrayOfPeriods.size)
 
-                    for (elem in priceList){
+                    for (elem in durations){
                         arrayOfPeriods += "${elem.getString("period")} минут"
                     }
 
@@ -1221,17 +1221,17 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
     }
 
 
-    private fun getPriceList(urlPriceList: String){
+    private fun getDurations(urlDurations: String){
         val request = JsonObjectRequest(
             Request.Method.GET,  //GET - API-запрос для получение данных
-            urlPriceList, null, { response ->
+            urlDurations, null, { response ->
                 try {
-                    Log.d(TAG, "Url price list: $urlPriceList")
+                    Log.d(TAG, "Url price list: $urlDurations")
                     Log.d(TAG, "response price list: $response")
                     val prompts = response.getJSONArray("prompts")
                     for (i in 0..prompts.length()){
                         val elem = prompts.getJSONObject(0)
-                        priceList += elem
+                        durations += elem
                     }
 
                 } catch (e: JSONException) {
