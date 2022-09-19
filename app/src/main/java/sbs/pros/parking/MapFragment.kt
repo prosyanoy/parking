@@ -55,10 +55,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.bottom_sheet_layout.*
 import kotlinx.android.synthetic.main.bottom_sheet_parked_layout.*
 import kotlinx.android.synthetic.main.bottom_sheet_reserve_layout.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -73,7 +69,9 @@ import sbs.pros.parking.utils.viewLifecycleLazy
 import java.util.*
 import com.android.volley.RequestQueue
 import kotlinx.android.synthetic.main.bottom_sheet_waiting_layout.*
+import kotlinx.coroutines.*
 import java.lang.Math.abs
+import java.lang.Runnable
 import java.time.Duration
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
@@ -144,7 +142,6 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
     private var mRequestQueue: RequestQueue? = null
 
-    private var durations = emptyArray<JSONObject>()
 
 
 
@@ -502,20 +499,21 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
 
                 duration_picker.setOnClickListener {
-                    val builder = AlertDialog.Builder(requireContext())
-                    builder.setTitle("Выбрать период")
-
                     val urlDurations = "https://pros.sbs/parking/order.php?apicall=period_prompts&id=${parkingData.id}&start=$savedYear-$savedMonth-$savedDay ${time_picker.text}"
-                    getDurations(urlDurations)
+                    val durations = getDurations(urlDurations)
+
+                    Log.d(TAG, "durations: ${durations.joinToString { " " }}")
 
                     var arrayOfPeriods: Array<String> = emptyArray()
-                    arrayOfPeriods.drop(arrayOfPeriods.size)
+                    Log.d(TAG, "array of periods before: ${arrayOfPeriods.joinToString(" ")}")
 
                     for (elem in durations){
                         arrayOfPeriods += "${elem.getString("period")} минут"
                     }
+                    Log.d(TAG, "array of periods after: ${arrayOfPeriods.joinToString(" ")}")
 
-
+                    val builder = AlertDialog.Builder(requireContext())
+                    builder.setTitle("Выбрать период")
                     builder.setItems(arrayOfPeriods) { dialog, position ->
                         duration_picker.text = arrayOfPeriods[position]
                     }
@@ -1213,7 +1211,8 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
     }
 
 
-    private fun getDurations(urlDurations: String){
+    private fun getDurations(urlDurations: String): Array<JSONObject> {
+        var durations:Array<JSONObject> = emptyArray()
         val request = JsonObjectRequest(
             Request.Method.GET,  //GET - API-запрос для получение данных
             urlDurations, null, { response ->
@@ -1221,18 +1220,19 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                     Log.d(TAG, "Url price list: $urlDurations")
                     Log.d(TAG, "response price list: $response")
                     val prompts = response.getJSONArray("prompts")
-                    for (i in 0..prompts.length()){
-                        val elem = prompts.getJSONObject(0)
+                    for (i in 0 until prompts.length()){
+                        val elem = prompts.getJSONObject(i)
                         durations += elem
                     }
+                    Log.d(TAG, "durations in getDurations: ${durations.joinToString(" ")}")
 
                 } catch (e: JSONException) {
                     e.printStackTrace()
                 }
             }) { error ->
-            // в случае возникновеня ошибки
             error.printStackTrace()
         }
-        mRequestQueue!!.add(request) // добавляем запрос в очередь
+        mRequestQueue!!.add(request)
+        return durations
     }
 }
