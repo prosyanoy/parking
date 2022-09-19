@@ -492,7 +492,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 //date, time, duration pickers setup
                 date_picker.setOnClickListener {
                     getTimeDateCalendar()
-                    DatePickerDialog(requireContext(), this, year, month, day).show()
+                    DatePickerDialog(requireContext(), this, year, month - 1, day).show()
                 }
 
                 time_picker.setOnClickListener {
@@ -653,18 +653,10 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                     val endDate = Date(date_picker.text.substring(6,10).toInt(), date_picker.text.substring(3,5).toInt(), date_picker.text.substring(0,2).toInt())
                     val dateDiff: Long = endDate.time - startDate.time
 
-
-
                     val remainingTime = dateDiff + ((time_picker.text.substring(0,2).toInt() * 3600 + time_picker.text.substring(3,5).toInt() * 60 - hour * 3600 - minute * 60) * 1000).toLong()
                     //in seconds
-                    Log.d(TAG, "date times: ${startDate.time} -> ${endDate.time}")
-                    Log.d(TAG, "date diff: ${dateDiff}")
-                    Log.d(TAG, "time: : ${time_picker.text.substring(0,2).toInt()}:${time_picker.text.substring(3,5).toInt()} -> ${hour}:${minute}")
-                    Log.d(TAG, "timer: $remainingTime")
+
                     //timer setup
-
-
-
                     try {
                         countDownTimer.cancel()
                     } catch (error: UninitializedPropertyAccessException){
