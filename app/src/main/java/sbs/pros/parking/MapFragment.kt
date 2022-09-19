@@ -500,15 +500,15 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
                 duration_picker.setOnClickListener {
                     val urlDurations = "https://pros.sbs/parking/order.php?apicall=period_prompts&id=${parkingData.id}&start=$savedYear-$savedMonth-$savedDay ${time_picker.text}"
-                    val durations = getDurations(urlDurations)
+                    val prompts = getDurations(urlDurations)
 
-                    Log.d(TAG, "durations: ${durations.joinToString { " " }}")
+                    Log.d(TAG, "durations: ${prompts.join(" ")}")
 
                     var arrayOfPeriods: Array<String> = emptyArray()
                     Log.d(TAG, "array of periods before: ${arrayOfPeriods.joinToString(" ")}")
 
-                    for (elem in durations){
-                        arrayOfPeriods += "${elem.getString("period")} минут"
+                    for (i in 0..prompts.length()-1){
+                        arrayOfPeriods += "${prompts.getJSONObject(i).getString("period")} минут"
                     }
                     Log.d(TAG, "array of periods after: ${arrayOfPeriods.joinToString(" ")}")
 
@@ -1211,8 +1211,9 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
     }
 
 
-    private fun getDurations(urlDurations: String): Array<JSONObject> {
+    private fun getDurations(urlDurations: String): JSONArray {
         var durations:Array<JSONObject> = emptyArray()
+        var prompts:JSONArray = JSONArray()
         val request = JsonObjectRequest(
             Request.Method.GET,  //GET - API-запрос для получение данных
             urlDurations, null, { response ->
@@ -1220,11 +1221,6 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                     Log.d(TAG, "Url price list: $urlDurations")
                     Log.d(TAG, "response price list: $response")
                     val prompts = response.getJSONArray("prompts")
-                    for (i in 0 until prompts.length()){
-                        val elem = prompts.getJSONObject(i)
-                        durations += elem
-                    }
-                    Log.d(TAG, "durations in getDurations: ${durations.joinToString(" ")}")
 
                 } catch (e: JSONException) {
                     e.printStackTrace()
@@ -1233,6 +1229,6 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
             error.printStackTrace()
         }
         mRequestQueue!!.add(request)
-        return durations
+        return prompts
     }
 }
