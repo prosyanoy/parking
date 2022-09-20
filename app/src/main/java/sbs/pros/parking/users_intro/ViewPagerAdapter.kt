@@ -4,15 +4,14 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
-import sbs.pros.parking.R
+import kotlinx.android.synthetic.main.item_page_on_boarding_search_parking.view.*
 
 
-class ViewPagerAdapter(var con: Context, var itemPages: Array<ItemPage>) : PagerAdapter() {
+class ViewPagerAdapter(private val context: Context, private val itemPages: Array<ItemPage>) : PagerAdapter() {
 
 
     override fun getCount(): Int {return itemPages.size}
@@ -22,14 +21,9 @@ class ViewPagerAdapter(var con: Context, var itemPages: Array<ItemPage>) : Pager
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val inflater: LayoutInflater = con.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
-        val view : View = inflater.inflate(R.layout.item_page, container, false)
-        val img : ImageView = view.findViewById(R.id.img) as ImageView
-        val txt : TextView = view.findViewById(R.id.textView2) as TextView
-
-        img.setImageResource(itemPages[position].image)
-        txt.text = itemPages[position].text
+        val view : View = inflater.inflate(itemPages[position].itemPageLayout, container, false)
         container.addView(view)
 
         return view

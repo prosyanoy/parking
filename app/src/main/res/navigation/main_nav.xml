@@ -54,6 +54,9 @@
         <action
             android:id="@+id/action_onBoardingFragment_to_authFragment"
             app:destination="@id/authFragment" />
+        <action
+            android:id="@+id/action_onBoardingFragment_to_chooseFragment"
+            app:destination="@id/chooseFragment" />
     </fragment>
     <fragment
         android:id="@+id/locationFragment"
