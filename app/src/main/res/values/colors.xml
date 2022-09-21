@@ -28,4 +28,11 @@
     <color name="purple">#BF3DA3</color>
     <color name="lightPurple">#FF52D9</color>
     <color name="darkPurple">#80296D</color>
+
+    <!-- On boarding colors -->
+    <color name="on_boarding_background_grey">#E4E4E4</color>
+    <color name="on_boarding_primary_purple">#8f6dd8</color>
+    <color name="on_boarding_secondary_purple">#664B9F</color>
+    <color name="on_boarding_text_color_dark_grey">#4f4f4f</color>
+    <color name="on_boarding_geolocation_text_color_white">#d0d5dd</color>
 </resources>

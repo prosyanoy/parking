@@ -23,6 +23,8 @@ android {
 
         buildConfigField "String", "mapkit_api_key", "\"${properties.getProperty("mapkit_api_key")}\""
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {

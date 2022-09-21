@@ -35,4 +35,16 @@
     <string name="app_version">Версия %s</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="next_page_on_boarding">Next page on boarding</string>
+    <string name="on_boarding_button_skip">Skip</string>
+    <string name="on_boarding_button_back">Back</string>
+
+    <string name="on_boarding_search_parking_title">Поиск парковок поблизости</string>
+    <string name="on_boarding_search_parking_description">Ищите и сравнивайте автостоянки по цене и расположению</string>
+    <string name="on_boarding_geolocation_text">Чтобы правильно определять ваше местоположение, приложение запросит доступ к данным геолокации</string>
+    <string name="on_boarding_pay_for_parking_title">Бронирование и оплата на выезде</string>
+    <string name="on_boarding_pay_for_parking_description">Платите заранее по факту брони или по факту выезда с парковки</string>
+    <string name="on_boarding_tariff_for_parking_title">Неограниченная стоянка по абонементу</string>
+    <string name="on_boarding_tariff_for_parking_description">Паркуйтесь на всех стоянках Сочи и Адлера. От 9.999₽/месяц</string>
+
 </resources>
