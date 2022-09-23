@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/on_boarding_background_grey">
+
+    <LinearLayout
+        android:id="@+id/chooseMethodForPayFragmentCreditCardsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/rounded_title_pay_for_parking"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/creditCardsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/pay_fragment_text_color"
+            android:textStyle="bold"
+            android:text="@string/credit_card_title"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/creditCardsDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/credit_card_title_description" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/chooseMethodForPayFragmentSbpLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/rounded_title_pay_for_parking"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/chooseMethodForPayFragmentCreditCardsLayout">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/sbpTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/pay_fragment_text_color"
+            android:textStyle="bold"
+            android:text="@string/sbp_title"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/sbpDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sbp_title_description" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/chooseMethodForPayFragmentAddCreditCardButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_credit_card_button_text"
+        android:textColor="@color/on_boarding_secondary_purple"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/chooseMethodForPayFragmentSbpLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

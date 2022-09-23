@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -164,10 +165,10 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
             navHost.navController.navigateUp()
         }
 
-
-
+        binding.mapUi.uiMapDepositButton.setOnClickListener {
+            findNavController().navigate(R.id.action_mapFragment_to_payFragment)
+        }
     }
-
 
     override fun onStop() {
         mapView?.onStop()

@@ -42,4 +42,14 @@
     <string name="on_boarding_pay_for_parking_description">Платите заранее по факту брони или по факту выезда с парковки</string>
     <string name="on_boarding_tariff_for_parking_title">Неограниченная стоянка по абонементу</string>
     <string name="on_boarding_tariff_for_parking_description">Паркуйтесь на всех стоянках Сочи и Адлера. От 9.999₽/месяц</string>
+    <string name="pay_fragment_balance_text_view">Баланс после пополнения</string>
+    <string name="pay_fragment_start_balance_text_view">50₽</string>
+    <string name="pay_fragment_choose_method_text_view">Способ оплаты</string>
+    <string name="pay_fragment_warning_comission">Обратите внимание на комиссию внешних сервисов</string>
+    <string name="pay_fragment_pay_button">Оплатить</string>
+    <string name="credit_card_title">Банковская карта</string>
+    <string name="credit_card_title_description">Комиссия 3,19% (минимум 3,49 ₽)</string>
+    <string name="sbp_title">Система быстрых платежей</string>
+    <string name="sbp_title_description">Комиссия 0,7%</string>
+    <string name="add_credit_card_button_text">Привязать банковскую карту</string>
 </resources>

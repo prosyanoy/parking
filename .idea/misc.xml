@@ -6,6 +6,7 @@
         <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/active_dots.xml" value="0.1835" />
         <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/back_tabs.xml" value="0.1835" />
         <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/bottom_sheet_background.xml" value="0.1835" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/divider.xml" value="0.1845" />
         <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/ic1.xml" value="0.1845" />
         <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/ic_chats.xml" value="0.1835" />
         <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/ic_circle_on_progress.xml" value="0.1235" />
@@ -31,14 +32,26 @@
         <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/on_boarding_telephone_picture.xml" value="0.1845" />
         <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/onboarding_ellipse.xml" value="0.1835" />
         <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/onboarding_search_parking.xml" value="0.1835" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/rounded_button_pay_for_parking.xml" value="0.1845" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/rounded_layout.xml" value="0.1845" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/rounded_title_pay_fo_parking.xml" value="0.1845" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/rounded_title_pay_for_parking.xml" value="0.1845" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/layout/button_layout.xml" value="0.536" />
         <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/layout/fragment_choose.xml" value="0.18614130434782608" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/layout/fragment_choose_method_for_pay.xml" value="0.18614130434782608" />
         <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/layout/fragment_location.xml" value="0.1" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/layout/fragment_map.xml" value="0.18614130434782608" />
         <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/layout/fragment_on_boarding.xml" value="0.136" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/layout/fragment_pay.xml" value="0.264" />
         <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/layout/item_page.xml" value="0.1" />
         <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/layout/item_page_on_boarding_geolocation.xml" value="0.11031420765027322" />
         <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/layout/item_page_on_boarding_pay_for_parking.xml" value="0.152" />
         <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/layout/item_page_on_boarding_search_parking.xml" value="0.14628623188405798" />
         <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/layout/item_page_on_boarding_tariff_for_parking.xml" value="0.18614130434782608" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/layout/item_page_pay_balance.xml" value="0.1" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/layout/item_page_pay_choose_method_for_pay.xml" value="0.18614130434782608" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/layout/tile_method_for_pay_parking.xml" value="0.18614130434782608" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/layout/ui_map_layout.xml" value="0.18614130434782608" />
         <entry key="..\:/parking/app/src/main/res/drawable/active_dots.xml" value="0.14" />
         <entry key="..\:/parking/app/src/main/res/drawable/background_splash.xml" value="0.14" />
         <entry key="..\:/parking/app/src/main/res/drawable/bottom_sheet_background.xml" value="0.14" />
