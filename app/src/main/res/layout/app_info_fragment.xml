@@ -6,37 +6,39 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_margin="12dp"
-        android:src="@drawable/ic_mappin"
+        android:id="@+id/infoFragmentLogo"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="18dp"
+        android:padding="1dp"
+        android:src="@drawable/ic_logo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="23dp"
+        android:layout_marginTop="-5dp"
+        android:gravity="top"
         android:paddingStart="12dp"
         android:text="ПроПарковки"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:textColor="@color/black_text"
+        android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/imageView" />
+        app:layout_constraintStart_toEndOf="@+id/infoFragmentLogo"
+        app:layout_constraintTop_toTopOf="@+id/infoFragmentLogo" />
 
     <TextView
         android:id="@+id/versionText"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:lineHeight="23dp"
+        android:layout_height="17dp"
         android:paddingStart="12dp"
-        android:text="Версия 0.0.1\nДепартамент транспорта и развития дорожно-транспортной инфрастуктуры города Москвы"
-        android:textColor="@color/black"
-        android:textSize="17sp"
+        android:text="@string/app_version"
+        android:textColor="@color/black_text"
+        android:layout_marginTop="4dp"
+        android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="@+id/textView2"
         app:layout_constraintStart_toStartOf="@+id/textView2"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
@@ -45,23 +47,23 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="15dp"
+        android:layout_marginTop="20sp"
         android:text="Единый контакт-центр"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/versionText" />
+        android:textColor="@color/black_text"
+        android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="@+id/infoFragmentLogo"
+        app:layout_constraintTop_toBottomOf="@+id/infoFragmentLogo" />
 
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="+7 962 944 4200"
-        android:textColor="@color/light_blue_600"
-        android:textSize="20sp"
+        android:text="+7 (962) 944-42-00"
+        android:textColor="@color/on_boarding_primary_purple"
+        android:textStyle="bold"
+        android:textSize="15sp"
         android:autoLink="phone"
-        android:textColorLink="@color/light_blue_600"
+        android:textColorLink="@color/on_boarding_primary_purple"
         app:layout_constraintStart_toStartOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
@@ -71,10 +73,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:autoLink="web"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:text="Условия использования Яндекс.Карт"
-        android:textColor="@color/light_blue_600"
-        android:textSize="20sp"
+        android:textColor="@color/on_boarding_primary_purple"
+        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textView6"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
@@ -85,8 +87,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="Условия пользовательского соглашения"
-        android:textColor="@color/light_blue_600"
-        android:textSize="20sp"
+        android:textColor="@color/on_boarding_primary_purple"
+        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/yandexPolicy"
         app:layout_constraintTop_toBottomOf="@+id/yandexPolicy" />
@@ -97,8 +99,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="Согласие на обработку персональных данных"
-        android:textColor="@color/light_blue_600"
-        android:textSize="20sp"
+        android:textColor="@color/on_boarding_primary_purple"
+        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/appPolicy"
         app:layout_constraintTop_toBottomOf="@+id/appPolicy" />
