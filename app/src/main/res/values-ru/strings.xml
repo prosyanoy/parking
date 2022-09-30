@@ -52,4 +52,6 @@
     <string name="sbp_title">Система быстрых платежей</string>
     <string name="sbp_title_description">Комиссия 0,7%</string>
     <string name="add_credit_card_button_text">Привязать банковскую карту</string>
+    <string name="app_version">Версия %s</string>
+    <string name="menu_bottom_sheet_header">Меню</string>
 </resources>
