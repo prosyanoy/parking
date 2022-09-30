@@ -63,7 +63,7 @@
                     android:layout_width="20dp"
                     android:layout_height="17dp"
                     android:layout_marginEnd="12dp"
-                    android:src="@drawable/arrow"
+                    android:src="@drawable/ic_arrow"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -102,7 +102,7 @@
                     android:layout_width="20dp"
                     android:layout_height="17dp"
                     android:layout_marginEnd="12dp"
-                    android:src="@drawable/arrow"
+                    android:src="@drawable/ic_arrow"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -141,7 +141,7 @@
                     android:layout_width="20dp"
                     android:layout_height="17dp"
                     android:layout_marginEnd="12dp"
-                    android:src="@drawable/arrow"
+                    android:src="@drawable/ic_arrow"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -180,7 +180,7 @@
                     android:layout_width="20dp"
                     android:layout_height="17dp"
                     android:layout_marginEnd="12dp"
-                    android:src="@drawable/arrow"
+                    android:src="@drawable/ic_arrow"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -219,7 +219,7 @@
                     android:layout_width="20dp"
                     android:layout_height="17dp"
                     android:layout_marginEnd="12dp"
-                    android:src="@drawable/arrow"
+                    android:src="@drawable/ic_arrow"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -270,7 +270,7 @@
                     android:layout_width="20dp"
                     android:layout_height="17dp"
                     android:layout_marginEnd="12dp"
-                    android:src="@drawable/arrow"
+                    android:src="@drawable/ic_arrow"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -309,7 +309,7 @@
                     android:layout_width="20dp"
                     android:layout_height="17dp"
                     android:layout_marginEnd="12dp"
-                    android:src="@drawable/arrow"
+                    android:src="@drawable/ic_arrow"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -348,7 +348,7 @@
                     android:layout_width="20dp"
                     android:layout_height="17dp"
                     android:layout_marginEnd="12dp"
-                    android:src="@drawable/arrow"
+                    android:src="@drawable/ic_arrow"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -397,7 +397,7 @@
                     android:layout_width="20dp"
                     android:layout_height="17dp"
                     android:layout_marginEnd="12dp"
-                    android:src="@drawable/arrow"
+                    android:src="@drawable/ic_arrow"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -435,7 +435,7 @@
                     android:layout_width="20dp"
                     android:layout_height="17dp"
                     android:layout_marginEnd="12dp"
-                    android:src="@drawable/arrow"
+                    android:src="@drawable/ic_arrow"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -474,7 +474,7 @@
                     android:layout_width="20dp"
                     android:layout_height="17dp"
                     android:layout_marginEnd="12dp"
-                    android:src="@drawable/arrow"
+                    android:src="@drawable/ic_arrow"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -514,7 +514,7 @@
                     android:layout_width="20dp"
                     android:layout_height="17dp"
                     android:layout_marginEnd="12dp"
-                    android:src="@drawable/arrow"
+                    android:src="@drawable/ic_arrow"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
