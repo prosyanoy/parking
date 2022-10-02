@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.*
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import sbs.pros.parking.R
 import sbs.pros.parking.databinding.ThemeFragmentBinding
@@ -17,8 +18,8 @@ class ThemeFragment: DialogFragment() {
 
         binding = ThemeFragmentBinding.inflate(layoutInflater)
 
-        return AlertDialog.Builder(requireContext())
-            .setMessage(getString(R.string.themeAppeal))
+        return MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.themeAppeal))
             .setPositiveButton(getString(R.string.themeSelect)) { dialog, id ->
                 parentFragmentManager.setFragmentResult(
                     SupportFragment.THEME_REQUEST_KEY, bundleOf(

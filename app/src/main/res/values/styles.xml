@@ -34,7 +34,7 @@
         <item name="shapeAppearanceOverlay">@null</item>
     </style>
 
-    <style name="MaterialAlertDialog.App.Title.Text" parent="MaterialAlertDialog.Material3.Title.Text">
+    <style name="MaterialAlertDialog.App.Title.Text" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
         <item name="android:textColor">@color/black_text</item>
         <item name="android:textSize">24sp</item>
     </style>
