@@ -30,7 +30,7 @@
     <color name="purple">#BF3DA3</color>
     <color name="lightPurple">#FF52D9</color>
     <color name="darkPurple">#80296D</color>
-
+    <color name="primary_purple_0.6">#998f6dd8</color>
     <!-- On boarding colors -->
     <color name="on_boarding_background_grey">#E4E4E4</color>
     <color name="on_boarding_primary_purple">#8f6dd8</color>

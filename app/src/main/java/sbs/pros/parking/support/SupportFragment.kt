@@ -1,15 +1,19 @@
 package sbs.pros.parking.support
 
 import android.content.Intent
+import android.graphics.Color
+import android.opengl.Visibility
 import android.os.Bundle
 import android.os.Message
 import android.view.View
+import android.widget.CheckedTextView
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_support.*
 import sbs.pros.parking.Constants
 import sbs.pros.parking.R
 import sbs.pros.parking.databinding.FragmentSupportBinding
@@ -45,7 +49,7 @@ class SupportFragment() : Fragment(R.layout.fragment_support) {
             }
 
             sendBtn.setSafeOnClickListener {
-                sendEmail(themeText.text.toString(), messageField.text.toString())
+                sendEmail(themeBtn.text.toString(), messageField.text.toString())
                 messageField.text?.clear()
             }
         }
@@ -74,14 +78,23 @@ class SupportFragment() : Fragment(R.layout.fragment_support) {
     private fun setupFragmentListener() {
         setFragmentResultListener(THEME_REQUEST_KEY) { key, bundle ->
             val theme = bundle.getString("theme")
-            theme?.let { binding.themeText.text = it }
+            if (theme != "") theme?.let { binding.themeBtn.text = it }
+            checkButton()
+            if (binding.themeBtn.text != "Выберите тему") {
+                binding.themeBtn.setTextColor(themeBtn.context.getColor(R.color.black_text))
+                binding.themeBtn.isActivated = true
+                binding.messageFieldContainer.visibility = View.VISIBLE
+            }
+
         }
     }
 
     private fun checkButton() {
-        val themeTxt = binding.themeText.text
+        val themeTxt = binding.themeBtn.text
         isThemeSelected = themeTxt != "Выберите тему"
         binding.sendBtn.isEnabled = binding.messageField.text?.length!! > 9 && isThemeSelected
+        binding.sendBtn.alpha = if (binding.sendBtn.isEnabled) 1.0F else  0.6F
+
     }
 
     override fun onResume() {

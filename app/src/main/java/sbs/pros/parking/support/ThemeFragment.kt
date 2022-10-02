@@ -29,7 +29,7 @@ class ThemeFragment: DialogFragment() {
                             binding.rating.id -> binding.rating.text.toString()
                             binding.paymentCheck.id -> binding.paymentCheck.text.toString()
                             binding.refund.id -> binding.refund.text.toString()
-                            else -> {}
+                            else -> {""}
                         }
                     )
                 )
