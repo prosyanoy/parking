@@ -32,17 +32,17 @@ class SupportFragment() : Fragment(R.layout.fragment_support) {
         viewModel.setTitle("Обратная связь")
         setupFragmentListener()
 
-        with(binding){
+        val dialog = ThemeFragment()
+
+        with(binding) {
 
             themeBtn.setSafeOnClickListener {
-                findNavController().navigateSafe(R.id.action_supportFragment_to_themeFragment)
+                dialog.show(parentFragmentManager, THEME_REQUEST_KEY)
             }
 
             messageField.addTextChangedListener {
                 checkButton()
             }
-
-
 
             sendBtn.setSafeOnClickListener {
                 sendEmail(themeText.text.toString(), messageField.text.toString())
@@ -52,7 +52,7 @@ class SupportFragment() : Fragment(R.layout.fragment_support) {
     }
 
 
-    private fun sendEmail(theme: String, message: String){
+    private fun sendEmail(theme: String, message: String) {
         val email = Constants.EMAIL_ADDRESS
 
 
@@ -71,15 +71,14 @@ class SupportFragment() : Fragment(R.layout.fragment_support) {
 
     }
 
-
-    private fun setupFragmentListener(){
-        setFragmentResultListener(THEME_REQUEST_KEY){ key, bundle ->
+    private fun setupFragmentListener() {
+        setFragmentResultListener(THEME_REQUEST_KEY) { key, bundle ->
             val theme = bundle.getString("theme")
             theme?.let { binding.themeText.text = it }
         }
     }
 
-    private fun checkButton(){
+    private fun checkButton() {
         val themeTxt = binding.themeText.text
         isThemeSelected = themeTxt != "Выберите тему"
         binding.sendBtn.isEnabled = binding.messageField.text?.length!! > 9 && isThemeSelected

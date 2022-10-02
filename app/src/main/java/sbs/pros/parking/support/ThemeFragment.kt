@@ -1,58 +1,40 @@
 package sbs.pros.parking.support
 
+import android.app.Dialog
 import android.os.Bundle
-import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.*
 import dagger.hilt.android.AndroidEntryPoint
 import sbs.pros.parking.R
 import sbs.pros.parking.databinding.ThemeFragmentBinding
-import sbs.pros.parking.menu.MenuViewModel
-import sbs.pros.parking.utils.setSafeOnClickListener
-import sbs.pros.parking.utils.viewLifecycleLazy
 
 @AndroidEntryPoint
-class ThemeFragment: Fragment(R.layout.theme_fragment) {
+class ThemeFragment: DialogFragment() {
 
-    private val viewModel by activityViewModels<MenuViewModel>()
-    private val binding by viewLifecycleLazy { ThemeFragmentBinding.bind( requireView()) }
+    private lateinit var binding: ThemeFragmentBinding
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
+        binding = ThemeFragmentBinding.inflate(layoutInflater)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel.setTitle("Тема")
-
-        with(binding){
-            mode.setSafeOnClickListener {
-                setFragmentResult(SupportFragment.THEME_REQUEST_KEY, bundleOf("theme" to mode.text.toString() ))
-                findNavController().navigateUp()
+        return AlertDialog.Builder(requireContext())
+            .setMessage(getString(R.string.themeAppeal))
+            .setPositiveButton(getString(R.string.themeSelect)) { dialog, id ->
+                parentFragmentManager.setFragmentResult(
+                    SupportFragment.THEME_REQUEST_KEY, bundleOf(
+                        "theme" to when (binding.themeGroup.checkedRadioButtonId) {
+                            binding.mode.id -> binding.mode.text.toString()
+                            binding.others.id -> binding.others.text.toString()
+                            binding.rating.id -> binding.rating.text.toString()
+                            binding.paymentCheck.id -> binding.paymentCheck.text.toString()
+                            binding.refund.id -> binding.refund.text.toString()
+                            else -> {}
+                        }
+                    )
+                )
             }
-
-            paymentCheck.setSafeOnClickListener {
-                setFragmentResult(SupportFragment.THEME_REQUEST_KEY, bundleOf("theme" to paymentCheck.text.toString() ))
-                findNavController().navigateUp()
-            }
-
-            refund.setSafeOnClickListener {
-                setFragmentResult(SupportFragment.THEME_REQUEST_KEY, bundleOf("theme" to refund.text.toString()))
-                findNavController().navigateUp()
-            }
-
-            others.setSafeOnClickListener {
-                setFragmentResult(SupportFragment.THEME_REQUEST_KEY, bundleOf("theme" to others.text.toString()))
-                findNavController().navigateUp()
-            }
-
-            rating.setSafeOnClickListener {
-                setFragmentResult(SupportFragment.THEME_REQUEST_KEY, bundleOf("theme" to rating.text.toString()))
-                findNavController().navigateUp()
-            }
-
-
-        }
+            .setNegativeButton(getString(R.string.themeCancel)) { dialog, id -> }
+            .setView(binding.dialogFragment)
+            .create()
     }
 }

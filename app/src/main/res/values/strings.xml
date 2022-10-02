@@ -31,6 +31,9 @@
     <string name="remaining2">seconds</string>
     <string name="repeated_request">Request code</string>
     <string name="limit">The limit of attempts is over. Try later</string>
+    <string name="themeAppeal">Appeal theme</string>
+    <string name="themeCancel">Cancel</string>
+    <string name="themeSelect">Select</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="app_version">Версия %s</string>
     <!-- TODO: Remove or change this placeholder text -->
