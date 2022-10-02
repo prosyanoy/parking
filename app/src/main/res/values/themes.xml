@@ -17,6 +17,18 @@
         <item name="fontFamily">@font/overpass</item>
     </style>
 
+    <style name="ThemeOverlay.App.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="layout">@layout/theme_fragment</item>
+        <item name="colorPrimary">@color/black_text</item>
+        <item name="colorSecondary">@color/on_boarding_primary_purple</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="android:textColor">@color/black_text</item>
+        <item name="alertDialogStyle">@style/MaterialAlertDialog.App</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.App.Title.Text</item>
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.App.Button</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Widget.App.Button</item>
+    </style>
+
     <style name="EditTextTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorControlNormal">@color/purple</item>
         <item name="colorControlActivated">@color/purple</item>
