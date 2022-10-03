@@ -3,6 +3,101 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/active_dots.xml" value="0.1835" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/back_tabs.xml" value="0.1835" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/bottom_sheet_background.xml" value="0.1835" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/ic1.xml" value="0.1845" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/ic_chats.xml" value="0.1835" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/ic_circle_on_progress.xml" value="0.1235" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/ic_circle_progress.xml" value="0.1235" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/ic_currencyrub.xml" value="0.1835" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.1835" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/ic_decline.xml" value="0.1835" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/ic_ellipse.xml" value="0.1835" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/ic_ellipse_5.xml" value="0.1835" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/ic_ellipse_6.xml" value="0.1835" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/ic_ellipse_7.xml" value="0.1835" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1835" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/ic_on_boarding_fab.xml" value="0.1845" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/little_rounded_layout.xml" value="0.1835" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/on_boarding.xml" value="0.1845" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/on_boarding_car_picture.xml" value="0.1845" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/on_boarding_cards_picture.xml" value="0.1845" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/on_boarding_coins_first_picture.xml" value="0.1845" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/on_boarding_fab_selector.xml" value="0.1845" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/on_boarding_map_picture.xml" value="0.1845" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/on_boarding_payment_picture.xml" value="0.1845" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/on_boarding_road_picture.xml" value="0.1845" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/on_boarding_telephone_picture.xml" value="0.1845" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/onboarding_ellipse.xml" value="0.1835" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/drawable/onboarding_search_parking.xml" value="0.1835" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/layout/fragment_choose.xml" value="0.18614130434782608" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/layout/fragment_location.xml" value="0.1" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/layout/fragment_on_boarding.xml" value="0.136" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/layout/item_page.xml" value="0.1" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/layout/item_page_on_boarding_geolocation.xml" value="0.11031420765027322" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/layout/item_page_on_boarding_pay_for_parking.xml" value="0.152" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/layout/item_page_on_boarding_search_parking.xml" value="0.14628623188405798" />
+        <entry key="..\:/Geekbrains/other projects Android/parking/app/src/main/res/layout/item_page_on_boarding_tariff_for_parking.xml" value="0.18614130434782608" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/drawable/active_dots.xml" value="0.197" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/drawable/back_select.xml" value="0.197" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/drawable/back_tabs.xml" value="0.197" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/drawable/bottom_sheet_background.xml" value="0.197" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/drawable/default_pager_dot.xml" value="0.197" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/drawable/divider.xml" value="0.197" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/drawable/ic_accept.xml" value="0.197" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/drawable/ic_arrow_back.xml" value="0.197" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/drawable/ic_battery_with_charger_svgrepo_com.xml" value="0.197" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/drawable/ic_bellsimple.xml" value="0.197" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/drawable/ic_bike__a_.xml" value="0.2405" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/drawable/ic_bus__d_.xml" value="0.2405" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/drawable/ic_car.xml" value="0.2405" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/drawable/ic_car__b_.xml" value="0.2405" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/drawable/ic_chartbar.xml" value="0.197" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/drawable/ic_circle_progress.xml" value="0.2405" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/drawable/ic_globehemispherewest.xml" value="0.2405" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.2405" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/drawable/ic_in.xml" value="0.2405" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/drawable/ic_shieldcheck.xml" value="0.197" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/drawable/ic_user.xml" value="0.197" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/drawable/ic_wheelchair.xml" value="0.197" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/drawable/inactive_dots.xml" value="0.197" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/drawable/little_rounded_layout.xml" value="0.197" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/drawable/on_boarding_calendar_picture.xml" value="0.197" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/drawable/rounded_layout.xml" value="0.197" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/drawable/selected_pager_dot.xml" value="0.197" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/drawable/tab_pager_selector.xml" value="0.197" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/font/overpass.xml" value="0.396875" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/font/overpass_bold.xml" value="0.396875" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/font/overpass_thin.xml" value="0.396875" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/layout/activity_main.xml" value="0.358695652173913" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/layout/app_info_fragment.xml" value="0.4672395273899033" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/layout/bottom_sheet_layout_map_filters.xml" value="0.358695652173913" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/layout/bottom_sheet_layout_parking.xml" value="0.358695652173913" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/layout/button_layout.xml" value="0.358695652173913" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/layout/custom_tab.xml" value="0.358695652173913" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/layout/dialog_intent_settings.xml" value="0.358695652173913" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/layout/fragment_auth.xml" value="0.358695652173913" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/layout/fragment_car_registration.xml" value="0.358695652173913" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/layout/fragment_choose.xml" value="0.358695652173913" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/layout/fragment_confirmation.xml" value="0.358695652173913" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/layout/fragment_in.xml" value="0.358695652173913" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/layout/fragment_landlord_auth.xml" value="0.358695652173913" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/layout/fragment_landlord_menu.xml" value="0.358695652173913" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/layout/fragment_location.xml" value="0.358695652173913" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/layout/fragment_map.xml" value="0.358695652173913" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/layout/fragment_on_boarding.xml" value="0.358695652173913" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/layout/fragment_out.xml" value="0.358695652173913" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/layout/fragment_parked.xml" value="0.358695652173913" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/layout/fragment_support.xml" value="0.358695652173913" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/layout/item_page_on_boarding_geolocation.xml" value="0.358695652173913" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/layout/menu_bottom_sheet_layout.xml" value="0.358695652173913" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/layout/menu_fragment.xml" value="0.5" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/layout/theme_fragment.xml" value="0.358695652173913" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/layout/tile_in.xml" value="0.358695652173913" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/layout/tile_out.xml" value="0.358695652173913" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/layout/tile_parked.xml" value="0.358695652173913" />
+        <entry key="..\:/gigaDevRep/kotlik/parking/app/src/main/res/layout/ui_map_layout.xml" value="0.358695652173913" />
         <entry key="..\:/parking/app/src/main/res/drawable/active_dots.xml" value="0.14" />
         <entry key="..\:/parking/app/src/main/res/drawable/background_splash.xml" value="0.14" />
         <entry key="..\:/parking/app/src/main/res/drawable/bottom_sheet_background.xml" value="0.14" />

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Parking</string>
+    <string name="intent_settings_text_view_geo_status">Включите геолокацию на вашем устройстве</string>
+    <string name="intent_settings_button">Перейти в Настройки</string>
+    <string name="intent_settings_text_view_fine_location">Разрешите определить ваше местоположение в Настройках устройства</string>
+    <string name="bottom_sheet_content">Контент</string>
+    <string name="bottom_sheet_peek">Пик</string>
+    <string name="successful">СМС было отправлено на ваш номер телефона</string>
+    <string name="server_error">Не получается соединиться с сервером</string>
+    <string name="ruble">1000&#8198;&#8381;</string>
+    <string name="geolocation_request">Чтобы правильно определять ваше местоположение, приложение запросит доступ к данным геолокации</string>
+    <string name="continue_text">Продолжить</string>
+    <string name="greetings">Добро пожаловать</string>
+    <string name="phone_confirmation">Подтверждение телефона</string>
+    <string name="name">ПроПарковки</string>
+    <string name="logo_description">Логотип</string>
+    <string name="sms">SMS</string>
+    <string name="flash_call">Flash Call</string>
+    <string name="pay">Оплатить</string>
+    <string name="flash_call_instruction">Введите ваш номер мобильного телефона. Вам поступит звонок с нашего номера.</string>
+    <string name="sms_instruction">Введите номер мобильного телефона. Мы отправим одноразовый код в SMS.</string>
+    <string name="next">Далее</string>
+    <string name="number_input_field">Поле для ввода номера</string>
+    <string name="invalid_number">Номер введен некорректно</string>
+    <string name="not_deliver">SMS не было доставлено</string>
+    <string name="expired">Получатель вне зоны доступа</string>
+    <string name="deliver">SMS отправлено успешно</string>
+    <string name="sms_second">Введите одноразовый код из SMS</string>
+    <string name="flash_call_second">Введите последние 4 цифры номера входящего звонка</string>
+    <string name="remaining1">Запросить код повторно через</string>
+    <string name="remaining2">секунд(ы)</string>
+    <string name="repeated_request">Запросить код</string>
+    <string name="limit">Количество запросов исчерпано. Повторите позже</string>
+    <string name="next_page_on_boarding">Следующая страница</string>
+    <string name="on_boarding_button_skip">Пропустить</string>
+    <string name="on_boarding_button_back">Назад</string>
+    <string name="on_boarding_search_parking_title">Поиск парковок поблизости</string>
+    <string name="on_boarding_search_parking_description">Ищите и сравнивайте автостоянки по цене и расположению</string>
+    <string name="on_boarding_geolocation_text">Чтобы правильно определять ваше местоположение, приложение запросит доступ к данным геолокации</string>
+    <string name="on_boarding_pay_for_parking_title">Бронирование и оплата на выезде</string>
+    <string name="on_boarding_pay_for_parking_description">Платите заранее по факту брони или по факту выезда с парковки</string>
+    <string name="on_boarding_tariff_for_parking_title">Неограниченная стоянка по абонементу</string>
+    <string name="on_boarding_tariff_for_parking_description">Паркуйтесь на всех стоянках Сочи и Адлера. От 9.999₽/месяц</string>
+    <string name="app_version">Версия %s</string>
+    <string name="menu_bottom_sheet_header">Меню</string>
+</resources>

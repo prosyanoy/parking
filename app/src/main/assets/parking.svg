@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="8.26772in" height="11.6929in" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 8267.72 11692.91"
+ xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:xodm="http://www.corel.com/coreldraw/odm/2003">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .str1 {stroke:black;stroke-width:18.75;stroke-miterlimit:2.61313}
+    .str0 {stroke:#2B2B2A;stroke-width:18.75;stroke-miterlimit:2.61313}
+    .fil1 {fill:none}
+    .fil2 {fill:url(#id0)}
+    .fil5 {fill:url(#id1)}
+    .fil3 {fill:url(#id2)}
+    .fil4 {fill:url(#id3)}
+    .fil7 {fill:url(#id4)}
+    .fil6 {fill:url(#id5)}
+    .fil0 {fill:url(#id6)}
+   ]]>
+  </style>
+  <linearGradient id="id0" gradientUnits="userSpaceOnUse" x1="3472.4" y1="4476.67" x2="3472.4" y2="7205.83">
+   <stop offset="0" style="stop-opacity:1; stop-color:#D0D1D1"/>
+   <stop offset="1" style="stop-opacity:1; stop-color:#D0D1D1"/>
+  </linearGradient>
+  <linearGradient id="id1" gradientUnits="userSpaceOnUse" x1="3472.4" y1="4476.67" x2="3472.4" y2="7205.83">
+   <stop offset="0" style="stop-opacity:1; stop-color:white"/>
+   <stop offset="1" style="stop-opacity:1; stop-color:#E8E8E8"/>
+  </linearGradient>
+  <linearGradient id="id2" gradientUnits="userSpaceOnUse" xlink:href="#id0" x1="4784.9" y1="4476.67" x2="4784.9" y2="7205.83">
+  </linearGradient>
+  <linearGradient id="id3" gradientUnits="userSpaceOnUse" xlink:href="#id1" x1="4784.9" y1="4476.67" x2="4784.9" y2="7205.83">
+  </linearGradient>
+  <linearGradient id="id4" gradientUnits="userSpaceOnUse" x1="5336.98" y1="7018.33" x2="4639.06" y2="5310">
+   <stop offset="0" style="stop-opacity:1; stop-color:#DBDBDB"/>
+   <stop offset="1" style="stop-opacity:1; stop-color:#818181"/>
+  </linearGradient>
+  <linearGradient id="id5" gradientUnits="userSpaceOnUse" x1="3461.98" y1="4903.75" x2="3097.4" y2="7320.41">
+   <stop offset="0" style="stop-opacity:1; stop-color:#D9D8D8"/>
+   <stop offset="1" style="stop-opacity:1; stop-color:#747474"/>
+  </linearGradient>
+  <radialGradient id="id6" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1.01506 0.0169306 -1.69306E-002 1.01506 37 -158)" cx="4133.86" cy="5845.06" r="1789.03" fx="4133.86" fy="5845.06">
+   <stop offset="0" style="stop-opacity:1; stop-color:#40AFFF"/>
+   <stop offset="0.839216" style="stop-opacity:0.501961; stop-color:#40AFFF"/>
+   <stop offset="1" style="stop-opacity:0; stop-color:#40AFFF"/>
+  </radialGradient>
+ </defs>
+ <g id="Layer_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <circle class="fil0" cx="4133.86" cy="5845.06" r="2169.42"/>
+  <g id="_105553249582208" filter="url(#filter0_iiiii_2_290)">
+   <line class="fil1 str0" x1="4133.86" y1="4476.67" x2="4133.86" y2= "7213.44" />
+   <line class="fil1 str0" x1="4133.86" y1="4476.67" x2="2816.15" y2= "4955.65" />
+   <line class="fil1 str0" x1="2816.15" y1="4955.65" x2="2816.15" y2= "6734.44" />
+   <line class="fil1 str0" x1="4133.86" y1="4476.67" x2="5451.57" y2= "4955.65" />
+   <line class="fil1 str0" x1="3704.47" y1="7057.36" x2="3704.47" y2= "5063.89" />
+   <line class="fil1 str0" x1="3704.47" y1="5063.89" x2="3198.63" y2= "5247.76" />
+   <line class="fil1 str0" x1="3198.63" y1="5247.76" x2="3198.63" y2= "6871.59" />
+   <line class="fil1 str0" x1="4133.86" y1="7213.44" x2="3704.47" y2= "7057.36" />
+   <line class="fil1 str0" x1="4563.24" y1="7057.36" x2="4563.24" y2= "5063.89" />
+   <line class="fil1 str0" x1="4563.24" y1="5063.89" x2="5069.09" y2= "5247.76" />
+   <line class="fil1 str0" x1="5069.09" y1="5247.76" x2="5069.09" y2= "6871.59" />
+   <line class="fil1 str0" x1="4133.86" y1="7213.44" x2="4563.24" y2= "7057.36" />
+   <line class="fil1 str0" x1="5451.57" y1="4955.65" x2="5451.57" y2= "6734.44" />
+   <polyline class="fil1 str0" points="3198.63,6871.59 3399.67,6726.15 3403.35,5173.35 "/>
+   <line class="fil1 str0" x1="3198.63" y1="6871.59" x2="2816.15" y2= "6734.44" />
+   <line class="fil1 str0" x1="5069.09" y1="6871.59" x2="5451.57" y2= "6734.44" />
+   <polyline class="fil1 str0" points="5069.09,6871.59 4868.05,6726.15 4864.36,5173.35 "/>
+   <polygon class="fil2" points="4133.86,7213.44 4133.86,4476.67 2816.15,4955.65 2816.15,6734.44 3198.63,6871.59 3198.63,5247.76 3403.35,5173.35 3704.47,5063.89 3704.47,7057.36 "/>
+   <polygon class="fil3" points="4133.86,4476.67 4133.86,7213.44 4563.24,7057.36 4563.24,5063.89 4864.36,5173.35 5069.09,5247.76 5069.09,6871.59 5451.57,6734.44 5451.57,4955.65 "/>
+   <polygon class="fil4 str1" points="4133.86,4476.67 4133.86,7213.44 4563.24,7057.36 4563.24,5063.89 4864.36,5173.35 5069.09,5247.76 5069.09,6871.59 5451.57,6734.44 5451.57,4955.65 "/>
+   <polygon class="fil5 str1" points="4133.86,7213.44 4133.86,4476.67 2816.15,4955.65 2816.15,6734.44 3198.63,6871.59 3198.63,5247.76 3403.35,5173.35 3704.47,5063.89 3704.47,7057.36 "/>
+   <polygon class="fil6 str1" points="3399.67,6726.15 3403.35,5173.35 3198.63,5247.76 3198.63,6871.59 "/>
+   <polygon class="fil7 str1" points="4864.36,5173.35 4868.05,6726.15 5069.09,6871.59 5069.09,5247.76 "/>
+  </g>
+ </g>
+</svg>

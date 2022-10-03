@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="bottom_sheet_height">210dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="on_boarding_text_size_title_20sp">20sp</dimen>
+    <dimen name="on_boarding_text_size_description_16sp">16sp</dimen>
+    <dimen name="on_boarding_text_size_18sp">18sp</dimen>
 
 </resources>

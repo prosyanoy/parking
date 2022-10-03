@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_200">#BF3DA3 </color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
@@ -8,8 +8,32 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="grey">#6D72797E</color>
+    <color name="black_text">#1B1C1E</color>
 
-    <color name="lightGreen">#FA32F62B</color>
     <color name="primary">#0DAEFC</color>
     <color name="secondary">#0985C0</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="light_blue_900">#FF01579B</color>
+    <color name="light_blue_A200">#FF40C4FF</color>
+    <color name="light_blue_A400">#FF00B0FF</color>
+    <color name="black_overlay">#66000000</color>
+
+    <color name="blue">#40AFFF</color>
+    <color name="lightBlue">#80CAFF</color>
+    <color name="darkBlue">#0095FF</color>
+
+    <color name="green">#3CF063</color>
+    <color name="lightGreen">#78F092</color>
+    <color name="darkGreen">#00F034</color>
+
+    <color name="purple">#BF3DA3</color>
+    <color name="lightPurple">#FF52D9</color>
+    <color name="darkPurple">#80296D</color>
+
+    <!-- On boarding colors -->
+    <color name="on_boarding_background_grey">#E4E4E4</color>
+    <color name="on_boarding_primary_purple">#8f6dd8</color>
+    <color name="on_boarding_secondary_purple">#664B9F</color>
+    <color name="on_boarding_text_color_dark_grey">#4f4f4f</color>
+    <color name="on_boarding_geolocation_text_color_white">#d0d5dd</color>
 </resources>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_menu"
+    app:startDestination="@id/menuFragment">
+
+    <fragment
+        android:id="@+id/appInfoFragment"
+        android:name="sbs.pros.parking.app_info.AppInfoFragment"
+        android:label="AppInfoFragment" />
+    <fragment
+        android:id="@+id/menuFragment"
+        android:name="sbs.pros.parking.menu.MenuFragment"
+        android:label="MenuFragment" >
+        <action
+            android:id="@+id/action_menuFragment_to_appInfoFragment"
+            app:destination="@id/appInfoFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_supportFragment"
+            app:destination="@id/supportFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/supportFragment"
+        android:name="sbs.pros.parking.support.SupportFragment"
+        android:label="SupportFragment" >
+        <action
+            android:id="@+id/action_supportFragment_to_themeFragment"
+            app:destination="@id/themeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/themeFragment"
+        android:name="sbs.pros.parking.support.ThemeFragment"
+        android:label="ThemeFragment" />
+</navigation>

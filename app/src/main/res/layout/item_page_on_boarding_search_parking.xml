@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/on_boarding_background_grey"
+    tools:context=".users_intro.OnBoardingFragment">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/onBoardingImageViewCirclesBackground"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:scaleType="center"
+        app:layout_constraintBottom_toTopOf="@id/onBoardingDownHorizontalGuideline"
+        app:layout_constraintEnd_toEndOf="@+id/onBoardingEndVerticalGuideline"
+        app:layout_constraintStart_toStartOf="@+id/onBoardingStartVerticalGuideline"
+        app:srcCompat="@drawable/on_boarding_circles_background"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/onBoardingImageViewHomesPicture"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:scaleType="center"
+        app:layout_constraintBottom_toTopOf="@id/onBoardingDownHorizontalGuideline"
+        app:layout_constraintEnd_toEndOf="@+id/onBoardingEndVerticalGuideline"
+        app:layout_constraintStart_toStartOf="@+id/onBoardingStartVerticalGuideline"
+        app:srcCompat="@drawable/on_boarding_homes_picture"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/onBoardingImageViewCarPicture"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:scaleType="center"
+        android:rotation="1"
+        android:layout_marginBottom="300dp"
+        android:layout_marginEnd="60dp"
+        app:layout_constraintBottom_toBottomOf="@id/onBoardingImageViewCirclesBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/on_boarding_car_picture"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/onBoardingImageRoadPicture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="center"
+        android:layout_marginBottom="32dp"
+        android:layout_marginEnd="50dp"
+        app:layout_constraintBottom_toBottomOf="@id/onBoardingImageViewCirclesBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/on_boarding_road_picture"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/onBoardingImageTelephonePicture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="center"
+        android:layout_marginBottom="40dp"
+        android:layout_marginStart="-30dp"
+        app:layout_constraintBottom_toBottomOf="@id/onBoardingImageViewCirclesBackground"
+        app:layout_constraintStart_toStartOf="@id/onBoardingImageRoadPicture"
+        app:srcCompat="@drawable/on_boarding_telephone_picture"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/onBoardingImageCoinsFirstPicture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="center"
+        android:layout_marginBottom="120dp"
+        app:layout_constraintBottom_toBottomOf="@id/onBoardingImageViewCirclesBackground"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/on_boarding_coins_first_picture"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/onBoardingDownHorizontalGuideline"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.587" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/onBoardingStartVerticalGuideline"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="-0.23" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/onBoardingEndVerticalGuideline"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="1.22" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/onBoardingFabGuideline"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.829"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/onBoardingTextTitle"
+        android:textSize="@dimen/on_boarding_text_size_title_20sp"
+        android:textStyle="bold"
+        android:layout_width="290dp"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:textColor="@color/on_boarding_text_color_dark_grey"
+        app:layout_constraintBottom_toTopOf="@+id/onBoardingTextDescription"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="6dp"
+        android:text="@string/on_boarding_search_parking_title"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/onBoardingTextDescription"
+        android:textSize="@dimen/on_boarding_text_size_description_16sp"
+        android:layout_width="290dp"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:textColor="@color/on_boarding_text_color_dark_grey"
+        app:layout_constraintBottom_toTopOf="@id/onBoardingFabGuideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="57dp"
+        android:text="@string/on_boarding_search_parking_description"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
