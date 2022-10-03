@@ -10,6 +10,43 @@ import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import sbs.pros.parking.databinding.ActivityMainBinding
 import sbs.pros.parking.utils.MapKitInitializer
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.yandex.mapkit.Animation
+import com.yandex.mapkit.MapKit
+import com.yandex.mapkit.MapKitFactory
+import com.yandex.mapkit.geometry.LinearRing
+import com.yandex.mapkit.geometry.Point
+import com.yandex.mapkit.geometry.Polygon
+import com.yandex.mapkit.geometry.Polyline
+import com.yandex.mapkit.layers.ObjectEvent
+import com.yandex.mapkit.map.*
+import com.yandex.mapkit.mapview.MapView
+import com.yandex.mapkit.user_location.UserLocationLayer
+import com.yandex.mapkit.user_location.UserLocationObjectListener
+import com.yandex.mapkit.user_location.UserLocationView
+import com.yandex.runtime.image.ImageProvider
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import sbs.pros.parking.bottom_sheet.BottomSheetDialog
+import sbs.pros.parking.intro.IntroActivity
+import sbs.pros.parking.model.PinData
+import sbs.pros.parking.utils.drawLocationPoint
+import sbs.pros.parking.utils.drawSimpleBitmap
+import sbs.pros.parking.utils.moveWithBottomPadding
+
+
+class MainActivity : AppCompatActivity(), ClusterListener, ClusterTapListener,
+    UserLocationObjectListener{
+
+    private val MAPKIT_API_KEY = "024ae79a-58dc-4626-ac7e-1ba6ba83121e"
+
+    private val url = "https://pros.sbs/parking/getting.php"
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(){
@@ -59,5 +96,72 @@ class MainActivity : AppCompatActivity(){
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
-    //d
+
+    private fun setUserLocationLayer(){
+        userLocationLayer = mapKit?.createUserLocationLayer(mapView!!.mapWindow)
+        userLocationLayer!!.isVisible = true
+        userLocationLayer!!.isHeadingEnabled = false
+        userLocationLayer!!.setObjectListener(this)
+    }
+
+    private fun checkUserLocation(){
+        GlobalScope.launch(Dispatchers.Main) {
+            var t = 0
+            while (t < 10000){
+                if (userLocationLayer!!.cameraPosition()?.target != null){
+                    centerCameraByUser()
+                    break
+                }
+                delay(250L)
+                t += 250
+            }
+        }
+    }
+
+    private fun checkFineLocationGrant(): Boolean {
+        return (ContextCompat.checkSelfPermission(this, "android.permission.ACCESS_FINE_LOCATION")
+                == PackageManager.PERMISSION_GRANTED)
+    }
+
+    private fun checkFineLocationDenied(): Boolean {
+        return (ContextCompat.checkSelfPermission(this, "android.permission.ACCESS_FINE_LOCATION")
+                == PackageManager.PERMISSION_DENIED)
+    }
+
+    private fun checkGEOStatus(): Boolean {
+        val manager: LocationManager = getSystemService(LOCATION_SERVICE) as LocationManager
+        return manager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+    }
+
+    private fun centerCameraByUser() {
+        mapView!!.map.move(
+            CameraPosition(Point(userLocationLayer!!.cameraPosition()?.target!!.latitude, userLocationLayer!!.cameraPosition()?.target!!.longitude), 16f, 0.0f, 0.0f),
+            Animation(Animation.Type.SMOOTH, 0F),
+            null)
+    }
+
+    override fun onObjectAdded(userLocationView: UserLocationView) {
+        userLocationView.arrow.setIcon(ImageProvider.fromBitmap(drawLocationPoint()))
+        userLocationView.arrow.setIconStyle(IconStyle().setAnchor(PointF(0.5f, 0.5f))
+            .setRotationType(RotationType.ROTATE)
+            .setZIndex(1f)
+            .setScale(0.5f))
+
+        val pinIcon = userLocationView.pin.useCompositeIcon()
+        pinIcon.setIcon(
+            "pin",
+            ImageProvider.fromBitmap(drawLocationPoint()),
+            IconStyle().setAnchor(PointF(0.5f, 0.5f))
+                .setRotationType(RotationType.ROTATE)
+                .setZIndex(1f)
+                .setScale(0.5f)
+        )
+        userLocationView.accuracyCircle.fillColor = Color.BLUE and -0x66000001
+    }
+
+    override fun onObjectRemoved(userLocationView: UserLocationView) {}
+
+    override fun onObjectUpdated(userLocationView: UserLocationView, objectEvent: ObjectEvent) {}
+    //end user location
+
 }
