@@ -15,6 +15,9 @@
         <action
             android:id="@+id/action_mapFragment_to_landlordMenu"
             app:destination="@id/landlordMenu" />
+        <action
+            android:id="@+id/action_mapFragment_to_payFragment"
+            app:destination="@id/payFragment" />
     </fragment>
 
     <fragment
@@ -93,6 +96,23 @@
         <action
             android:id="@+id/action_carRegistrationFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/payFragment"
+        android:name="sbs.pros.parking.pay.PayFragment"
+        android:label="fragment_pay"
+        tools:layout="@layout/fragment_pay" >
+        <action
+            android:id="@+id/action_payFragment_to_chooseMethodForPayFragment"
+            app:destination="@id/chooseMethodForPayFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/chooseMethodForPayFragment"
+        android:name="sbs.pros.parking.pay.ChooseMethodForPayFragment"
+        android:label="fragment_choose_method_for_pay"
+        tools:layout="@layout/fragment_choose_method_for_pay" >
     </fragment>
 
 </navigation>
