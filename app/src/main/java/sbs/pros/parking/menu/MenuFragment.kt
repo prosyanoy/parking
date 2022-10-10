@@ -21,29 +21,25 @@ class MenuFragment() : Fragment(R.layout.menu_fragment) {
     private val binding by viewLifecycleLazy { MenuFragmentBinding.bind( requireView()) }
 
 
-
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.setTitle("Меню")
 
-        with(binding){
+        with(binding) {
 
             info.setSafeOnClickListener {
                 findNavController().navigateSafe(R.id.action_menuFragment_to_appInfoFragment)
             }
 
 
-
             support.setSafeOnClickListener {
                 findNavController().navigateSafe(R.id.action_menuFragment_to_supportFragment)
             }
 
+            topUpBankAccountMenu.setSafeOnClickListener {
+                findNavController().navigateSafe(R.id.action_menuFragment_to_bottomSheetDialogPay)
+            }
+
         }
     }
-
-
-
-
 }

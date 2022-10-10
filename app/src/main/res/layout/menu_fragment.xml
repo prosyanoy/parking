@@ -11,8 +11,10 @@
         android:paddingTop="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
         app:stickyHeader="@id/main">
 
         <LinearLayout
@@ -23,13 +25,13 @@
             android:showDividers="middle">
 
             <TextView
-                android:textAppearance="@style/Headline"
                 android:id="@+id/main"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:padding="12dp"
                 android:text="Основные"
+                android:textAppearance="@style/Headline"
                 android:textSize="20sp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -49,11 +51,11 @@
                     app:tint="@color/purple_200" />
 
                 <TextView
-                    android:textAppearance="@style/Body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:text="Личный кабинет"
+                    android:textAppearance="@style/Body"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="@+id/accountImg"
                     app:layout_constraintStart_toEndOf="@+id/accountImg"
@@ -88,11 +90,11 @@
                     app:tint="@color/purple_200" />
 
                 <TextView
-                    android:textAppearance="@style/Body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:text="Изменить город"
+                    android:textAppearance="@style/Body"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="@+id/cityImg"
                     app:layout_constraintStart_toEndOf="@+id/cityImg"
@@ -127,11 +129,11 @@
                     app:tint="@color/purple_200" />
 
                 <TextView
-                    android:textAppearance="@style/Body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:text="Уведомления"
+                    android:textAppearance="@style/Body"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="@+id/notifyImg"
                     app:layout_constraintStart_toEndOf="@+id/notifyImg"
@@ -166,11 +168,11 @@
                     app:tint="@color/purple_200" />
 
                 <TextView
-                    android:textAppearance="@style/Body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:text="Новости"
+                    android:textAppearance="@style/Body"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="@+id/newsImg"
                     app:layout_constraintStart_toEndOf="@+id/newsImg"
@@ -205,11 +207,11 @@
                     app:tint="@color/purple_200" />
 
                 <TextView
-                    android:textAppearance="@style/Body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:text="История"
+                    android:textAppearance="@style/Body"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="@+id/storyImg"
                     app:layout_constraintStart_toEndOf="@+id/storyImg"
@@ -228,18 +230,19 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
-                android:textAppearance="@style/Headline"
-
                 android:id="@+id/payment"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="35dp"
                 android:gravity="center_vertical"
                 android:padding="12dp"
                 android:text="Оплата"
+                android:textAppearance="@style/Headline"
                 android:textSize="20sp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/topUpBankAccountMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground">
@@ -256,11 +259,11 @@
                     app:tint="@color/purple_200" />
 
                 <TextView
-                    android:textAppearance="@style/Body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:text="Пополнить счёт"
+                    android:textAppearance="@style/Body"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="@+id/payImg"
                     app:layout_constraintStart_toEndOf="@+id/payImg"
@@ -295,11 +298,11 @@
                     app:tint="@color/purple_200" />
 
                 <TextView
-                    android:textAppearance="@style/Body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:text="Аналитика расходов"
+                    android:textAppearance="@style/Body"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="@+id/analyticsImg"
                     app:layout_constraintStart_toEndOf="@+id/analyticsImg"
@@ -334,11 +337,11 @@
                     app:tint="@color/purple_200" />
 
                 <TextView
-                    android:textAppearance="@style/Body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:text="Банковские карты"
+                    android:textAppearance="@style/Body"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="@+id/cardsImg"
                     app:layout_constraintStart_toEndOf="@+id/cardsImg"
@@ -356,7 +359,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
-                android:textAppearance="@style/Headline"
                 android:id="@+id/others"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -364,6 +366,7 @@
                 android:gravity="center_vertical"
                 android:padding="12dp"
                 android:text="Другое"
+                android:textAppearance="@style/Headline"
                 android:textSize="20sp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -383,11 +386,11 @@
                     app:tint="@color/purple_200" />
 
                 <TextView
-                    android:textAppearance="@style/Body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:text="Автомобили"
+                    android:textAppearance="@style/Body"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="@+id/carsImg"
                     app:layout_constraintStart_toEndOf="@+id/carsImg"
@@ -421,11 +424,11 @@
                     app:tint="@color/purple_200" />
 
                 <TextView
-                    android:textAppearance="@style/Body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:text="Штрафы и эвакуации"
+                    android:textAppearance="@style/Body"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="@+id/evacImg"
                     app:layout_constraintStart_toEndOf="@+id/evacImg"
@@ -460,11 +463,11 @@
                     app:tint="@color/purple_200" />
 
                 <TextView
-                    android:textAppearance="@style/Body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:text="Обратная связь"
+                    android:textAppearance="@style/Body"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="@+id/supportImg"
                     app:layout_constraintStart_toEndOf="@+id/supportImg"
@@ -500,11 +503,11 @@
                     app:tint="@color/purple_200" />
 
                 <TextView
-                    android:textAppearance="@style/Body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:text="О приложении"
+                    android:textAppearance="@style/Body"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="@+id/infoImg"
                     app:layout_constraintStart_toEndOf="@+id/infoImg"

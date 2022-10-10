@@ -47,5 +47,12 @@
     <string name="on_boarding_pay_for_parking_description">Платите заранее по факту брони или по факту выезда с парковки</string>
     <string name="on_boarding_tariff_for_parking_title">Неограниченная стоянка по абонементу</string>
     <string name="on_boarding_tariff_for_parking_description">Паркуйтесь на всех стоянках Сочи и Адлера. От 9.999₽/месяц</string>
+    <string name="pay_title">My balance</string>
+    <string name="current_balance">Current balance</string>
+    <string name="rub_test_balance">0000.00</string>
+    <string name="amountAddedTV"> Amount added</string>
+    <string name="pay_with_SBP">             Top up via SBP</string>
+    <string name="pay_with_CARD">             Top up with a bank card</string>
+    <string name="enter_amount_et">Enter the desired amount</string>
 
 </resources>

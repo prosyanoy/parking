@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottom_sheet_pay"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/margin_top_constrlay_16dp"
+    android:background="@drawable/bottom_sheet_background">
+
+    <ImageView
+        android:id="@+id/holder_for_pay_sheet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_start_holder_20dp"
+        android:layout_marginTop="@dimen/margin_top_holder"
+        android:padding="@dimen/padding_holder_8dp"
+        android:src="@drawable/holder_for_sheet"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/backFromPay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_start_back_btn_16dp"
+        android:layout_marginTop="@dimen/margin_start_back_btn_36dp"
+        android:backgroundTintMode="add"
+        android:src="@drawable/btn_back_pay"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/payTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_start_title_16dp"
+        android:layout_marginTop="@dimen/margin_top_title_44dp"
+        android:text="@string/pay_title"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_title_20sp"
+        app:layout_constraintStart_toEndOf="@+id/backFromPay"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/historyPayBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_top_history_btn_36dp"
+        android:layout_marginEnd="@dimen/margin_end_history_btn_16dp"
+        android:backgroundTintMode="add"
+        android:src="@drawable/ic_history_clock_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/backgroundPayAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_top_back_pat_amount_64dp"
+        android:src="@drawable/ic_back_ground_pay_amount_new"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.523"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/holder_for_pay_sheet" />
+
+    <TextView
+        android:id="@+id/currentBalanceTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_start_balance_tv_44dp"
+        android:layout_marginTop="@dimen/margin_top_balance_tv_16dp"
+        android:text="@string/current_balance"
+        android:textColor="@color/white"
+        android:textSize="@dimen/balance_tv_text_size_20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/payTitle" />
+
+    <TextView
+        android:id="@+id/currentBalanceNumbersTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_start_numbers_tv_44dp"
+        android:layout_marginTop="@dimen/margin_top_numbers_tv_12dp"
+        android:text="@string/rub_test_balance"
+        android:textColor="@color/white"
+        android:textSize="@dimen/number_tv_text_size_32sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/currentBalanceTV" />
+
+    <TextView
+        android:id="@+id/amountAddedTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_start_amount_add_tv_16dp"
+        android:text="@string/amountAddedTV"
+        android:textSize="@dimen/text_size_amount_add_tv_18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/backgroundPayAmount" />
+
+    <ImageView
+        android:id="@+id/frame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_top_frame_4dp"
+        android:src="@drawable/new_frame_17"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/amountAddedTV" />
+
+    <EditText
+        android:id="@+id/amountAddedETinFrame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_start_edit_text_in_frame_4dp"
+        android:background="@android:color/transparent"
+        android:hint="@string/enter_amount_et"
+        android:inputType="phone"
+        android:digits="0123456789."
+        android:maxLength="8"
+        android:paddingStart="@dimen/padding_start_edit_text_in_frame_8dp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_edit_text_in_frame_19sp"
+        app:layout_constraintBottom_toBottomOf="@+id/frame"
+        app:layout_constraintStart_toStartOf="@id/frame"
+        app:layout_constraintTop_toTopOf="@id/frame"
+        app:layout_constraintVertical_bias="0.592" />
+
+    <ImageButton
+        android:id="@+id/btnAddSbp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_top_btn_add_sbp_320dp"
+        android:backgroundTintMode="add"
+        android:src="@drawable/button_add_sbp"
+        app:layout_constraintBottom_toTopOf="@+id/btnAddCard"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frame" />
+
+
+    <TextView
+        android:id="@+id/payWithSBPtv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_start_pay_with_SBP_tv_80dp"
+        android:text="@string/pay_with_SBP"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_pay_with_SBP_tv_20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnAddSbp"
+        app:layout_constraintStart_toStartOf="@+id/btnAddCard"
+        app:layout_constraintTop_toTopOf="@+id/btnAddSbp"
+        app:layout_constraintVertical_bias="0.463" />
+
+    <ImageButton
+        android:id="@+id/btnAddCard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTintMode="add"
+        android:src="@drawable/button_add_bank_card"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/payWithCardTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_start_pay_with_card_tv_32dp"
+        android:text="@string/pay_with_CARD"
+        android:textColor="@color/on_boarding_secondary_purple"
+        android:textSize="@dimen/text_size_pay_with_card_tv_20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnAddCard"
+        app:layout_constraintStart_toStartOf="@+id/btnAddCard"
+        app:layout_constraintTop_toTopOf="@+id/btnAddCard"
+        app:layout_constraintVertical_bias="0.463" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

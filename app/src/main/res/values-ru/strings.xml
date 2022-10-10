@@ -44,4 +44,11 @@
     <string name="on_boarding_tariff_for_parking_description">Паркуйтесь на всех стоянках Сочи и Адлера. От 9.999₽/месяц</string>
     <string name="app_version">Версия %s</string>
     <string name="menu_bottom_sheet_header">Меню</string>
+    <string name="pay_title">Мой счёт</string>
+    <string name="current_balance">Текущий баланс</string>
+    <string name="amountAddedTV">Сумма пополнения</string>
+    <string name="pay_with_SBP">Пополнить через СБП</string>
+    <string name="pay_with_CARD">Пополнить с банковской карты</string>
+    <string name="enter_amount_et">Введите желаемую сумму</string>
+
 </resources>

@@ -15,6 +15,9 @@
         <action
             android:id="@+id/action_mapFragment_to_landlordMenu"
             app:destination="@id/landlordMenu" />
+        <action
+            android:id="@+id/action_mapFragment_to_bottomSheetDialogPay2"
+            app:destination="@id/bottomSheetDialogPay2" />
     </fragment>
 
     <fragment
@@ -94,5 +97,13 @@
             android:id="@+id/action_carRegistrationFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
     </fragment>
+    <dialog
+        android:id="@+id/bottomSheetDialogPay2"
+        android:name="sbs.pros.parking.menu.BottomSheetDialogPay"
+        android:label="BottomSheetDialogPay" >
+        <action
+            android:id="@+id/action_bottomSheetDialogPay2_to_mapFragment2"
+            app:destination="@id/mapFragment" />
+    </dialog>
 
 </navigation>

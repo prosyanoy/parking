@@ -8,4 +8,36 @@
     <dimen name="on_boarding_text_size_description_16sp">16sp</dimen>
     <dimen name="on_boarding_text_size_18sp">18sp</dimen>
 
+    <!-- dimens for menu_bottom_sheet_pay -->
+    <dimen name="margin_top_constrlay_16dp">16dp</dimen>
+    <dimen name="margin_start_holder_20dp">20dp</dimen>
+    <dimen name="margin_top_holder">4dp</dimen>
+    <dimen name="padding_holder_8dp">8dp</dimen>
+    <dimen name="margin_start_back_btn_16dp">16dp</dimen>
+    <dimen name="margin_start_back_btn_36dp">36dp</dimen>
+    <dimen name="margin_start_title_16dp">16dp</dimen>
+    <dimen name="margin_top_title_44dp">44dp</dimen>
+    <dimen name="text_size_title_20sp">20sp</dimen>
+    <dimen name="margin_top_history_btn_36dp">36dp</dimen>
+    <dimen name="margin_end_history_btn_16dp">16dp</dimen>
+    <dimen name="margin_top_back_pat_amount_64dp">64dp</dimen>
+    <dimen name="margin_start_balance_tv_44dp">44dp</dimen>
+    <dimen name="margin_top_balance_tv_16dp">16dp</dimen>
+    <dimen name="balance_tv_text_size_20sp">20sp</dimen>
+    <dimen name="margin_start_numbers_tv_44dp">44dp</dimen>
+    <dimen name="margin_top_numbers_tv_12dp">12dp</dimen>
+    <dimen name="number_tv_text_size_32sp">32sp</dimen>
+    <dimen name="margin_start_amount_add_tv_16dp">16dp</dimen>
+    <dimen name="text_size_amount_add_tv_18sp">18sp</dimen>
+    <dimen name="margin_top_frame_4dp">4dp</dimen>
+    <dimen name="margin_start_edit_text_in_frame_4dp">4dp</dimen>
+    <dimen name="padding_start_edit_text_in_frame_8dp">8dp</dimen>
+    <dimen name="text_size_edit_text_in_frame_19sp">19sp</dimen>
+    <dimen name="margin_top_btn_add_sbp_320dp">320dp</dimen>
+    <dimen name="margin_start_pay_with_SBP_tv_80dp">80dp</dimen>
+    <dimen name="text_size_pay_with_SBP_tv_20sp">20sp</dimen>
+    <dimen name="margin_start_pay_with_card_tv_32dp">32dp</dimen>
+    <dimen name="text_size_pay_with_card_tv_20sp">20sp</dimen>
+    <!--========================================================= -->
+
 </resources>

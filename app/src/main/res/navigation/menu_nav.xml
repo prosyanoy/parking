@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_menuFragment_to_supportFragment"
             app:destination="@id/supportFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_bottomSheetDialogPay"
+            app:destination="@id/bottomSheetDialogPay" />
     </fragment>
     <fragment
         android:id="@+id/supportFragment"
@@ -32,4 +35,12 @@
         android:id="@+id/themeFragment"
         android:name="sbs.pros.parking.support.ThemeFragment"
         android:label="ThemeFragment" />
+    <dialog
+        android:id="@+id/bottomSheetDialogPay"
+        android:name="sbs.pros.parking.menu.BottomSheetDialogPay"
+        android:label="BottomSheetDialogPay" >
+        <action
+            android:id="@+id/action_bottomSheetDialogPay_to_menuFragment"
+            app:destination="@id/menuFragment" />
+    </dialog>
 </navigation>
