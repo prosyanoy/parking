@@ -28,6 +28,8 @@ class MenuFragment() : Fragment(R.layout.menu_fragment) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.setTitle("Меню")
 
+        findNavController().enableOnBackPressed(true)
+
         with(binding){
 
             info.setSafeOnClickListener {

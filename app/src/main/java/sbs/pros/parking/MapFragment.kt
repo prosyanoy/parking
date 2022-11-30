@@ -14,6 +14,7 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
@@ -56,7 +57,8 @@ import sbs.pros.parking.utils.viewLifecycleLazy
 import kotlin.math.roundToInt
 
 @AndroidEntryPoint
-class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTapListener, UserLocationObjectListener {
+class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTapListener,
+    UserLocationObjectListener {
 
 
     private val menuViewModel by activityViewModels<MenuViewModel>()
@@ -83,7 +85,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
     private var filterBottomSheetBehaviour: BottomSheetBehavior<LinearLayout>? = null
 
-    val binding by viewLifecycleLazy { FragmentMapBinding.bind( requireView()) }
+    val binding by viewLifecycleLazy { FragmentMapBinding.bind(requireView()) }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -115,12 +117,22 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         getParkings(requireContext(), url, mapObjects, clusterizedCollection!!)
 
         viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-            menuViewModel.title.collect{ binding.bottomMenu.menuTitle.text = it }
+            menuViewModel.title.collect { binding.bottomMenu.menuTitle.text = it }
         }
-
+        // back button settings
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            if (filterBottomSheetBehaviour?.state == BottomSheetBehavior.STATE_EXPANDED ||
+                menuBottomSheetBehaviour?.state == BottomSheetBehavior.STATE_EXPANDED
+            ) {
+                filterBottomSheetBehaviour?.state = BottomSheetBehavior.STATE_HIDDEN
+                menuBottomSheetBehaviour?.state = BottomSheetBehavior.STATE_HIDDEN
+            } else {
+                getActivity()?.finish()
+            }
+        }
     }
 
-    private fun setupFilters(){
+    private fun setupFilters() {
         val filterBinding = binding.bottomFilter.bottomSheetFilters
 
         filterBottomSheetBehaviour = BottomSheetBehavior.from(filterBinding)
@@ -129,6 +141,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
         binding.mapUi.uiMapFilterFAB.setSafeOnClickListener {
             filterBottomSheetBehaviour?.setState(BottomSheetBehavior.STATE_EXPANDED)
+
         }
 
         binding.bottomFilter.buttonCloseFilters.setSafeOnClickListener {
@@ -136,15 +149,15 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         }
     }
 
-    private fun setupMenu(){
+    private fun setupMenu() {
         val menuBinding = binding.bottomMenu.bottomSheet
 
         val navHost = NavHostFragment()
-        childFragmentManager.beginTransaction().replace(R.id.menu_host_fragment, navHost).commitNow()
+        childFragmentManager.beginTransaction().replace(R.id.menu_host_fragment, navHost)
+            .commitNow()
         navHost.navController.setGraph(R.navigation.menu_nav, Bundle())
 
-        navHost.navController.addOnDestinationChangedListener {
-                controller, destination, arguments ->
+        navHost.navController.addOnDestinationChangedListener { controller, destination, arguments ->
             binding.bottomMenu.back.isVisible = destination.id != R.id.menuFragment
         }
 
@@ -165,7 +178,6 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         }
 
 
-
     }
 
 
@@ -184,18 +196,25 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
     override fun onClusterAdded(cluster: Cluster) {
         // We setup cluster appearance and tap handler in this method
         cluster.appearance.setIcon(
-            ImageProvider.fromAsset(requireContext(), "search_result.png"))
+            ImageProvider.fromAsset(requireContext(), "search_result.png")
+        )
         cluster.addClusterTapListener(this)
     }
 
     override fun onClusterTap(cluster: Cluster): Boolean {
         mapView!!.map.move(
-            CameraPosition(Point(cluster.appearance.geometry.latitude,cluster.appearance.geometry.longitude), mapView!!.map.cameraPosition.zoom * 1.08f, 0.0f, 0.0f),
+            CameraPosition(
+                Point(
+                    cluster.appearance.geometry.latitude,
+                    cluster.appearance.geometry.longitude
+                ), mapView!!.map.cameraPosition.zoom * 1.08f, 0.0f, 0.0f
+            ),
             Animation(Animation.Type.SMOOTH, 0.25F),
             null
         )
         return true
     }
+
     private fun setClickListeners() {
 
         val uiMapLocationFAB = binding.mapUi.uiMapLocationFAB
@@ -212,7 +231,12 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         }
     }
 
-    private fun getParkings(context : Context, url : String, mapObjects : MapObjectCollection, clusterizedCollection: ClusterizedPlacemarkCollection) {
+    private fun getParkings(
+        context: Context,
+        url: String,
+        mapObjects: MapObjectCollection,
+        clusterizedCollection: ClusterizedPlacemarkCollection
+    ) {
         val queue = Volley.newRequestQueue(context)
         val stringRequest = object : StringRequest(
             Method.GET, "$url?apicall=get_parkings",
@@ -222,7 +246,8 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                 val jsonArray = org.json.JSONTokener(response).nextValue() as org.json.JSONArray
                 for (i in 0 until jsonArray.length()) {
                     val coordinatesObject = jsonArray.getJSONObject(i).getString("coordinates")
-                    val coordinates = org.json.JSONTokener(coordinatesObject).nextValue() as org.json.JSONObject
+                    val coordinates =
+                        org.json.JSONTokener(coordinatesObject).nextValue() as org.json.JSONObject
 
                     val point1 = coordinates.getString("point")
                     val point2 = org.json.JSONTokener(point1).nextValue() as org.json.JSONArray
@@ -231,7 +256,8 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                     val lon = point2.getDouble(1)
                     val point = Point(lat, lon)
 
-                    val list = org.json.JSONTokener(coordinates.getString("list")).nextValue() as org.json.JSONArray
+                    val list = org.json.JSONTokener(coordinates.getString("list"))
+                        .nextValue() as org.json.JSONArray
 
                     var myList = mutableListOf<Point>()
                     for (i in 0 until list.length()) {
@@ -249,9 +275,27 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                     val id = jsonArray.getJSONObject(i).getInt("id")
 
                     if (type == "l") {
-                        parking(context, mapObjects, clusterizedCollection, point, myList, address, hour_cost, id)
+                        parking(
+                            context,
+                            mapObjects,
+                            clusterizedCollection,
+                            point,
+                            myList,
+                            address,
+                            hour_cost,
+                            id
+                        )
                     } else if (type == "g") {
-                        parkingG(context, mapObjects, clusterizedCollection, point, myList, address, hour_cost, id)
+                        parkingG(
+                            context,
+                            mapObjects,
+                            clusterizedCollection,
+                            point,
+                            myList,
+                            address,
+                            hour_cost,
+                            id
+                        )
                     }
                 }
             },
@@ -261,7 +305,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                     R.string.server_error,
                     Toast.LENGTH_SHORT
                 ).show()
-            }){}
+            }) {}
         queue.add(stringRequest)
     }
 
@@ -276,7 +320,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                 var lastState = "STATE_HALF_EXPANDED"
 
                 setSelectedPlacemark(mapObject)
-                when(parkingData.parking){
+                when (parkingData.parking) {
                     is PolylineMapObject -> setSelectedPolyline(parkingData.parking)
                     is PolygonMapObject -> setSelectedPolygon(parkingData.parking)
                 }
@@ -289,11 +333,18 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                 }
 
                 mapView!!.map.move(
-                    CameraPosition(Point(point.latitude - 0.0001,point.longitude), 16f, 0.0f, 0.0f),
+                    CameraPosition(
+                        Point(point.latitude - 0.0001, point.longitude),
+                        16f,
+                        0.0f,
+                        0.0f
+                    ),
                     Animation(Animation.Type.SMOOTH, 0.5F),
-                    null)
+                    null
+                )
 
-                bottomSheetBehavior.addBottomSheetCallback(object: BottomSheetBehavior.BottomSheetCallback(){
+                bottomSheetBehavior.addBottomSheetCallback(object :
+                    BottomSheetBehavior.BottomSheetCallback() {
                     override fun onStateChanged(bottomSheet: View, state: Int) {
                         when (state) {
 
@@ -302,43 +353,70 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
                             BottomSheetBehavior.STATE_EXPANDED -> {
                                 lastState = "STATE_EXPANDED"
                                 mapView!!.map.move(
-                                    CameraPosition(Point(point.latitude - 0.0002,point.longitude), 16f, 0.0f, 0.0f),
+                                    CameraPosition(
+                                        Point(point.latitude - 0.0002, point.longitude),
+                                        16f,
+                                        0.0f,
+                                        0.0f
+                                    ),
                                     Animation(Animation.Type.SMOOTH, 0.5F),
-                                    null)
+                                    null
+                                )
                             }
 
-                            BottomSheetBehavior.STATE_COLLAPSED ->{
+                            BottomSheetBehavior.STATE_COLLAPSED -> {
                                 mapView!!.map.move(
-                                    CameraPosition(Point(mapView!!.map.cameraPosition.target.latitude + 0.0002, mapView!!.map.cameraPosition.target.longitude ), 16f, 0.0f, 0.0f),
+                                    CameraPosition(
+                                        Point(
+                                            mapView!!.map.cameraPosition.target.latitude + 0.0002,
+                                            mapView!!.map.cameraPosition.target.longitude
+                                        ), 16f, 0.0f, 0.0f
+                                    ),
                                     Animation(Animation.Type.SMOOTH, 0.5F),
-                                    null)
+                                    null
+                                )
                                 clearSelection()
                                 binding.mapUi.uiMapParkingFAB.visibility = View.VISIBLE
                             }
 
                             BottomSheetBehavior.STATE_DRAGGING -> {}
                             BottomSheetBehavior.STATE_SETTLING -> {}
-                            BottomSheetBehavior.STATE_HALF_EXPANDED ->{
+                            BottomSheetBehavior.STATE_HALF_EXPANDED -> {
 
-                                if (lastState == "STATE_EXPANDED"){
+                                if (lastState == "STATE_EXPANDED") {
                                     mapView!!.map.move(
-                                        CameraPosition(Point(point.latitude - 0.0001,point.longitude), 16f, 0.0f, 0.0f),
+                                        CameraPosition(
+                                            Point(
+                                                point.latitude - 0.0001,
+                                                point.longitude
+                                            ), 16f, 0.0f, 0.0f
+                                        ),
                                         Animation(Animation.Type.SMOOTH, 0.5F),
-                                        null)
+                                        null
+                                    )
                                 }
                                 lastState = "STATE_HALF_EXPANDED"
                             }
                         }
                     }
 
-                    override fun onSlide(bottomSheet: View, slideOffset: Float) { }
+                    override fun onSlide(bottomSheet: View, slideOffset: Float) {}
                 })
 
             }
             true
         }
 
-    private fun parking(context: Context, mapObjects: MapObjectCollection, clusterizedCollection: ClusterizedPlacemarkCollection, point : Point, list : List<Point>, address : String, hour_cost : Int, id : Int) {
+    private fun parking(
+        context: Context,
+        mapObjects: MapObjectCollection,
+        clusterizedCollection: ClusterizedPlacemarkCollection,
+        point: Point,
+        list: List<Point>,
+        address: String,
+        hour_cost: Int,
+        id: Int
+    ) {
         val polyline = mapObjects
             .addPolyline(Polyline(list))
             .apply { setStrokeColor(Color.rgb(13, 174, 252)) }
@@ -361,7 +439,16 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         clusterizedCollection.clusterPlacemarks(60.0, 15)
     }
 
-    private fun parkingG(context: Context, mapObjects: MapObjectCollection, clusterizedCollection: ClusterizedPlacemarkCollection, point : Point, list : List<Point>, address : String, hour_cost : Int, id : Int) {
+    private fun parkingG(
+        context: Context,
+        mapObjects: MapObjectCollection,
+        clusterizedCollection: ClusterizedPlacemarkCollection,
+        point: Point,
+        list: List<Point>,
+        address: String,
+        hour_cost: Int,
+        id: Int
+    ) {
         val polygon = mapObjects.addPolygon(
             Polygon(LinearRing(list), ArrayList())
         )
@@ -388,41 +475,49 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         clusterizedCollection.clusterPlacemarks(60.0, 15)
     }
 
-    private fun requestLocationPermission(grant : Boolean = false, denied : Boolean = false) {
-        if(checkFineLocationDenied() && denied){
+    private fun requestLocationPermission(grant: Boolean = false, denied: Boolean = false) {
+        if (checkFineLocationDenied() && denied) {
             fineLocationDialog()
-        } else if (!checkFineLocationGrant() && grant)
-        {
-            ActivityCompat.requestPermissions(requireActivity(), arrayOf("android.permission.ACCESS_FINE_LOCATION"),
+        } else if (!checkFineLocationGrant() && grant) {
+            ActivityCompat.requestPermissions(
+                requireActivity(), arrayOf("android.permission.ACCESS_FINE_LOCATION"),
                 Constants.PERMISSIONS_REQUEST_FINE_LOCATION
             )
         }
     }
 
-    private fun setSelectedPlacemark(mapObject: PlacemarkMapObject){
+    private fun setSelectedPlacemark(mapObject: PlacemarkMapObject) {
         val style = IconStyle().apply { scale = 1.3f }
         val parkingData = mapObject.userData as PinData
 
-        mapObject.setIcon(ImageProvider.fromBitmap(drawSimpleBitmap("${parkingData.hour_cost}\u2006₽", requireContext(), green)))
+        mapObject.setIcon(
+            ImageProvider.fromBitmap(
+                drawSimpleBitmap(
+                    "${parkingData.hour_cost}\u2006₽",
+                    requireContext(),
+                    green
+                )
+            )
+        )
         mapObject.setIconStyle(style)
         selectedPlacemark = mapObject
     }
 
-    private fun setSelectedPolyline(polyline: PolylineMapObject){
+    private fun setSelectedPolyline(polyline: PolylineMapObject) {
         polyline.setStrokeColor(green)
         selectedObject = polyline
     }
 
-    private fun setSelectedPolygon(polygon: PolygonMapObject){
+    private fun setSelectedPolygon(polygon: PolygonMapObject) {
         polygon.fillColor = lightGreen
         polygon.strokeColor = darkGreen
         selectedObject = polygon
     }
 
 
-    private fun clearSelection(){
+    private fun clearSelection() {
         selectedObject?.let {
-            when(it){
+            when (it) {
                 is PolylineMapObject -> {
                     it.setStrokeColor(blue)
                 }
@@ -436,13 +531,19 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
         selectedPlacemark?.let {
             val parkingData = it.userData as PinData
-            it.setIcon(ImageProvider.fromBitmap(drawSimpleBitmap("${parkingData.hour_cost}\u2006₽", requireContext())))
+            it.setIcon(
+                ImageProvider.fromBitmap(
+                    drawSimpleBitmap(
+                        "${parkingData.hour_cost}\u2006₽",
+                        requireContext()
+                    )
+                )
+            )
         }
     }
 
 
-
-    private fun fineLocationDialog(){
+    private fun fineLocationDialog() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_intent_settings, null)
 
         val customDialog = AlertDialog.Builder(requireContext())
@@ -462,7 +563,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
     }
 
 
-    private fun geoStatusDialog(){
+    private fun geoStatusDialog() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_intent_settings, null)
 
         val customDialog = AlertDialog.Builder(requireContext())
@@ -480,8 +581,8 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         }
 
         GlobalScope.launch {
-            while (true){
-                if (checkGEOStatus()){
+            while (true) {
+                if (checkGEOStatus()) {
                     customDialog.dismiss()
                 }
                 delay(250L)
@@ -490,8 +591,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
     }
 
 
-
-    private fun setUserLocationLayer(){
+    private fun setUserLocationLayer() {
         userLocationLayer = mapKit?.createUserLocationLayer(mapView!!.mapWindow)
         userLocationLayer!!.isVisible = true
         userLocationLayer!!.isHeadingEnabled = false
@@ -499,32 +599,45 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
     }
 
     private fun checkFineLocationGrant(): Boolean {
-        return (ContextCompat.checkSelfPermission(requireContext(), "android.permission.ACCESS_FINE_LOCATION")
+        return (ContextCompat.checkSelfPermission(
+            requireContext(),
+            "android.permission.ACCESS_FINE_LOCATION"
+        )
                 == PackageManager.PERMISSION_GRANTED)
     }
 
     private fun checkFineLocationDenied(): Boolean {
-        return (ContextCompat.checkSelfPermission(requireContext(), "android.permission.ACCESS_FINE_LOCATION")
+        return (ContextCompat.checkSelfPermission(
+            requireContext(),
+            "android.permission.ACCESS_FINE_LOCATION"
+        )
                 == PackageManager.PERMISSION_DENIED)
     }
 
     private fun checkGEOStatus(): Boolean {
-        val manager: LocationManager = requireContext().getSystemService(LOCATION_SERVICE) as LocationManager
+        val manager: LocationManager =
+            requireContext().getSystemService(LOCATION_SERVICE) as LocationManager
         return manager.isProviderEnabled(LocationManager.GPS_PROVIDER)
     }
 
     private fun centerCameraByUser() {
         mapView!!.map.move(
-            CameraPosition(Point(userLocationLayer!!.cameraPosition()?.target!!.latitude, userLocationLayer!!.cameraPosition()?.target!!.longitude), 16f, 0.0f, 0.0f),
+            CameraPosition(
+                Point(
+                    userLocationLayer!!.cameraPosition()?.target!!.latitude,
+                    userLocationLayer!!.cameraPosition()?.target!!.longitude
+                ), 16f, 0.0f, 0.0f
+            ),
             Animation(Animation.Type.SMOOTH, 0F),
-            null)
+            null
+        )
     }
 
-    private fun checkUserLocation(){
+    private fun checkUserLocation() {
         GlobalScope.launch(Dispatchers.Main) {
             var t = 0
-            while (t < 10000){
-                if (userLocationLayer!!.cameraPosition()?.target != null){
+            while (t < 10000) {
+                if (userLocationLayer!!.cameraPosition()?.target != null) {
                     centerCameraByUser()
                     break
                 }
@@ -537,10 +650,12 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
 
     override fun onObjectAdded(userLocationView: UserLocationView) {
         userLocationView.arrow.setIcon(ImageProvider.fromBitmap(drawLocationPoint()))
-        userLocationView.arrow.setIconStyle(IconStyle().setAnchor(PointF(0.5f, 0.5f))
-            .setRotationType(RotationType.ROTATE)
-            .setZIndex(1f)
-            .setScale(0.5f))
+        userLocationView.arrow.setIconStyle(
+            IconStyle().setAnchor(PointF(0.5f, 0.5f))
+                .setRotationType(RotationType.ROTATE)
+                .setZIndex(1f)
+                .setScale(0.5f)
+        )
 
         val pinIcon = userLocationView.pin.useCompositeIcon()
         pinIcon.setIcon(
@@ -559,7 +674,7 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
     override fun onObjectUpdated(userLocationView: UserLocationView, objectEvent: ObjectEvent) {}
 
     companion object {
-        private var currentSelection : MapObject? = null
+        private var currentSelection: MapObject? = null
         private val node = currentSelection
         fun changeSelection(parking: MapObject?) {
             if (node is PolylineMapObject) {
@@ -591,7 +706,6 @@ class MapFragment : Fragment(R.layout.fragment_map), ClusterListener, ClusterTap
         private val darkGreen = Color.rgb(30, 141, 13)
 
     }
-
 
 
 }
